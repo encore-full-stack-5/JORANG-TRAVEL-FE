@@ -39,7 +39,7 @@
 
 .title-color {
   margin-left: 130px;
-  font-size: 50px;
+  font-size: 45px;
   color: #9cc7ee;
 }
 
@@ -126,4 +126,20 @@ input[type="password"] {
   align-items: center;
   justify-content: center;
   margin-top: 10%;
+}
+
+.sign-up {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 1%;
+}
+
+.center-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  align-items: flex-end;
+  flex-wrap: wrap;
 }
