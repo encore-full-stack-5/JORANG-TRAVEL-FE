@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const SignIn = () => {
   return (
-    <div>
+    <div className="center-right">
       <div className="login">
         <input
           type="text"
