@@ -7,6 +7,7 @@ import SignIn from "./component/SignIn";
 import Mypage from "./component/Mypage";
 import SignUp from "./component/SignUp";
 import Nav from "./component/Nav";
+import TravelDiary from "./component/TravelDiary";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/SignUp" element={<SignUp />}></Route>
           <Route path="/SignIn" element={<SignIn />}></Route>
           <Route path="/Mypage" element={<Mypage />}></Route>
+          <Route path="/TravelDiary" element={<TravelDiary />}></Route>
         </Routes>
       </BrowserRouter>
     </div>
