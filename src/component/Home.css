@@ -1,0 +1,27 @@
+.world-map-container svg {
+  margin-top: 40px;
+  width: 100%;
+  height: 480px;
+}
+
+.map-selected {
+  fill: #e7d662;
+}
+
+.map-unselected {
+  fill: #4397e6;
+}
+
+.map-selected:hover,
+.map-unselected:hover {
+  cursor: pointer;
+}
+
+.map-unselected:hover {
+  fill: #e7d662;
+  filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.5));
+}
+
+#continent {
+  position: absolute;
+}

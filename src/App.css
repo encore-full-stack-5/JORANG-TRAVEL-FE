@@ -296,7 +296,7 @@ input[type="password"] {
   height: 30px;
   border: 2.5px solid #9cc7ee;
   align-items: center;
-=======
+}
 
 .change-button {
   outline: none;
@@ -338,5 +338,4 @@ input[type="password"] {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
 }
