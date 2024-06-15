@@ -637,7 +637,7 @@ input[type="password"] {
 
 .preview-image {
   width: 50%;
-  height: 300px;
+  height: auto;
   object-fit: cover;
 }
 
