@@ -9,6 +9,7 @@ const TravelDiary = () => {
   const [Publish, setPublish] = useState(false);
   const [travelCotent, setTravelCotent] = useState([]);
   const [expenseContent, setExpenseContent] = useState([]);
+  const [travelContent, setTravelContent] = useState([]);
   const [newEntry, setNewEntry] = useState({
     description: "",
     image: null,
@@ -23,20 +24,12 @@ const TravelDiary = () => {
   });
 
   const addEntry = () => {
-    setTravelCotent([...travelCotent, newEntry]);
-    setNewEntry({ description: "", image: null });
+    if (newEntry.description !== "" || newEntry.image !== null) {
+      setTravelContent([...travelContent, newEntry]); // travelContent에 새 항목 추가
+      setNewEntry({ description: "", image: null }); // 새 항목 입력을 위해 초기화
+    }
   };
 
-  const addEntryExpense = () => {
-    setExpenseContent([...expenseContent, newExpense]);
-    setNewEntry({
-      location: "",
-      category: "",
-      amount: "",
-    });
-  };
-
-  const [showPrivacyOptions, setShowPrivacyOptions] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const handleSave = () => {
     setModalIsOpen(true);
@@ -45,40 +38,36 @@ const TravelDiary = () => {
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
 
   const addExpense = () => {
-    setExpenses([...expenses, newExpense]);
-    setNewExpense({ date: selectedDate, category: "", amount: "" });
-    setIsExpenseModalOpen(false); // 모달 닫기
+    // 여러 개의 금액 입력 데이터를 expenses 상태에 추가
+    setExpenses([
+      ...expenses,
+      ...expenseInputs.map((input) => ({
+        date: selectedDate,
+        amount: input.amount,
+      })),
+    ]);
+    setExpenseInputs([{ id: Math.random(), amount: "", location: "" }]);
+    setIsExpenseModalOpen(false);
   };
 
   const handleDateClick = (date) => {
     setSelectedDate(date);
-    setNewExpense({ ...newExpense, date: date }); // newExpense에 date 포함
-    setIsExpenseModalOpen(true); // 모달 열기
+    const expensesForDate = expenses.filter((exp) => {
+      const expenseDate = new Date(exp.date).toISOString().split("T")[0];
+      return expenseDate === date.toISOString().split("T")[0];
+    });
+    setExpenseInputs(
+      expensesForDate.length > 0
+        ? expensesForDate
+        : [{ id: Math.random(), amount: "", location: "" }]
+    );
+    setIsExpenseModalOpen(true);
   };
 
   const [textareaHeight, setTextareaHeight] = useState({
     row: 1,
     lineBreak: {},
   });
-
-  const resizeTextarea = (e) => {
-    const { scrollHeight, clientHeight, value } = e.target;
-    // 줄바꿈이 일어날 때
-    if (scrollHeight > clientHeight) {
-      setTextareaHeight((prev) => ({
-        row: prev.row + 1,
-        lineBreak: { ...prev.lineBreak, [value.length - 1]: true },
-      }));
-    }
-
-    // 텍스트 지워서 줄바꿈 지점에 도달했을 때
-    if (textareaHeight.lineBreak[value.length]) {
-      setTextareaHeight((prev) => ({
-        row: prev.row - 1,
-        lineBreak: { ...prev.lineBreak, [value.length]: false },
-      }));
-    }
-  };
 
   // 날짜별 지출 합계를 계산하는 함수
   const getDailyExpensesTotal = (date) => {
@@ -102,7 +91,50 @@ const TravelDiary = () => {
       );
     }
   };
+  const handleImageChange = (file) => {
+    setNewEntry({ ...newEntry, image: file });
+  };
+  const handleDescriptionChange = (description) => {
+    setNewEntry({ ...newEntry, description });
+  };
+  const addExpenseInput = () => {
+    setExpenseInputs([
+      ...expenseInputs,
+      { id: Math.random(), amount: "", location: " " },
+    ]);
+  };
 
+  const [expenseInputs, setExpenseInputs] = useState([
+    { id: Math.random(), amount: "", location: " " },
+  ]);
+
+  const [locationInputs, setLocationInputs] = useState([]);
+  const handleExpenseChange = (id, field, value) => {
+    setExpenseInputs(
+      expenseInputs.map((input) =>
+        input.id === id ? { ...input, [field]: value } : input
+      )
+    );
+    // 입력된 경비를 저장하는 함수
+    const addExpense = () => {
+      const updatedExpenses = expenses.filter(
+        (exp) =>
+          !(
+            new Date(exp.date).toISOString().split("T")[0] ===
+            selectedDate.toISOString().split("T")[0]
+          )
+      );
+      setExpenses([...updatedExpenses, ...expenseInputs]);
+      setIsExpenseModalOpen(false);
+    };
+    const handleExpenseChange = (id, field, value) => {
+      setExpenseInputs(
+        expenseInputs.map((input) =>
+          input.id === id ? { ...input, [field]: value } : input
+        )
+      );
+    };
+  };
   return (
     <div className="travel">
       <div className="travel-diary">
@@ -121,76 +153,74 @@ const TravelDiary = () => {
           />
           발행
         </label>
-        <div>
-          <h4 style={{ textAlign: "left" }}>여행기</h4>
-          {travelCotent.map((entry, index) => (
-            <div key={index} className="entry">
-              {/* <p>{entry.description}</p> */}
-              {entry.image && (
-                <img
-                  src={URL.createObjectURL(entry.image)}
-                  alt="entry"
-                  className="entry-image"
-                />
-              )}
-            </div>
-          ))}
-          <div className="new-entry">
-            <div className="content-upload">
-              <textarea
-                className="textarea"
-                placeholder="내용"
-                value={newEntry.description}
-                onChange={
-                  (e) =>
-                    setNewEntry({ ...newEntry, description: e.target.value })
-                  // resizeTextarea(e);
-                }
-                // rows={textareaHeight.row} // textarea의 row 수를 동적으로 설정
+
+        {travelContent.map((entry, index) => (
+          <div key={index} className="entry-layout">
+            {entry.image && (
+              <img
+                src={URL.createObjectURL(entry.image)}
+                alt="Uploaded"
+                className="preview-image"
               />
-              <div className="divider"></div>
-            </div>
-            <div className="image-upload">
-              <input
-                type="file"
-                onChange={(e) =>
-                  setNewEntry({ ...newEntry, image: e.target.files[0] })
-                }
-                className="file-input"
+            )}
+            <p>{entry.description}</p>
+          </div>
+        ))}
+        <div className="entry-layout">
+          <div className="image-upload-section">
+            <input
+              type="file"
+              onChange={(e) => handleImageChange(e.target.files[0])}
+            />
+            {newEntry.image && (
+              <img
+                src={URL.createObjectURL(newEntry.image)}
+                alt="Uploaded"
+                className="preview-image"
               />
-            </div>
+            )}
           </div>
-          <div>
-            <button onClick={addEntry} className="add-button">
-              +
-            </button>
+          <div className="content-section">
+            <textarea
+              className="fixed-size-textarea"
+              placeholder="내용"
+              value={newEntry.description}
+              onChange={(e) => handleDescriptionChange(e.target.value)}
+            />
           </div>
-          <div className="button-add-container">
-            <button onClick={handleSave} className="save-button">
-              저장
-            </button>
-          </div>
-          <Modal
-            isOpen={modalIsOpen}
-            onRequestClose={() => setModalIsOpen(false)}
-            // contentLabel="Privacy Options"
-            className="modal"
-            overlayClassName="overlay"
-          >
-            <label>
-              <input type="radio" name="privacy" /> 공개
-            </label>
-            <label>
-              <input type="radio" name="privacy" /> 비공개
-            </label>
-            <select>
-              <option>나라 선택</option>
-              <option>미국</option>
-              <opttion></opttion>
-            </select>
-            <button onClick={() => setModalIsOpen(false)}>완료</button>
-          </Modal>
         </div>
+        <div className="buttonAddEntry">
+          <button onClick={addEntry} className="add-button">
+            +
+          </button>
+        </div>
+        <div style={{ textAlign: "right" }}>
+          <button onClick={handleSave} className="save-button">
+            저장
+          </button>
+        </div>
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={() => setModalIsOpen(false)}
+          // contentLabel="Privacy Options"
+          className="modaldiary"
+          overlayClassName="overlaydiary"
+        >
+          <label>
+            <input type="radio" name="privacy" /> 공개
+          </label>
+          <label>
+            <input type="radio" name="privacy" /> 비공개
+          </label>
+          <select>
+            <option>나라 선택</option>
+            <option>미국</option>
+            <opttion>일본</opttion>
+            <option>중국</option>
+            <option>호주</option>
+          </select>
+          <button onClick={() => setModalIsOpen(false)}>완료</button>
+        </Modal>
       </div>
       <div className="expenses">
         <div className="travel-expenses">
@@ -205,30 +235,49 @@ const TravelDiary = () => {
             className="modal"
             overlayClassName="overlay"
           >
-            {selectedDate && (
-              <div className="new-expense">
-                <h3>{selectedDate.toDateString()} 경비 추가</h3>
+            {selectedDate && <h3>{selectedDate.toDateString()} 경비 추가</h3>}
+            {expenseInputs.map((input, index) => (
+              <div key={input.id} className="expenseInput">
+                <input
+                  type="text"
+                  placeholder="장소"
+                  value={input.location}
+                  onChange={(e) =>
+                    handleExpenseChange(input.id, "location", e.target.value)
+                  }
+                />
                 <select>
                   <option>나라 선택</option>
-                  {/* 나라 옵션을 추가 */}
-                  <option>일본</option>
                   <option>미국</option>
-                  <option>아프리카</option>
+                  <opttion>일본</opttion>
+                  <option>중국</option>
+                  <option>호주</option>
                 </select>
                 <input
                   type="text"
                   placeholder="금액"
-                  value={newExpense.amount}
+                  value={input.amount}
                   onChange={(e) =>
-                    setNewExpense({ ...newExpense, amount: e.target.value })
+                    handleExpenseChange(input.id, "amount", e.target.value)
                   }
                 />
-                <button onClick={addExpense} className="add-button">
-                  +
-                </button>
               </div>
-            )}
+            ))}
+
+            <button onClick={addExpenseInput} className="add-button">
+              +
+            </button>
+            <div className="saveExpense" style={{ textAlign: "right" }}>
+              <button onClick={addExpense} className="save-button-expense">
+                저장
+              </button>
+            </div>
           </Modal>
+          <div style={{ textAlign: "right" }}>
+            <button onClick={handleSave} className="save-button">
+              저장
+            </button>
+          </div>
         </div>
       </div>
     </div>
