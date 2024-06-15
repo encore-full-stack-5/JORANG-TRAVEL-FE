@@ -1,5 +1,4 @@
 import React from "react";
-import jorangImage from "./../image/jorangImage.png";
 import { Link } from "react-router-dom";
 
 const SignIn = () => {
@@ -24,11 +23,11 @@ const SignIn = () => {
       </div>
 
       <div className="row-center">
-        <Link to="/FindLoginId" style={{ textDecoration: "none" }}>
+        <Link to="/findLoginId" style={{ textDecoration: "none" }}>
           <p className="font-color">아이디</p>
         </Link>
         <p className="font-color">/</p>
-        <Link to="/FindPassword" style={{ textDecoration: "none" }}>
+        <Link to="/findPassword" style={{ textDecoration: "none" }}>
           <p className="font-color">비밀번호</p>
         </Link>
         <p className="font-color">찾기</p>
