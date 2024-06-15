@@ -340,3 +340,145 @@ input[type="password"] {
   justify-content: space-between;
 
 }
+
+.row-left-center-space {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.country-image-container {
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay p {
+  text-align: start;
+  color: #606060;
+  padding: 15px;
+}
+
+.country-image-container:hover .overlay {
+  opacity: 1;
+}
+
+.chat-signature-color-oval {
+  background-color: #c2d6e9;
+  border-radius: 30px;
+  font-size: 15px;
+  color: #606060;
+  display: inline-flex; /* inline-flex로 변경하여 정렬을 쉽게 합니다 */
+  align-items: center; /* 세로 중앙 정렬 */
+  justify-content: center; /* 가로 중앙 정렬 */
+  min-width: 100px; /* 최소 너비를 설정하여 텍스트 양이 적을 때도 적절한 크기 유지 */
+  max-width: 60%; /* 최대 너비를 설정 */
+  padding: 10px 20px; /* 여백을 추가하여 텍스트가 테두리와 붙지 않게 합니다 */
+  word-wrap: break-word; /* 긴 단어를 자동으로 줄바꿈 */
+  text-align: start; /* 텍스트를 가로 중앙에 위치시킴 */
+  box-sizing: border-box; /* 패딩과 테두리를 요소의 전체 크기에 포함시킴 */
+  overflow: hidden; /* 스크롤 비활성화 */
+  height: auto; /* 텍스트 양이 늘어나면 자동으로 세로 길이가 늘어남 */
+}
+
+.chat-signature-oval {
+  background-color: white;
+  height: 30px;
+  border-radius: 30px;
+  font-size: 15px;
+  border: 3px solid #9cc7ee;
+  color: #606060;
+  display: inline-flex; /* inline-flex로 변경하여 정렬을 쉽게 합니다 */
+  align-items: center; /* 세로 중앙 정렬 */
+  justify-content: center; /* 가로 중앙 정렬 */
+  min-width: 100px; /* 최소 너비를 설정하여 텍스트 양이 적을 때도 적절한 크기 유지 */
+  max-width: 60%; /* 최대 너비를 설정 */
+  padding: 10px 20px; /* 여백을 추가하여 텍스트가 테두리와 붙지 않게 합니다 */
+  word-wrap: break-word; /* 긴 단어를 자동으로 줄바꿈 */
+  text-align: start; /* 텍스트를 가로 중앙에 위치시킴 */
+  box-sizing: border-box; /* 패딩과 테두리를 요소의 전체 크기에 포함시킴 */
+  overflow: hidden; /* 스크롤 비활성화 */
+  height: auto; /* 텍스트 양이 늘어나면 자동으로 세로 길이가 늘어남 */
+}
+
+.trip-font-color {
+  font-size: 20px;
+  color: #606060;
+  padding-top: 30px;
+}
+
+.trip-text-display {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: "15px";
+  margin-left: 15%;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.trip-image-display {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 10px;
+  margin-left: 13%;
+  margin-right: 13%;
+}
+
+.image-text-box {
+  border-radius: 30px;
+  border: 3px solid #9cc7ee;
+  background-color: white;
+  height: 180px;
+  width: 180px;
+  display: flex;
+  flex-direction: column;
+  margin: 15px;
+}
+
+.image-container {
+  flex: 8; /* 80% 높이 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-container img {
+  width: 180px;
+  height: 144px;
+  object-fit: cover; /* 이미지를 컨테이너에 맞게 자르지 않고 채우기 */
+  border-top-left-radius: 27px;
+  border-top-right-radius: 27px;
+}
+
+.text-container {
+  flex: 2; /* 20% 높이 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  border-bottom-left-radius: 27px;
+  border-bottom-right-radius: 27px;
+  box-sizing: border-box; /* 패딩을 요소의 전체 크기에 포함 */
+  overflow: hidden;
+}
+
+.text-container p {
+  padding-left: 8px;
+  white-space: nowrap; /* 텍스트를 한 줄로 유지 */
+  overflow: hidden; /* 넘치는 텍스트를 숨김 */
+  text-overflow: ellipsis; /* 넘치는 텍스트에 줄임표시 추가 */
+}

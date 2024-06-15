@@ -8,15 +8,15 @@ const Header = () => {
       <nav>
         <div>
           <div className="header-right">
-            <Link to="/SignUp" style={{ textDecoration: "none" }}>
+            <Link to="/signup" style={{ textDecoration: "none" }}>
               <p className="font-color">회원가입</p>
             </Link>
             <p className="font-color">/</p>
-            <Link to="/SignIn" style={{ textDecoration: "none" }}>
+            <Link to="/signin" style={{ textDecoration: "none" }}>
               <p className="font-color">로그인</p>
             </Link>
             <p className="font-color">/</p>
-            <Link to="/Mypage" style={{ textDecoration: "none" }}>
+            <Link to="/mypage" style={{ textDecoration: "none" }}>
               <p className="font-color">마이페이지</p>
             </Link>
           </div>
