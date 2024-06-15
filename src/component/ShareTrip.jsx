@@ -2,50 +2,55 @@ import React, { useState } from "react";
 import Norway from "./../image/Norway.png";
 import ImageText from "./ImageText";
 import jorangImage from "./../image/jorangImage.png";
+import filterImage from "./../image/filterImage.png";
 import searchImage from "./../image/searchImage.png";
+import Search from "./Search";
 
-const ShareTrip = () => {
-  const [click, setClick] = useState(false);
-
-  const countryInfo =
-    "노르웨이의 국기는 1821년에 프레드리크 멜체르(Fredrik Meltzer)가 디자인한 것이다. ..."; // 생략
-
+const Mytrip = () => {
   return (
-    <div>
-      <div
-        style={{
-          marginTop: "50px",
-          position: "relative",
-          width: "1000px",
-          height: "30%",
-        }}
-      >
-        <div
-          className="image-container" // 이미지를 감싸는 div에 적용할 클래스
-          onClick={() => setClick(!click)} // 클릭 시 click 상태 변경
-        >
-          <img src={Norway} alt="Norway" />
-          {click && ( // click이 true일 때만 텍스트를 표시
-            <div className="overlay">
-              <p>{countryInfo}</p>
-            </div>
-          )}
+    <div style={{ paddingTop: "20px" }}>
+      <Search placeholder="가고 싶은 나라나 도시를 선택해주세요" />
+      <div className="row-center-space">
+        <div className="trip-text-display">
+          <p className="trip-font-color">최근 올라온 여행일지</p>
         </div>
+        <div className="signature-oval" style={{ width: "80px" }}>
+          <p style={{ color: "#606060" }}>필터</p>
+          <img
+            src={filterImage}
+            style={{ width: "25px", height: "25px" }}
+          ></img>
+        </div>
+      </div>
+
+      <div className="trip-image-display">
+        <ImageText
+          src={Norway}
+          content="안녕하세요hihihihihihihihihihihi"
+        ></ImageText>
+        <ImageText
+          src={jorangImage}
+          content="hihihihihihihihihihihi반갑습니다"
+        ></ImageText>
+        <ImageText
+          src={Norway}
+          content="안녕하세요hihihihihihihihihihihi"
+        ></ImageText>
+        <ImageText
+          src={jorangImage}
+          content="hihihihihihihihihihihi반갑습니다"
+        ></ImageText>
+        <ImageText
+          src={searchImage}
+          content="안녕하세요hihihihihihihihihihihi"
+        ></ImageText>
       </div>
 
       <div className="trip-text-display">
-        <div className="row-center-space" style={{ alignItems: "baseline" }}>
-          <p className="trip-font-color">노르웨이 여행일지</p>
-          <p
-            className="trip-font-color"
-            style={{ paddingLeft: "5px", fontSize: "14px" }}
-          >
-            더보기
-          </p>
-        </div>
+        <p className="trip-font-color">이번주 Hot한 여행일지 Top5</p>
       </div>
 
-      <div className="trip-image-display" style={{ marginTop: "20px" }}>
+      <div className="trip-image-display">
         <ImageText
           src={Norway}
           content="안녕하세요hihihihihihihihihihihi"
@@ -71,4 +76,4 @@ const ShareTrip = () => {
   );
 };
 
-export default ShareTrip;
+export default Mytrip;

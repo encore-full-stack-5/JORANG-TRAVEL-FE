@@ -7,9 +7,10 @@ import SignIn from "./component/SignIn";
 import Mypage from "./component/Mypage";
 import SignUp from "./component/SignUp";
 import Nav from "./component/Nav";
-import ShareTrip from "./component/ShareTrip";
 import Chatbot from "./component/Chatbot";
 import Mytrip from "./component/Mytrip";
+import ShareTrip from "./component/ShareTrip";
+import ShareTripCountry from "./component/ShareTripCountry";
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
         <Header />
         <Nav />
         <Routes>
-          <Route path="/" element={<Home />}></Route>
+          <Route path="/" element={<ShareTripCountry />}></Route>
           <Route path="/signup" element={<SignUp />}></Route>
           <Route path="/signin" element={<SignIn />}></Route>
           <Route path="/mypage" element={<Mypage />}></Route>

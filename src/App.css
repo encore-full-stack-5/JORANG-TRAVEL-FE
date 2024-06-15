@@ -186,11 +186,18 @@ input[type="password"] {
   justify-content: space-between;
 }
 
-/* .image-container {
+.row-left-center-space {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.country-image-container {
   overflow: hidden;
   display: flex;
   justify-content: center;
-} */
+  position: relative;
+}
 
 .overlay {
   position: absolute;
@@ -199,16 +206,19 @@ input[type="password"] {
   width: 100%;
   height: 100%;
   background-color: rgba(255, 255, 255, 0.7);
-  opacity: 0; /* 초기 상태는 투명 */
-  transition: opacity 0.5s ease; /* 투명도에 대한 transition 효과 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .overlay p {
-  text-align: center;
+  text-align: start;
+  color: #606060;
+  padding: 15px;
 }
 
-.image-container:hover .overlay {
-  opacity: 1; /* hover 시 투명도 조절 */
+.country-image-container:hover .overlay {
+  opacity: 1;
 }
 
 .chat-signature-color-oval {

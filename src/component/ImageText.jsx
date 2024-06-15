@@ -6,7 +6,7 @@ const ImageText = (props) => {
         <img src={props.src} alt="description" />
       </div>
       <div className="text-container">
-        <p>{props.content}</p>
+        <p style={{ color: "#606060" }}>{props.content}</p>
       </div>
     </div>
   );
