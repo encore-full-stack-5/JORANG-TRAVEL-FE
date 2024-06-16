@@ -2,60 +2,63 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import ImageSlider from "./ImageSlider.jsx";
 Modal.setAppElement("#root");
 
 const TravelDiary = () => {
   const [title, setTitle] = useState("");
-  const [Publish, setPublish] = useState(false);
-  const [travelCotent, setTravelCotent] = useState([]);
-  const [expenseContent, setExpenseContent] = useState([]);
+  const [publish, setPublish] = useState(false);
   const [travelContent, setTravelContent] = useState([]);
   const [newEntry, setNewEntry] = useState({
     description: "",
     image: null,
   });
-
   const [expenses, setExpenses] = useState([]);
-  const [newExpense, setNewExpense] = useState({
-    date: null,
-    location: "",
-    category: "",
-    amount: "",
-  });
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
+  const [expenseInputs, setExpenseInputs] = useState([
+    { id: Math.random(), amount: "", location: "" },
+  ]);
+
+  // 새로운 여행 항목 추가
   const addEntry = () => {
     if (newEntry.description !== "" || newEntry.image !== null) {
-      setTravelContent([...travelContent, newEntry]); // travelContent에 새 항목 추가
-      setNewEntry({ description: "", image: null }); // 새 항목 입력을 위해 초기화
+      // travelContent에 새로운 항목 추가
+      setTravelContent([...travelContent, newEntry]);
+      // 새 입력 칸 초기화
+      setNewEntry({ description: "", image: null });
     }
   };
 
-  const [modalIsOpen, setModalIsOpen] = useState(false);
   const handleSave = () => {
     setModalIsOpen(true);
   };
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
 
+  // 경비 추가 함수
   const addExpense = () => {
-    // 여러 개의 금액 입력 데이터를 expenses 상태에 추가
     setExpenses([
       ...expenses,
       ...expenseInputs.map((input) => ({
         date: selectedDate,
         amount: input.amount,
+        location: input.location,
       })),
     ]);
+    // 입력 필드 초기화
     setExpenseInputs([{ id: Math.random(), amount: "", location: "" }]);
     setIsExpenseModalOpen(false);
   };
 
+  // 날짜를 클릭했을 때 실행되는 함수
   const handleDateClick = (date) => {
     setSelectedDate(date);
     const expensesForDate = expenses.filter((exp) => {
       const expenseDate = new Date(exp.date).toISOString().split("T")[0];
       return expenseDate === date.toISOString().split("T")[0];
     });
+    // 날짜에 해당하는 경비 항목이 있으면 그 항목들을, 없으면 빈 입력 필드를 설정
     setExpenseInputs(
       expensesForDate.length > 0
         ? expensesForDate
@@ -64,12 +67,7 @@ const TravelDiary = () => {
     setIsExpenseModalOpen(true);
   };
 
-  const [textareaHeight, setTextareaHeight] = useState({
-    row: 1,
-    lineBreak: {},
-  });
-
-  // 날짜별 지출 합계를 계산하는 함수
+  // 일일 경비 합계 계산
   const getDailyExpensesTotal = (date) => {
     const dateString = date.toISOString().split("T")[0];
     return expenses.reduce((sum, expense) => {
@@ -80,7 +78,7 @@ const TravelDiary = () => {
     }, 0);
   };
 
-  // 날짜 타일에 지출 합계를 표시하는 함수
+  // 날짜 타일에 경비 합계 표시
   const tileContent = ({ date, view }) => {
     if (view === "month") {
       const total = getDailyExpensesTotal(date);
@@ -91,50 +89,34 @@ const TravelDiary = () => {
       );
     }
   };
+
+  // 이미지 파일 변경 처리
   const handleImageChange = (file) => {
     setNewEntry({ ...newEntry, image: file });
   };
+
+  // 설명 변경 처리
   const handleDescriptionChange = (description) => {
     setNewEntry({ ...newEntry, description });
   };
+
+  // 경비 입력 필드 추가
   const addExpenseInput = () => {
     setExpenseInputs([
       ...expenseInputs,
-      { id: Math.random(), amount: "", location: " " },
+      { id: Math.random(), amount: "", location: "" },
     ]);
   };
 
-  const [expenseInputs, setExpenseInputs] = useState([
-    { id: Math.random(), amount: "", location: " " },
-  ]);
-
-  const [locationInputs, setLocationInputs] = useState([]);
+  // 경비 입력 변경 처리
   const handleExpenseChange = (id, field, value) => {
     setExpenseInputs(
       expenseInputs.map((input) =>
         input.id === id ? { ...input, [field]: value } : input
       )
     );
-    // 입력된 경비를 저장하는 함수
-    const addExpense = () => {
-      const updatedExpenses = expenses.filter(
-        (exp) =>
-          !(
-            new Date(exp.date).toISOString().split("T")[0] ===
-            selectedDate.toISOString().split("T")[0]
-          )
-      );
-      setExpenses([...updatedExpenses, ...expenseInputs]);
-      setIsExpenseModalOpen(false);
-    };
-    const handleExpenseChange = (id, field, value) => {
-      setExpenseInputs(
-        expenseInputs.map((input) =>
-          input.id === id ? { ...input, [field]: value } : input
-        )
-      );
-    };
   };
+
   return (
     <div className="travel">
       <div className="travel-diary">
@@ -148,14 +130,14 @@ const TravelDiary = () => {
         <label className="publish-checkbox">
           <input
             type="checkbox"
-            checked={Publish}
+            checked={publish}
             onChange={(e) => setPublish(e.target.checked)}
           />
           발행
         </label>
-
+        {/* <ImageSlider images={travelContent} /> */}
         {travelContent.map((entry, index) => (
-          <div key={index} className="entry-layout">
+          <div key={index} className="prview-entry-layout">
             {entry.image && (
               <img
                 src={URL.createObjectURL(entry.image)}
@@ -163,9 +145,12 @@ const TravelDiary = () => {
                 className="preview-image"
               />
             )}
-            <p>{entry.description}</p>
+            <p className="preview-description" style={{ textAlign: "left" }}>
+              {entry.description}
+            </p>
           </div>
         ))}
+
         <div className="entry-layout">
           <div className="image-upload-section">
             <input
@@ -202,7 +187,6 @@ const TravelDiary = () => {
         <Modal
           isOpen={modalIsOpen}
           onRequestClose={() => setModalIsOpen(false)}
-          // contentLabel="Privacy Options"
           className="modaldiary"
           overlayClassName="overlaydiary"
         >
@@ -215,7 +199,7 @@ const TravelDiary = () => {
           <select>
             <option>나라 선택</option>
             <option>미국</option>
-            <opttion>일본</opttion>
+            <option>일본</option>
             <option>중국</option>
             <option>호주</option>
           </select>
@@ -236,7 +220,7 @@ const TravelDiary = () => {
             overlayClassName="overlay"
           >
             {selectedDate && <h3>{selectedDate.toDateString()} 경비 추가</h3>}
-            {expenseInputs.map((input, index) => (
+            {expenseInputs.map((input) => (
               <div key={input.id} className="expenseInput">
                 <input
                   type="text"
@@ -249,7 +233,7 @@ const TravelDiary = () => {
                 <select>
                   <option>나라 선택</option>
                   <option>미국</option>
-                  <opttion>일본</opttion>
+                  <option>일본</option>
                   <option>중국</option>
                   <option>호주</option>
                 </select>
@@ -263,7 +247,6 @@ const TravelDiary = () => {
                 />
               </div>
             ))}
-
             <button onClick={addExpenseInput} className="add-button">
               +
             </button>
@@ -273,11 +256,6 @@ const TravelDiary = () => {
               </button>
             </div>
           </Modal>
-          <div style={{ textAlign: "right" }}>
-            <button onClick={handleSave} className="save-button">
-              저장
-            </button>
-          </div>
         </div>
       </div>
     </div>
