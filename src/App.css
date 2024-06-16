@@ -636,9 +636,15 @@ input[type="password"] {
 }
 
 .preview-image {
-  width: 50%;
-  height: auto;
+
+  width: 311px;
+  height: 150px;
+
+
   object-fit: cover;
+  border: none;
+  border-radius: 5px;
+  margin-top: 15.5px;
 }
 
 .entry-description {
@@ -675,4 +681,23 @@ input[type="password"] {
   background-color: #9cc7ee;
   border: none;
   border-radius: 5px;
+}
+
+.preview-description {
+  width: 408px;
+  height: 150px;
+  object-fit: cover;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  /* flex-basis: 50%; */
+}
+
+.prview-entry-layout {
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+  border: 1px solid #ccc;
+  padding: 10px;
+
+  border-radius: 8px;
 }
