@@ -20,7 +20,7 @@ function App() {
         <Header />
         <Nav />
         <Routes>
-          <Route path="/" element={<ShareTripCountry />}></Route>
+          <Route path="/" element={<Home />}></Route>
           <Route path="/signup" element={<SignUp />}></Route>
           <Route path="/signin" element={<SignIn />}></Route>
           <Route path="/mypage" element={<Mypage />}></Route>

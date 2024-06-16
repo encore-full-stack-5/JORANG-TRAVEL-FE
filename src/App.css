@@ -636,8 +636,11 @@ input[type="password"] {
 }
 
 .preview-image {
+
   width: 311px;
   height: 150px;
+
+
   object-fit: cover;
   border: none;
   border-radius: 5px;
