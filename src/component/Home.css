@@ -27,6 +27,7 @@
   position: absolute;
   font-weight: 800;
   font-size: 1.3rem;
+  pointer-events: none;
 }
 
 .bg-modal {

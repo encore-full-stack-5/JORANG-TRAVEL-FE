@@ -7,36 +7,41 @@ const Home = () => {
   const [selectedContinent, setSelectedContinent] = useState();
   const [[top, left], setPosition] = useState([]);
   const [isHomeModalOpen, setIsHomeModalOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const [hoveredContinent, setHoveredContinent] = useState("");
 
   const handleMouseOver = (e) => {
-    if (e.target.id.substring(0, 4) === "path")
+    console.log(e);
+    if (e.target.nodeName === "path") {
       switch (e.target.parentNode.id) {
         case "AS":
-          document.getElementById("continent").textContent = "아시아";
+          setHoveredContinent("아시아");
           setPosition([43, 60]);
           break;
         case "EU":
-          document.getElementById("continent").textContent = "유럽";
+          setHoveredContinent("유럽");
           setPosition([39, 49]);
           break;
         case "OC":
-          document.getElementById("continent").textContent = "오세아니아";
+          setHoveredContinent("오세아니아");
           setPosition([78, 74]);
           break;
         case "AF":
-          document.getElementById("continent").textContent = "아프리카";
+          setHoveredContinent("아프리카");
           setPosition([60, 47]);
           break;
         case "NA":
-          document.getElementById("continent").textContent = "북아메리카";
+          setHoveredContinent("북아메리카");
           setPosition([43, 23]);
           break;
         case "SA":
-          document.getElementById("continent").textContent = "남아메리카";
+          setHoveredContinent("남아메리카");
           setPosition([71, 29]);
           break;
       }
-    else document.getElementById("continent").textContent = null;
+    } else if (e.target.nodeName === "svg") {
+      setHoveredContinent("");
+    }
   };
 
   const openModal = (e) => {
@@ -53,14 +58,17 @@ const Home = () => {
     setIsHomeModalOpen(false);
   };
 
+  const handleInputValue = (e) => {
+    setSearch(e.target.value);
+  };
+
   return (
     <>
       <div className="world-map-container" onMouseOver={handleMouseOver}>
         <WorldMap onSelect={openModal} />
-        <span
-          id="continent"
-          style={{ top: `${top}%`, left: `${left}%` }}
-        ></span>
+        <span id="continent" style={{ top: `${top}%`, left: `${left}%` }}>
+          {hoveredContinent}
+        </span>
       </div>
       {isHomeModalOpen ? (
         <div className="bg-modal">
@@ -77,14 +85,17 @@ const Home = () => {
                   type="text"
                   className="home-input"
                   placeholder="여행하고 싶은 나라를 입력해주세요"
+                  onChange={handleInputValue}
                 />
               </div>
               <div className="modal-container">
-                {countries[selectedContinent].sort().map((country, index) => (
-                  <button className="modal-item" key={index}>
-                    {country}
-                  </button>
-                ))}
+                {countries[selectedContinent].sort().map((country, index) =>
+                  country.includes(search) ? (
+                    <button className="modal-item" key={index}>
+                      {country}
+                    </button>
+                  ) : null
+                )}
               </div>
             </div>
           </div>
