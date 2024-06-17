@@ -20,14 +20,14 @@ export const getPostsByCountry = async (country) => {
 export const getRecentPostsFirst = async () => {
   const res = await api("/api/v1/posts/recent-first", "get");
   console.log(res.data);
-  return res.data;
+  return res.data.content;
 };
 
 // 이번주 좋아요 순 post 가져오기
 export const getTopLikePostsFirst = async () => {
   const res = await api("/api/v1/posts/like-first", "get");
   console.log(res.data);
-  return res.data;
+  return res.data.content;
 };
 
 // 이 기간의 여행기 post 가져오기
