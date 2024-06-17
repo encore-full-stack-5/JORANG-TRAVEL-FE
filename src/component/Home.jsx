@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import WorldMap from "react-world-map";
 import "./Home.css";
 import countries from "../countries.js";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const [selectedContinent, setSelectedContinent] = useState();
@@ -91,9 +92,9 @@ const Home = () => {
               <div className="modal-container">
                 {countries[selectedContinent].sort().map((country, index) =>
                   country.includes(search) ? (
-                    <button className="modal-item" key={index}>
+                    <Link className="modal-item" key={index}>
                       {country}
-                    </button>
+                    </Link>
                   ) : null
                 )}
               </div>

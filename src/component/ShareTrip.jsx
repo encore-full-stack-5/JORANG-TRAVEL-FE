@@ -1,12 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Norway from "./../image/Norway.png";
 import ImageText from "./ImageText";
 import jorangImage from "./../image/jorangImage.png";
 import filterImage from "./../image/filterImage.png";
 import searchImage from "./../image/searchImage.png";
 import Search from "./Search";
+import { getAllPosts } from "../api/post-api";
 
 const Mytrip = () => {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    getPosts();
+  }, []);
+
+  const getPosts = async () => {
+    const res = await getAllPosts();
+    setPosts(res);
+  };
+
   return (
     <div style={{ paddingTop: "20px" }}>
       <Search placeholder="가고 싶은 나라나 도시를 선택해주세요" />
@@ -22,7 +34,7 @@ const Mytrip = () => {
           ></img>
         </div>
       </div>
-
+      {/* posts[0].diaries[0].photos[0].photoURL */}
       <div className="trip-image-display">
         <ImageText
           src={Norway}

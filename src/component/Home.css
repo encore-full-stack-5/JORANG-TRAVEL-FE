@@ -106,4 +106,9 @@
   background-color: white;
   padding: 5px;
   width: fit-content;
+  text-decoration: none;
+}
+
+.modal-item:visited {
+  text-decoration: none;
 }
