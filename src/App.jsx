@@ -24,10 +24,14 @@ function App() {
           <Route path="/signup" element={<SignUp />}></Route>
           <Route path="/signin" element={<SignIn />}></Route>
           <Route path="/mypage" element={<Mypage />}></Route>
-          <Route path="/shareTrip" element={<ShareTrip />}></Route>
+          <Route path="/share-trip" element={<ShareTrip />}></Route>
           <Route path="/chatbot" element={<Chatbot />}></Route>
           <Route path="/mytrip" element={<Mytrip />}></Route>
-          <Route path="/TravelDiary" element={<TravelDiary />}></Route>
+          <Route path="/travel-diary" element={<TravelDiary />}></Route>
+          <Route
+            path="/country/:country"
+            element={<ShareTripCountry />}
+          ></Route>
         </Routes>
       </BrowserRouter>
     </div>
