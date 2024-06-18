@@ -217,10 +217,72 @@ const TravelDiary = () => {
           />
           발행
         </label>
+        {/* <ImageSlider images={travelContent} /> */}
+        {/* <div className="" */}
+        {/* <DatePicker */}
+        {/* // {entry.date}/> */}
+        {/* {travelContent.map((entry, index) => (
+          <div key={index} className="prview-entry-layout">
+            {entry.image && (
+              <img
+                src={URL.createObjectURL(entry.image)}
+                alt="Uploaded"
+                className="preview-image"
+                onClick={() => handleImageClick(index)}
+                // ref={fileInputRef}
+                // // style={{ display: "none" }}
+              />
+            )}
 
+            <div className="preview-description" style={{ textAlign: "left" }}>
+              <textarea className="fixed-size-textarea">
+                {entry.description}
+              </textarea>
+            </div>
+          </div>
+        ))}
+        <div className="entry-image-content">
+          <div className="select-diary-date">
+            <h5 className="datestyle">날짜 선택</h5>
+            <DatePicker
+              selected={selectedDiaryDate}
+              onChange={(date) => setSelectedDiaryDate(date)}
+              dateFormat="yyyy/MM/dd"
+              isClearable
+              showYearDropdown
+              scrollableMonthYearDropdown
+              className="date-block"
+            />
+          </div>
+          <div className="entry-layout">
+            <div className="image-upload-section">
+              <input
+                type="file"
+                onChange={(e) => handleImageChange(e.target.files[0])}
+                ref={fileInputRef}
+                // style={{ display: "none" }}
+              />
+              {newEntry.image && (
+                <img
+                  src={URL.createObjectURL(newEntry.image)}
+                  alt="Uploaded"
+                  className="preview-image"
+                />
+              )}
+            </div>
+            <div className="content-section">
+              <textarea
+                className="fixed-size-textarea"
+                placeholder="내용"
+                value={newEntry.description}
+                onChange={(e) => handleDescriptionChange(e.target.value)}
+              />
+            </div>
+          </div>
+        </div> */}
         <div className="select-diary-date">
-          {/* <DatePicker
-            selected={entry.date}
+          <DatePicker
+            selected={selectedDiaryDate}
             onChange={(date) => setSelectedDiaryDate(date)}
             dateFormat="yyyy/MM/dd"
             isClearable
@@ -228,7 +290,7 @@ const TravelDiary = () => {
             scrollableMonthYearDropdown
             className="date-block"
             placeholderText="날짜"
-          /> */}
+          />
         </div>
         {travelContent.map((entry, index) => (
           <div key={index} className="preview-entry-layout">
@@ -251,18 +313,6 @@ const TravelDiary = () => {
             </div>
           </div>
         ))}
-        {/* <div className="select-diary-date">
-          <DatePicker
-            selected={input.date}
-            onChange={(date) => setSelectedDiaryDate(date)}
-            dateFormat="yyyy/MM/dd"
-            isClearable
-            showYearDropdown
-            scrollableMonthYearDropdown
-            className="date-block"
-            placeholderText="날짜"
-          />
-        </div> */}
 
         {diaryInputs.map((input) => (
           <div key={input.id} className="entry-layout">
