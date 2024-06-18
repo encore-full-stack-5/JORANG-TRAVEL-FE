@@ -27,7 +27,7 @@ function App() {
           <Route path="/share-trip" element={<ShareTrip />}></Route>
           <Route path="/chatbot" element={<Chatbot />}></Route>
           <Route path="/mytrip" element={<Mytrip />}></Route>
-          <Route path="/travel-diary" element={<TravelDiary />}></Route>
+          <Route path="/TravelDiary" element={<TravelDiary />}></Route>
           <Route
             path="/country/:country"
             element={<ShareTripCountry />}

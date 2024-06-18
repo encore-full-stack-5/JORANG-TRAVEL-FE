@@ -561,13 +561,6 @@ input[type="password"] {
   background-color: #9cc7ee;
 }
 
-.entry-layout {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-top: 20px;
-}
-
 .image-upload-section {
   flex-basis: 40%; /* 부모 컨테이너의 40% 크기 */
   border: 2px solid #ccc; /* 회색 테두리 */
@@ -618,22 +611,12 @@ input[type="password"] {
   margin-top: 20px;
 }
 
-.entry-layout {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-
 .preview-image {
-
   width: 311px;
   height: 150px;
 
   object-fit: fill;
 
-
-
- 
   border: none;
   border-radius: 5px;
 }
@@ -748,8 +731,16 @@ input[type="password"] {
   display: inline-block;
   padding: 6px 12px;
   cursor: pointer;
-  color: ;
+  /* color: ; */
   /* background-color: #f0f0f0; */
   /* border: 1px solid #ccc;
   border-radius: 4px; */
+}
+.upload-image-content {
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
