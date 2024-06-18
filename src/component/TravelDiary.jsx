@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+// import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+
 import Modal from "react-modal";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 import ImageSlider from "./ImageSlider.jsx";
 Modal.setAppElement("#root");
 
@@ -10,17 +15,25 @@ const TravelDiary = () => {
   const [publish, setPublish] = useState(false);
   const [travelContent, setTravelContent] = useState([]);
   const [newEntry, setNewEntry] = useState({
+    date: null,
     description: "",
     image: null,
   });
+  const [diary, setDiary] = useState([]);
   const [expenses, setExpenses] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [selectedDiaryDate, setSelectedDiaryDate] = useState(null);
 
   const [expenseInputs, setExpenseInputs] = useState([
     { id: Math.random(), amount: "", location: "" },
   ]);
+
+  const [diaryInputs, setDiaryInputs] = useState([
+    { id: Math.random(), date: null, description: "", image: null },
+  ]);
+  const fileInputRef = useRef(null);
 
   // 새로운 여행 항목 추가
   const addEntry = () => {
@@ -28,7 +41,7 @@ const TravelDiary = () => {
       // travelContent에 새로운 항목 추가
       setTravelContent([...travelContent, newEntry]);
       // 새 입력 칸 초기화
-      setNewEntry({ description: "", image: null });
+      setNewEntry({ date: null, description: "", image: null });
     }
   };
 
@@ -49,6 +62,23 @@ const TravelDiary = () => {
     // 입력 필드 초기화
     setExpenseInputs([{ id: Math.random(), amount: "", location: "" }]);
     setIsExpenseModalOpen(false);
+  };
+
+  //다이어리 추가
+  const addDiary = () => {
+    setDiary([
+      ...diary,
+      ...diaryInputs.map((input) => ({
+        date: selectedDate,
+        description: input.description,
+        image: input.image,
+      })),
+    ]);
+    //입력 필드 cnrk
+    setDiaryInputs([
+      ...diaryInputs,
+      { id: Math.random(), date: "", description: "", image: "" },
+    ]);
   };
 
   // 날짜를 클릭했을 때 실행되는 함수
@@ -91,13 +121,45 @@ const TravelDiary = () => {
   };
 
   // 이미지 파일 변경 처리
-  const handleImageChange = (file) => {
-    setNewEntry({ ...newEntry, image: file });
+  // const handleImageChange = (file) => {
+  //   setNewEntry({ ...newEntry, image: file });
+  // };
+  const handleImageChange = (file, id, type = "diary") => {
+    // const fileArray = Array.from(files).slice(0, 5); // 최대 5개 이미지 제한
+    // const newImages = fileArray.map((file) => URL.createObjectURL(file));
+    if (type === "diary") {
+      setDiaryInputs(
+        diaryInputs.map((input) =>
+          input.id === id ? { ...input, image: file } : input
+        )
+      );
+    } else {
+      setTravelContent(
+        travelContent.map((entry, index) =>
+          index === id ? { ...entry, image: file } : entry
+        )
+      );
+    }
   };
 
   // 설명 변경 처리
-  const handleDescriptionChange = (description) => {
-    setNewEntry({ ...newEntry, description });
+  // const handleDescriptionChange = (description) => {
+  //   setNewEntry({ ...newEntry, description });
+  // };
+  const handleDescriptionChange = (description, id, type = "diary") => {
+    if (type === "diary") {
+      setDiaryInputs(
+        diaryInputs.map((input) =>
+          input.id === id ? { ...input, description } : input
+        )
+      );
+    } else {
+      setTravelContent(
+        travelContent.map((entry, index) =>
+          index === id ? { ...entry, description } : entry
+        )
+      );
+    }
   };
 
   // 경비 입력 필드 추가
@@ -115,6 +177,26 @@ const TravelDiary = () => {
         input.id === id ? { ...input, [field]: value } : input
       )
     );
+  };
+  //다이어리 입력 필드 추가
+  // const addDiaryInput = () => {
+  //   setDiaryInputs;
+  // };
+  //날짜 선택 시 newEntry의 날짜를 업데이트
+  const handleDateChage = (date) => {
+    setNewEntry({ ...newEntry, date });
+  };
+
+  const handleImageClick = (index) => {
+    fileInputRef.current.click();
+    fileInputRef.current.onchange = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const updatedContent = [...travelContent];
+        updatedContent[index].image = file;
+        setTravelContent(updatedContent);
+      }
+    };
   };
 
   return (
@@ -135,47 +217,84 @@ const TravelDiary = () => {
           />
           발행
         </label>
-        {/* <ImageSlider images={travelContent} /> */}
+
+        <div className="select-diary-date">
+          {/* <DatePicker
+            selected={entry.date}
+            onChange={(date) => setSelectedDiaryDate(date)}
+            dateFormat="yyyy/MM/dd"
+            isClearable
+            showYearDropdown
+            scrollableMonthYearDropdown
+            className="date-block"
+            placeholderText="날짜"
+          /> */}
+        </div>
         {travelContent.map((entry, index) => (
-          <div key={index} className="prview-entry-layout">
+          <div key={index} className="preview-entry-layout">
             {entry.image && (
               <img
                 src={URL.createObjectURL(entry.image)}
                 alt="Uploaded"
                 className="preview-image"
+                onClick={() => handleImageClick(index, "travel")}
               />
             )}
-            <p className="preview-description" style={{ textAlign: "left" }}>
-              {entry.description}
-            </p>
+            <div className="preview-description" style={{ textAlign: "left" }}>
+              <textarea
+                className="fixed-size-textarea"
+                value={entry.description}
+                onChange={(e) =>
+                  handleDescriptionChange(e.target.value, index, "travel")
+                }
+              />
+            </div>
+          </div>
+        ))}
+        {/* <div className="select-diary-date">
+          <DatePicker
+            selected={input.date}
+            onChange={(date) => setSelectedDiaryDate(date)}
+            dateFormat="yyyy/MM/dd"
+            isClearable
+            showYearDropdown
+            scrollableMonthYearDropdown
+            className="date-block"
+            placeholderText="날짜"
+          />
+        </div> */}
+
+        {diaryInputs.map((input) => (
+          <div key={input.id} className="entry-layout">
+            <div className="image-upload-section">
+              <input
+                type="file"
+                onChange={(e) => handleImageChange(e.target.files[0], input.id)}
+                placeholderText="사진"
+              />
+              {input.image && (
+                <img
+                  src={URL.createObjectURL(input.image)}
+                  alt="Uploaded"
+                  className="preview-image"
+                />
+              )}
+            </div>
+            <div className="content-section">
+              <textarea
+                className="fixed-size-textarea"
+                placeholder="내용"
+                value={input.description}
+                onChange={(e) =>
+                  handleDescriptionChange(e.target.value, input.id)
+                }
+              />
+            </div>
           </div>
         ))}
 
-        <div className="entry-layout">
-          <div className="image-upload-section">
-            <input
-              type="file"
-              onChange={(e) => handleImageChange(e.target.files[0])}
-            />
-            {newEntry.image && (
-              <img
-                src={URL.createObjectURL(newEntry.image)}
-                alt="Uploaded"
-                className="preview-image"
-              />
-            )}
-          </div>
-          <div className="content-section">
-            <textarea
-              className="fixed-size-textarea"
-              placeholder="내용"
-              value={newEntry.description}
-              onChange={(e) => handleDescriptionChange(e.target.value)}
-            />
-          </div>
-        </div>
         <div className="buttonAddEntry">
-          <button onClick={addEntry} className="add-button">
+          <button onClick={addDiary} className="add-button">
             +
           </button>
         </div>
