@@ -1,15 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Norway from "./../image/Norway.png";
 import ImageText from "./ImageText";
-import jorangImage from "./../image/jorangImage.png";
 import filterImage from "./../image/filterImage.png";
-import searchImage from "./../image/searchImage.png";
 import Search from "./Search";
-import {
-  getAllPosts,
-  getRecentPostsFirst,
-  getTopLikePostsFirst,
-} from "../api/post-api";
+import { getRecentPostsFirst, getTopLikePostsFirst } from "../api/post-api";
 
 const Mytrip = () => {
   const [recentPosts, setRecentPosts] = useState([]);
@@ -41,40 +34,21 @@ const Mytrip = () => {
           ></img>
         </div>
       </div>
-      {/* posts[0].diaries[0].photos[0].photoURL */}
       <div className="trip-image-display">
         {recentPosts?.map((post, i) => (
-          //  diary.photos.length > 0&&
-
           <ImageText
             key={i}
             src={post.diaries
-              .filter((diary) => diary.photos && diary.photos.length > 0)
+              .filter(
+                (diary) =>
+                  diary.photos &&
+                  diary.photos.length > 0 &&
+                  new Date(diary.date) > new Date(2024, 5, 8).getTime()
+              )
               .map((diary) => diary.photos[0].photoURL)}
             content={post.title}
           ></ImageText>
         ))}
-
-        {/* <ImageText
-          src={Norway}
-          content="안녕하세요hihihihihihihihihihihi"
-        ></ImageText>
-        <ImageText
-          src={jorangImage}
-          content="hihihihihihihihihihihi반갑습니다"
-        ></ImageText>
-        <ImageText
-          src={Norway}
-          content="안녕하세요hihihihihihihihihihihi"
-        ></ImageText>
-        <ImageText
-          src={jorangImage}
-          content="hihihihihihihihihihihi반갑습니다"
-        ></ImageText>
-        <ImageText
-          src={searchImage}
-          content="안녕하세요hihihihihihihihihihihi"
-        ></ImageText> */}
       </div>
 
       <div className="trip-text-display">
@@ -83,8 +57,6 @@ const Mytrip = () => {
 
       <div className="trip-image-display">
         {TopPosts?.map((post, i) => (
-          //  diary.photos.length > 0&&
-
           <ImageText
             key={i}
             src={post.diaries
@@ -93,27 +65,6 @@ const Mytrip = () => {
             content={post.title}
           ></ImageText>
         ))}
-
-        {/* <ImageText
-          src={Norway}
-          content="안녕하세요hihihihihihihihihihihi"
-        ></ImageText>
-        <ImageText
-          src={jorangImage}
-          content="hihihihihihihihihihihi반갑습니다"
-        ></ImageText>
-        <ImageText
-          src={Norway}
-          content="안녕하세요hihihihihihihihihihihi"
-        ></ImageText>
-        <ImageText
-          src={jorangImage}
-          content="hihihihihihihihihihihi반갑습니다"
-        ></ImageText>
-        <ImageText
-          src={searchImage}
-          content="안녕하세요hihihihihihihihihihihi"
-        ></ImageText> */}
       </div>
     </div>
   );
