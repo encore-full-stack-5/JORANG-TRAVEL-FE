@@ -625,9 +625,15 @@ input[type="password"] {
 }
 
 .preview-image {
+
   width: 311px;
   height: 150px;
+
   object-fit: fill;
+
+
+
+ 
   border: none;
   border-radius: 5px;
 }
