@@ -13,6 +13,7 @@ import ShareTrip from "./component/ShareTrip";
 import ShareTripCountry from "./component/ShareTripCountry";
 import TravelDiary from "./component/TravelDiary";
 import Posts from "./component/Posts";
+import ImageSlider from "./component/ImageSlider";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
             element={<ShareTripCountry />}
           ></Route>
           <Route path="/posts" element={<Posts />}></Route>
+          <Route path="/slider" element={<ImageSlider />}></Route>
         </Routes>
       </BrowserRouter>
     </div>

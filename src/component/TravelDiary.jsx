@@ -1,14 +1,23 @@
 // import React, { useState } from "react";
 import React, { useState, useRef } from "react";
-
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import "./ImageSlider.css";
 import Modal from "react-modal";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
-import ImageSlider from "./ImageSlider.jsx";
+import Slider from "react-slick";
 Modal.setAppElement("#root");
+
+const settings = {
+  dots: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+};
 
 const TravelDiary = () => {
   const [title, setTitle] = useState("");
@@ -195,7 +204,7 @@ const TravelDiary = () => {
   const handleImageClick = (index) => {
     fileInputRef.current.click();
     fileInputRef.current.onchange = (e) => {
-      const file = e.target.files[0];
+      const file = e.target.files;
       if (file) {
         const updatedContent = [...travelContent];
         updatedContent[index].image = file;
@@ -243,6 +252,7 @@ const TravelDiary = () => {
         </div>
         {travelContent.map((entry, index) => (
           <div key={index} className="preview-entry-layout">
+            {console.log(entry.image)}
             {entry.image && (
               <img
                 src={URL.createObjectURL(entry.image)}
@@ -280,17 +290,28 @@ const TravelDiary = () => {
               <div className="image-upload-section">
                 <input
                   type="file"
-                  onChange={(e) =>
-                    handleImageChange(e.target.files[0], input.id)
-                  }
+                  onChange={(e) => {
+                    // console.log(e);
+                    handleImageChange(e.target.files, input.id);
+                  }}
                   placeholderText="사진"
+                  multiple
                 />
                 {input.image && (
-                  <img
-                    src={URL.createObjectURL(input.image)}
-                    alt="Uploaded"
-                    className="preview-image"
-                  />
+                  <div className="image-slider-container">
+                    <Slider {...settings}>
+                      {Object.keys(input.image).forEach((key) => {
+                        <div key={key}>
+                          {/* {console.log(URL.createObjectURL(input.image[key]))} */}
+                          <img
+                            src={URL.createObjectURL(input.image[key])}
+                            alt="Uploaded"
+                            className="preview-image"
+                          />
+                        </div>;
+                      })}
+                    </Slider>
+                  </div>
                 )}
               </div>
               <div className="content-section">

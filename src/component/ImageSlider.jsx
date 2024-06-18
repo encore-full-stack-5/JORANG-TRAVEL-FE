@@ -1,57 +1,36 @@
-// import React, { useState } from "react";
-
-// const ImageSlider = ({ images }) => {
-//   const [currentIndex, setCurrentIndex] = useState(0);
-
-//   const nextSlide = () => {
-//     setCurrentIndex((currentIndex + 1) % images.length);
-//   };
-
-//   const prevSlide = () => {
-//     const newIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
-//     setCurrentIndex(newIndex);
-//   };
-
-//   return (
-//     <div className="slider-container">
-//       <button onClick={prevSlide} className="slider-button">
-//         Prev
-//       </button>
-//       {images.length > 0 && (
-//         <img src={images[currentIndex]} alt="Slide" className="slide-image" />
-//       )}
-//       <button onClick={nextSlide} className="slider-button">
-//         Next
-//       </button>
-//     </div>
-//   );
-// };
-
-// export default ImageSlider;
-import React from "react";
-import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-// const ImageSlider = ({ images }) => {
-//   const settings = {
-//     dots: true,
-//     infinite: true,
-//     speed: 500,
-//     slidesToShow: 1,
-//     slidesToScroll: 1,
-//   };
+import "./ImageSlider.css";
 
-//   return (
-//     <div className="slider-container">
-//       <Slider {...settings}>
-//         {images.map((image, index) => (
-//           <div key={index}>
-//             <img src={URL.createObjectURL(image)} alt={`slide-${index}`} />
-//           </div>
-//         ))}
-//       </Slider>
-//     </div>
-//   );
-// };
+import React from "react";
+import Slider from "react-slick";
 
-// export default ImageSlider;
+const ImageSlider = ({ images }) => {
+  var settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
+  return (
+    <div className="image-slider-container">
+      <Slider {...settings}>
+        <div>
+          <img src="https://storage.googleapis.com/download/storage/v1/b/jorang/o/posts%2F6%2Fdiaries%2F22%2Fimages%2F1?generation=1718643796434344&alt=media" />
+        </div>
+        <div>
+          <img src="https://storage.googleapis.com/download/storage/v1/b/jorang/o/posts%2F7%2Fdiaries%2F23%2Fimages%2F1?generation=1718643856318918&alt=media" />
+        </div>
+        <div>
+          <img src="https://storage.googleapis.com/download/storage/v1/b/jorang/o/posts%2F8%2Fdiaries%2F24%2Fimages%2F1?generation=1718643866571072&alt=media" />
+        </div>
+        <div>
+          <img src="https://storage.googleapis.com/download/storage/v1/b/jorang/o/posts%2F9%2Fdiaries%2F25%2Fimages%2F1?generation=1718643897600426&alt=media" />
+        </div>
+      </Slider>
+    </div>
+  );
+};
+
+export default ImageSlider;
