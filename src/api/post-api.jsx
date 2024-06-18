@@ -1,8 +1,11 @@
 import { api } from "../config/network";
 
 // 모든 post 가져오기
-export const getAllPosts = async () => {
-  const res = await api("/api/v1/posts", "get");
+export const getAllPosts = async (page, size) => {
+  const res = await api("/api/v1/posts", "get", null, {
+    page: page,
+    size: size,
+  });
   console.log(res.data);
   return res.data;
 };
