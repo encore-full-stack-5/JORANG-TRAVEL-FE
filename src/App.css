@@ -156,7 +156,7 @@ input[type="password"] {
   padding: 20px;
   margin: auto;
   width: 80%;
-  max-width: 800px;
+  max-width: 900px;
 }
 
 .title-input {
@@ -562,13 +562,6 @@ input[type="password"] {
   background-color: #9cc7ee;
 }
 
-.entry-layout {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-top: 20px;
-}
-
 .image-upload-section {
   flex-basis: 40%; /* 부모 컨테이너의 40% 크기 */
   border: 2px solid #ccc; /* 회색 테두리 */
@@ -589,17 +582,6 @@ input[type="password"] {
   left: 0; /* 좌측에서부터 0 */
   opacity: 0; /* 투명도 0 */
   cursor: pointer; /* 마우스 오버 시 커서 변경 */
-}
-
-.image-upload-section::before {
-  content: "\📷"; /* 파일 아이콘 유니코드 */
-  font-family: "FontAwesome"; /* 아이콘 폰트 */
-  position: absolute;
-  top: 50%; /* 상단에서 50% 위치 */
-  left: 50%; /* 좌측에서 50% 위치 */
-  transform: translate(-50%, -50%); /* 정중앙 정렬 */
-  font-size: 24px; /* 아이콘 크기 */
-  color: #555; /* 아이콘 색상 */
 }
 
 .content-section {
@@ -630,16 +612,14 @@ input[type="password"] {
   margin-top: 20px;
 }
 
-.entry-layout {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-
 .preview-image {
-  width: 50%;
-  height: auto;
-  object-fit: cover;
+  width: 311px;
+  height: 150px;
+
+  object-fit: fill;
+
+  border: none;
+  border-radius: 5px;
 }
 
 .entry-description {
@@ -676,4 +656,92 @@ input[type="password"] {
   background-color: #9cc7ee;
   border: none;
   border-radius: 5px;
+}
+
+.preview-description {
+  width: 408px;
+  height: 150px;
+  object-fit: cover;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  /* flex-basis: 50%; */
+}
+
+.prview-entry-layout {
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+  border: 1px solid #ccc;
+  padding: 10px;
+
+  border-radius: 8px;
+}
+
+.select-diary-date {
+  border: #282c34;
+  text-align: left;
+  margin-left: 20px;
+}
+
+.entry-image-content {
+  border: 2px solid #606060;
+}
+.datestyle {
+  text-align: left;
+  margin-left: 10px;
+}
+/* .select-diary-date {
+  /* display: flex;
+  justify-content: space-between;} */
+
+.date-block input[type="text"] {
+  text-align: left;
+  color: #9cc7ee;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.date-block input:focus {
+  border-color: #0056b3;
+  box-shadow: 0 0 8px rgba(0, 86, 179, 0.5);
+}
+
+.preview-description textarea {
+  width: 98%;
+  height: 128px;
+  border: none;
+  resize: none;
+}
+
+.react-datepicker__input-container input.date-block {
+  outline: none;
+  height: 10px;
+  width: 120px;
+  border: 3px solid #9cc7ee;
+  border-radius: 30px;
+  padding: 8px 12px;
+  font-size: 15px;
+  color: #606060;
+}
+
+.custom-file-upload input[type="file"] {
+  display: none;
+}
+.custom-file-upload {
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  /* color: ; */
+  /* background-color: #f0f0f0; */
+  /* border: 1px solid #ccc;
+  border-radius: 4px; */
+}
+.upload-image-content {
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
