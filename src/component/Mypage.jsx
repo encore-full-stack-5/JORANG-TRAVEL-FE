@@ -176,10 +176,7 @@ const Mypage = () => {
             content={`지금까지 총 ${diaries.length}개의 나라를 여행했습니다`}
           ></SignatureColorOval>
 
-          <div
-            className="row-center-space"
-            style={{ marginTop: "20px", flexWrap: "wrap" }}
-          >
+          <div className="row-center-space" style={{ marginTop: "20px" }}>
             {diaries.map((diary, index) => (
               <div key={index}>
                 <SignatureOval content={diary}></SignatureOval>

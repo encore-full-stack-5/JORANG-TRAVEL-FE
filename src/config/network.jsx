@@ -1,8 +1,6 @@
 import axios from "axios";
 
-
 export const api = async (url, method, body, params) => {
-
   const res = await axios({
     url,
     method,
@@ -11,7 +9,7 @@ export const api = async (url, method, body, params) => {
     params: params,
     headers: {
       Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmcmVlZG9tIiwiZXhwIjoxNzE4NzI5MTIwfQ.qmBpB8bPlmLBtMEHhLwtqXBRTl25U9BprhRJDAz50qE",
+        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MSIsImV4cCI6MTcxODc4NzE4Mn0.8EJTNvNQUVJdEk5NfqBizs_uxwtic5TsW2Mko257Jq4",
     },
   });
 
