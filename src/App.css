@@ -69,7 +69,6 @@
 
 input[type="text"] {
   outline: none;
-  margin: 5px;
   height: 10px;
   width: 400px;
   border: 3px solid #9cc7ee;
@@ -169,7 +168,7 @@ input[type="password"] {
   padding: 20px;
   margin: auto;
   width: 80%;
-  max-width: 800px;
+  max-width: 900px;
 }
 
 .title-input {
@@ -185,10 +184,6 @@ input[type="password"] {
   align-items: right;
   margin-bottom: 20px;
 }
-
-/* .entry-group {
-  margin-bottom: 20px;
-} */
 
 .entry {
   /* border-bottom: 1px solid #ccc;
@@ -221,15 +216,6 @@ input[type="password"] {
   width: 50%;
 }
 
-/* .divider {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background-color: black;
-} */
-
 .new-entry input[type="text"],
 .new-entry {
   padding: 10px;
@@ -249,16 +235,6 @@ input[type="password"] {
   border-radius: 5px;
 }
 .image-upload {
-  /* flex: 1;  */
-  /* 너비 비율을 1로 설정하여 content-upload의 절반 너비로 */
-  /* display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px dashed #ccc;
-  border-radius: 5px;
-  height: 100%;  */
-  /* 높이를 부모 요소와 동일하게 설정 */
-  /* cursor: pointer; */
   position: relative;
   flex: 1;
   display: flex;
@@ -266,7 +242,7 @@ input[type="password"] {
   justify-content: center;
   border: 2px dashed #ccc;
   border-radius: 5px;
-  height: 150px; /* 필요에 따라 높이 조정 */
+  height: 150px;
   cursor: pointer;
 }
 .private {
@@ -274,7 +250,7 @@ input[type="password"] {
   margin-right: 20px;
 }
 .private input[type="radio"] {
-  margin-right: 5px; /* 라디오 버튼과 텍스트 사이의 간격 조정 */
+  margin-right: 5px;
 }
 
 /* 이미지 업로드 입력란이 컨테이너 내에 맞도록 합니다 */
@@ -287,8 +263,7 @@ input[type="password"] {
   top: 0;
   left: 0;
 }
-.content-upload textarea[type="file"] {
-}
+
 .image-upload:hover {
   border-color: #9cc7ee;
 }
@@ -349,7 +324,8 @@ input[type="password"] {
 .row-center-space {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
+  margin-right: 150px;
 }
 
 .row-left-center-space {
@@ -492,4 +468,292 @@ input[type="password"] {
   white-space: nowrap; /* 텍스트를 한 줄로 유지 */
   overflow: hidden; /* 넘치는 텍스트를 숨김 */
   text-overflow: ellipsis; /* 넘치는 텍스트에 줄임표시 추가 */
+}
+
+/* 경비모달 스타일 */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 500px;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.modal h3 {
+  margin-top: 0;
+  font-size: 24px;
+}
+
+.modal input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.modal button {
+  padding: 10px 20px;
+
+  background-color: white;
+  color: #9cc7ee;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border: 2.5px solid;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  margin-left: 230px;
+}
+
+/* 다이어리 모달 */
+.overlaydiary {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명 검은색 배경 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modaldiary {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 300px; /* 또는 적절한 너비 */
+}
+
+.modaldiary label {
+  display: block;
+  margin: 10px 0;
+}
+
+.modaldiary input[type="radio"] {
+  margin-right: 5px;
+}
+
+.modaldiary select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 10px;
+}
+
+.modaldiary button {
+  background-color: #9cc7ee;
+  color: white;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  border-radius: 5px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.modaldiary button:hover {
+  background-color: #9cc7ee;
+}
+
+.image-upload-section {
+  flex-basis: 40%; /* 부모 컨테이너의 40% 크기 */
+  border: 2px solid #ccc; /* 회색 테두리 */
+  border-radius: 8px; /* 모서리 둥글게 */
+  height: 150px; /* 높이 설정 */
+  display: flex;
+  justify-content: center; /* 가로 중앙 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
+  position: relative; /* 포지션 상대적 */
+  overflow: hidden; /* 내부 콘텐츠가 넘치면 숨김 */
+}
+
+.image-upload-section input[type="file"] {
+  position: absolute; /* 절대 위치 */
+  width: 100%; /* 전체 너비 */
+  height: 100%; /* 전체 높이 */
+  top: 0; /* 상단에서부터 0 */
+  left: 0; /* 좌측에서부터 0 */
+  opacity: 0; /* 투명도 0 */
+  cursor: pointer; /* 마우스 오버 시 커서 변경 */
+}
+
+.content-section {
+  flex-basis: 50%;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.content-section textarea {
+  width: 100%;
+  height: 128px;
+  border: none;
+  resize: none;
+}
+
+.buttonAddEntry {
+  padding: 15px;
+}
+.saveExpense {
+  display: flex;
+  justify-content: end;
+}
+.expenseInput {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+.preview-image {
+  width: 311px;
+  height: 150px;
+
+  object-fit: fill;
+
+  border: none;
+  border-radius: 5px;
+}
+
+.entry-description {
+  font-size: 16px;
+  color: #333;
+}
+
+.entry-inputs {
+  margin-top: 20px;
+}
+
+.image-upload-section {
+  margin-bottom: 10px;
+}
+
+.entry-textarea {
+  width: 300px;
+  height: 100px;
+  resize: none;
+}
+
+.modal select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.save-button {
+  width: 50px;
+  height: 30px;
+  background-color: #9cc7ee;
+  border: none;
+  border-radius: 5px;
+}
+
+.preview-description {
+  width: 408px;
+  height: 150px;
+  object-fit: cover;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  /* flex-basis: 50%; */
+}
+
+.prview-entry-layout {
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+  border: 1px solid #ccc;
+  padding: 10px;
+
+  border-radius: 8px;
+}
+
+.select-diary-date {
+  border: #282c34;
+  text-align: left;
+  margin-left: 20px;
+}
+
+.entry-image-content {
+  border: 2px solid #606060;
+}
+.datestyle {
+  text-align: left;
+  margin-left: 10px;
+}
+/* .select-diary-date {
+  /* display: flex;
+  justify-content: space-between;} */
+
+.date-block input[type="text"] {
+  text-align: left;
+  color: #9cc7ee;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.date-block input:focus {
+  border-color: #0056b3;
+  box-shadow: 0 0 8px rgba(0, 86, 179, 0.5);
+}
+
+.preview-description textarea {
+  width: 98%;
+  height: 128px;
+  border: none;
+  resize: none;
+}
+
+.react-datepicker__input-container input.date-block {
+  outline: none;
+  height: 10px;
+  width: 120px;
+  border: 3px solid #9cc7ee;
+  border-radius: 30px;
+  padding: 8px 12px;
+  font-size: 15px;
+  color: #606060;
+}
+
+.custom-file-upload input[type="file"] {
+  display: none;
+}
+.custom-file-upload {
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  /* color: ; */
+  /* background-color: #f0f0f0; */
+  /* border: 1px solid #ccc;
+  border-radius: 4px; */
+}
+.upload-image-content {
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
