@@ -12,7 +12,12 @@ import Mytrip from "./component/Mytrip";
 import ShareTrip from "./component/ShareTrip";
 import ShareTripCountry from "./component/ShareTripCountry";
 import TravelDiary from "./component/TravelDiary";
+
+import FindPassword from "./component/FindPassword";
+import FindLoginId from "./component/FindLoginId";
+
 import Posts from "./component/Posts";
+
 
 function App() {
   return (
@@ -28,12 +33,17 @@ function App() {
           <Route path="/sharetrip" element={<ShareTrip />}></Route>
           <Route path="/chatbot" element={<Chatbot />}></Route>
           <Route path="/mytrip" element={<Mytrip />}></Route>
+
+          <Route path="/findLoginId" element={<FindLoginId />}></Route>
+          <Route path="/findPassword" element={<FindPassword />}></Route>
+
           <Route path="/traveldiary" element={<TravelDiary />}></Route>
           <Route
             path="/country/:country"
             element={<ShareTripCountry />}
           ></Route>
           <Route path="/posts" element={<Posts />}></Route>
+
         </Routes>
       </BrowserRouter>
     </div>
