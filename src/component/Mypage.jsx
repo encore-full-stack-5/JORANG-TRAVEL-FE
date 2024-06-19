@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import jorangImage from "./../image/jorangImage.png";
 import SignatureColorOval from "./SignatureColorOval";
 import SignatureOval from "./SignatureOval";
-import { getUserById, updateUser } from "../config/authApi";
+import {
+  getDiaryByUserAndCountry,
+  getExpenseByUserAndCountry,
+  getUserById,
+  updateUser,
+} from "../config/authApi";
 import { useNavigate } from "react-router-dom";
 
 const Mypage = () => {
@@ -12,10 +17,12 @@ const Mypage = () => {
   const [isPasswordChanged, setIsPasswordChanged] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+  const [expenses, setExpenses] = useState([]);
+  const [diaries, setDiaries] = useState([]);
 
   useEffect(() => {
     const checkLoginStatus = async () => {
-      const loginId = localStorage.getItem("loginId");
+      const loginId = localStorage.getItem("id");
       if (loginId) {
         setIsLoggedIn(true);
         try {
@@ -30,8 +37,31 @@ const Mypage = () => {
         navigate("/signin");
       }
     };
+    const getExpensesApi = async () => {
+      try {
+        const response = await getExpenseByUserAndCountry();
+        console.log(response);
+        console.log(response.length);
+        setExpenses(response);
+      } catch {
+        console.log("error in getExpensesApi");
+      }
+    };
+
+    const getDiaryApi = async () => {
+      try {
+        const response = await getDiaryByUserAndCountry();
+        console.log("=======" + response);
+        console.log(response.length);
+        setDiaries(response);
+      } catch {
+        console.log("error in getDiaryApi");
+      }
+    };
 
     checkLoginStatus();
+    getExpensesApi();
+    getDiaryApi();
   }, [navigate, isNicknameChanged, isPasswordChanged]);
 
   const updateUserPasswordApi = async (e) => {
@@ -39,7 +69,7 @@ const Mypage = () => {
     const getPassword = document.getElementById("changePassword").value;
     try {
       const response = await updateUser(
-        localStorage.getItem("loginId"),
+        localStorage.getItem("id"),
         { value: getPassword },
         "password"
       );
@@ -57,7 +87,7 @@ const Mypage = () => {
     const getNickname = document.getElementById("changeNickname").value;
     try {
       const response = await updateUser(
-        localStorage.getItem("loginId"),
+        localStorage.getItem("id"),
         { value: getNickname },
         "nickname"
       );
@@ -141,58 +171,42 @@ const Mypage = () => {
             {nickname} 님의 여행들
           </p>
         </div>
-
         <div className="vertical-center" style={{ margin: "20px" }}>
-          <SignatureColorOval content="지금까지 총 3개의 나라를 여행했습니다"></SignatureColorOval>
-          <div className="row-center-space" style={{ marginTop: "20px" }}>
-            <SignatureOval content="중국"></SignatureOval>
-            <SignatureOval content="일본"></SignatureOval>
-            <SignatureOval content="노르웨이"></SignatureOval>
+          <SignatureColorOval
+            content={`지금까지 총 ${diaries.length}개의 나라를 여행했습니다`}
+          ></SignatureColorOval>
+
+          <div
+            className="row-center-space"
+            style={{ marginTop: "20px", flexWrap: "wrap" }}
+          >
+            {diaries.map((diary, index) => (
+              <div key={index}>
+                <SignatureOval content={diary}></SignatureOval>
+              </div>
+            ))}
           </div>
         </div>
-
         <div className="vertical-center" style={{ margin: "20px" }}>
-          <SignatureColorOval content="지금까지 총 3개의 나라를 여행했습니다"></SignatureColorOval>
-
-          <div style={{ marginTop: "20px" }}>
-            <div className="row-center-space">
+          <SignatureColorOval
+            className="sign-up"
+            content="총 지출 금액"
+          ></SignatureColorOval>
+          <br />
+          {expenses.map((expense, index) => (
+            <div key={index} className="row-center-space">
               <SignatureOval
                 style={{ marginBottom: "20px" }}
-                content="중국"
+                content={expense.country}
               ></SignatureOval>
               <p
                 className="font-color"
                 style={{ marginBottom: "30px", fontSize: "20px" }}
               >
-                ₩ 900000
+                ₩ {expense.cost}
               </p>
             </div>
-
-            <div className="row-center-space">
-              <SignatureOval
-                style={{ marginBottom: "20px" }}
-                content="일본"
-              ></SignatureOval>
-              <p
-                className="font-color"
-                style={{ marginBottom: "30px", fontSize: "20px" }}
-              >
-                ₩ 900000
-              </p>
-            </div>
-            <div className="row-center-space">
-              <SignatureOval
-                style={{ marginBottom: "20px" }}
-                content="노르웨이"
-              ></SignatureOval>
-              <p
-                className="font-color"
-                style={{ marginBottom: "30px", fontSize: "20px" }}
-              >
-                ₩ 900000
-              </p>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>

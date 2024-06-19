@@ -60,7 +60,7 @@ export const updateUser = async (id, changeValue, type) => {
 
 export const deleteUserById = async (id) => {
   try {
-    const res = await api(`/api/v1/auths/${id}`, "get");
+    const res = await api(`/api/v1/auths/${id}`, "delete");
     return res.data;
   } catch (error) {
     console.error("Error fetching user by ID", error);
@@ -82,5 +82,23 @@ export const findPassword = async (data) => {
     return res.data;
   } catch (error) {
     console.error("Error in findPassword", error);
+  }
+};
+
+export const getExpenseByUserAndCountry = async () => {
+  try {
+    const res = await api(`/api/v1/expenses/mypage`, "get");
+    return res.data;
+  } catch (error) {
+    console.error("Error in getExpenseByUserAndCountry", error);
+  }
+};
+
+export const getDiaryByUserAndCountry = async () => {
+  try {
+    const res = await api(`/api/v1/diaries/mypage`, "get");
+    return res.data;
+  } catch (error) {
+    console.error("Error in getDiaryByUserAndCountry", error);
   }
 };
