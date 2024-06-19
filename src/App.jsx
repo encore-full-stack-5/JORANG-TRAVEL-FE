@@ -12,6 +12,8 @@ import Mytrip from "./component/Mytrip";
 import ShareTrip from "./component/ShareTrip";
 import ShareTripCountry from "./component/ShareTripCountry";
 import TravelDiary from "./component/TravelDiary";
+import FindPassword from "./component/FindPassword";
+import FindLoginId from "./component/FindLoginId";
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
           <Route path="/chatbot" element={<Chatbot />}></Route>
           <Route path="/mytrip" element={<Mytrip />}></Route>
           <Route path="/TravelDiary" element={<TravelDiary />}></Route>
+          <Route path="/findLoginId" element={<FindLoginId />}></Route>
+          <Route path="/findPassword" element={<FindPassword />}></Route>
         </Routes>
       </BrowserRouter>
     </div>

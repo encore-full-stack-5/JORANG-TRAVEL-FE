@@ -13,7 +13,7 @@ const SignUp = () => {
   const [isEmailChecked, setIsEmailChecked] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem("loginId")) {
+    if (localStorage.getItem("id")) {
       setIsLoggedIn(true);
     }
   }, []);
@@ -164,7 +164,7 @@ const SignUp = () => {
         />
         <p className="font-color">이메일</p>
         <input
-          type="text"
+          type="email"
           id="email"
           style={{ height: "20px", width: "320px", borderRadius: "10px" }}
         />

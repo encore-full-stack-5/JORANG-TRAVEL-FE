@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { postSignIn } from "../config/authApi";
+import { deleteUserById, postSignIn } from "../config/authApi";
 import Mypage from "./Mypage";
 
 const SignIn = () => {
@@ -24,7 +24,7 @@ const SignIn = () => {
       console.log(response.token);
 
       console.log(response.loginId);
-      localStorage.setItem("loginId", response.loginId);
+      localStorage.setItem("id", response.loginId);
       localStorage.setItem("token", response.token);
       localStorage.setItem("nickname", response.nickname);
       console.log("성공");
@@ -45,7 +45,26 @@ const SignIn = () => {
     }
   };
 
-  return !localStorage.getItem("loginId") ? (
+  const withdraw = async (e) => {
+    e.preventDefault();
+    if (window.confirm("탈퇴하시겠습니까?")) {
+      if (window.confirm("진짜로 탈퇴하시겠습니까?")) {
+        try {
+          const response = await deleteUserById(localStorage.getItem("id"));
+          console.log(response);
+        } catch {
+          console.log("error in withdraw");
+          alert("탈퇴 실패");
+        }
+        localStorage.clear();
+        alert("탈퇴 완료");
+        // navigate("/login");
+        window.location.reload(); // 새로고침한다
+      }
+    }
+  };
+
+  return !localStorage.getItem("id") ? (
     <div className="center-right">
       <form onSubmit={signInFunc}>
         <div className="login">
@@ -110,6 +129,11 @@ const SignIn = () => {
       <br />
       <button onClick={localStorageClear} className="signature-oval">
         로그아웃
+      </button>
+      <br />
+      <br />
+      <button onClick={withdraw} className="signature-oval">
+        탈퇴하기
       </button>
     </div>
   );
