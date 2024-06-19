@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Norway from "./../image/Norway.png";
 import ImageText from "./ImageText";
-import jorangImage from "./../image/jorangImage.png";
-import searchImage from "./../image/searchImage.png";
 import { useParams } from "react-router-dom";
 import { getPostsByCountry } from "../api/post-api";
 
@@ -67,17 +65,7 @@ const ShareTripCountry = () => {
         </div>
       </div>
       <div className="trip-image-display">
-        {/* {posts?.map((post, i) => (
-          <ImageText
-            key={i}
-            src={post.diaries[0].photos[0].photoURL}
-            content={post.title}
-          ></ImageText>
-        ))} */}
-
         {posts?.map((post, i) => (
-          //  diary.photos.length > 0&&
-
           <ImageText
             key={i}
             src={post.diaries
@@ -86,23 +74,6 @@ const ShareTripCountry = () => {
             content={post.title}
           ></ImageText>
         ))}
-
-        {/* <ImageText
-          src={jorangImage}
-          content="hihihihihihihihihihihi반갑습니다"
-        ></ImageText>
-        <ImageText
-          src={Norway}
-          content="안녕하세요hihihihihihihihihihihi"
-        ></ImageText>
-        <ImageText
-          src={jorangImage}
-          content="hihihihihihihihihihihi반갑습니다"
-        ></ImageText>
-        <ImageText
-          src={searchImage}
-          content="안녕하세요hihihihihihihihihihihi"
-        ></ImageText> */}
       </div>
     </div>
   );
