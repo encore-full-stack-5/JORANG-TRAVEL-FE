@@ -11,7 +11,8 @@ const SignUp = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoginIdChecked, setIsLoginIdChecked] = useState(false);
   const [isEmailChecked, setIsEmailChecked] = useState(false);
-
+  const [loginId, setLoginId] = useState("");
+  const [email, setEmail] = useState("");
   useEffect(() => {
     if (localStorage.getItem("id")) {
       setIsLoggedIn(true);
@@ -34,8 +35,44 @@ const SignUp = () => {
     const getRepassword = document.getElementById("repassword").value;
     const getNickname = document.getElementById("nickname").value;
     const getEmail = document.getElementById("email").value;
-    console.log(getName, getLoginId, getPassword, getNickname, getEmail);
+    const getBirthday = document.getElementById("birthday").value;
+    console.log(
+      getName,
+      getLoginId,
+      getPassword,
+      getNickname,
+      getEmail,
+      getBirthday
+    );
     console.log("getName" + getName === null);
+
+    if (
+      !(
+        getName &&
+        getLoginId &&
+        getPassword &&
+        getRepassword &&
+        getNickname &&
+        getEmail &&
+        getBirthday
+      )
+    ) {
+      alert("모든 입력창에 정보를 입력해주세요.");
+      return;
+    }
+
+    if (getEmail !== email) {
+      setEmail("");
+      alert("이메일 사용 가능 버튼을 다시 눌러주세요.");
+      return;
+    }
+
+    if (getLoginId !== loginId) {
+      setLoginId("");
+      alert("이메일 사용 가능 버튼을 다시 눌러주세요.");
+      return;
+    }
+
     if (getPassword !== getRepassword) {
       alert("비밀번호가 일치하지 않습니다.");
       return;
@@ -46,26 +83,13 @@ const SignUp = () => {
       return;
     }
 
-    if (
-      !(
-        getName &&
-        getLoginId &&
-        getPassword &&
-        getRepassword &&
-        getNickname &&
-        getEmail
-      )
-    ) {
-      alert("모든 입력창에 정보를 입력해주세요.");
-      return;
-    }
     try {
       const response = await postSignUp({
         loginId: getLoginId,
         name: getName,
         nickname: getNickname,
         password: getPassword,
-        dateOfBirth: "2003-05-06",
+        dateOfBirth: getBirthday,
         email: getEmail,
       });
       console.log(response);
@@ -87,6 +111,7 @@ const SignUp = () => {
       if (response === "possible") {
         alert("사용 가능한 아이디입니다.");
         setIsLoginIdChecked(true);
+        setLoginId(loginId);
       } else {
         alert("존재하는 아이디입니다. 다시 입력하세요.");
       }
@@ -105,6 +130,7 @@ const SignUp = () => {
       if (response === "possible") {
         alert("사용 가능한 이메일입니다.");
         setIsEmailChecked(true);
+        setEmail(email);
       } else {
         alert("존재하는 이메일입니다. 다시 입력하세요.");
       }
@@ -178,7 +204,15 @@ const SignUp = () => {
             사용 가능
           </p>
         </button>
+        <p className="font-color">생일</p>
+        <input
+          type="date"
+          id="birthday"
+          defaultValue=""
+          style={{ height: "20px", width: "320px", borderRadius: "10px" }}
+        />
       </div>
+
       <button
         type="submit"
         className="rectangle"
