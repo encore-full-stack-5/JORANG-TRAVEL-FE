@@ -12,27 +12,39 @@ Modal.setAppElement("#root");
 
 const TravelDiary = () => {
   const [title, setTitle] = useState("");
+
   const [publish, setPublish] = useState(false);
   const [travelContent, setTravelContent] = useState([]);
   const [travelContent1, setTravelContent1] = useState([]);
+  const [traveldate, setTravelDate] = useState([]);
   const [newEntry, setNewEntry] = useState({
+    diaryTitle: "",
     date: null,
     description: "",
     image: null,
   });
   const [diary, setDiary] = useState([]);
   const [expenses, setExpenses] = useState([]);
-  const [selectedExpenseDate, setSelectedExpenseDate] = useState(null);
+  const [selectedExpenseDate, setselectedExpenseDate] = useState(null);
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
+  const [modalIsOpendiary, setModalIsOpenDiary] = useState(false);
+  const [isTravelDiaryOpen, setIsTravelDiaryOpen] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedDiaryDate, setSelectedDiaryDate] = useState(null);
+  const [selectedDiartDateGet, setSelectedDiaryDateGet] = useState(null);
 
   const [expenseInputs, setExpenseInputs] = useState([
     { id: Math.random(), amount: "", location: "" },
   ]);
 
   const [diaryInputs, setDiaryInputs] = useState([
-    { id: Math.random(), date: null, description: "", image: null },
+    {
+      id: Math.random(),
+      diarytTitle: "",
+      date: null,
+      description: "",
+      image: null,
+    },
   ]);
   const fileInputRef = useRef(null);
 
@@ -42,12 +54,88 @@ const TravelDiary = () => {
       // travelContent에 새로운 항목 추가
       setTravelContent([...travelContent, newEntry]);
       // 새 입력 칸 초기화
-      setNewEntry({ date: null, description: "", image: null });
+      setNewEntry({ diaryTitle: "", date: null, description: "", image: null });
     }
   };
-
+  const handleSaveDiary = () => {
+    setModalIsOpenDiary(true);
+  };
   const handleSave = () => {
     setModalIsOpen(true);
+  };
+  // const handleSaveTravelDiary = () => {
+  //   if (window.confirm("여행기를 발행 하시겠습니까?")) {
+  //     const isDiaryInputsEmpty = diaryInputs.some(
+  //       (input) =>
+  //         input.diarytTitle || !input.date || !input.description || !input.image
+  //     );
+  //     const isNewEntryEmpty =
+  //       !newEntry.diaryTitle ||
+  //       !newEntry.date ||
+  //       !newEntry.description ||
+  //       !newEntry.image;
+
+  //     if (isDiaryInputsEmpty || isNewEntryEmpty) {
+  //       alert("아직 내용이 입력되지 않았습니다. 계속해서 내용을 작성해주세요");
+
+  //       // if (diaryInputs.length === 0 || newEntry.description === "") {
+  //       //   alert("아직 내용이 입력되지 않았습니다. 계속해서 내용을 작성해주세요");
+  //       // }
+  //     } else {
+  //       alert("발행되었습니다.");
+  //     }
+  //   } else {
+  //     alert("발행이 취소되었습니다");
+  //   }
+  // };
+  const handleSaveTravelDiary = () => {
+    if (window.confirm("여행기를 발행 하시겠습니까?")) {
+      // 다이어리 입력 항목 중 하나라도 비어있는지 확인
+      const isDiaryInputsEmpty = diaryInputs.some((input) => {
+        const isEmpty =
+          // !input.diarytTitle ||
+          !input.date || !input.description || !input.image;
+        // if (!input.diarytTitle) {
+        //   console.log("Empty diary title:", input);
+        // }
+        if (!input.date) {
+          console.log("Empty diary date:", input);
+        }
+        if (!input.description) {
+          console.log("Empty diary description:", input);
+        }
+        if (!input.image) {
+          console.log("Empty diary image:", input);
+        }
+        return isEmpty;
+      });
+
+      const isNewEntryEmpty =
+        !newEntry.diaryTitle ||
+        !newEntry.date ||
+        !newEntry.description ||
+        !newEntry.image;
+      if (!newEntry.diaryTitle) {
+        console.log("Empty new entry title:", newEntry);
+      }
+      if (!newEntry.date) {
+        console.log("Empty new entry date:", newEntry);
+      }
+      if (!newEntry.description) {
+        console.log("Empty new entry description:", newEntry);
+      }
+      if (!newEntry.image) {
+        console.log("Empty new entry image:", newEntry);
+      }
+
+      if (isDiaryInputsEmpty || isNewEntryEmpty) {
+        alert("아직 내용이 입력되지 않았습니다. 계속해서 내용을 작성해주세요");
+      } else {
+        alert("발행되었습니다.");
+      }
+    } else {
+      alert("발행이 취소되었습니다");
+    }
   };
 
   // 경비 추가 함수
@@ -70,6 +158,7 @@ const TravelDiary = () => {
     setDiary([
       ...diary,
       ...diaryInputs.map((input) => ({
+        diaryTitle: input.diarytTitle,
         date: input.date,
         description: input.description,
         image: input.image,
@@ -78,13 +167,19 @@ const TravelDiary = () => {
     //입력 필드 추가
     setDiaryInputs([
       ...diaryInputs,
-      { id: Math.random(), date: "", description: "", image: "" },
+      {
+        id: Math.random(),
+        diarytTitle: "",
+        date: "",
+        description: "",
+        image: "",
+      },
     ]);
   };
 
   // 날짜를 클릭했을 때 실행되는 함수
   const handleDateClick = (date) => {
-    setSelectedExpenseDate(date);
+    setselectedExpenseDate(date);
     const expensesForDate = expenses.filter((exp) => {
       const expenseDate = new Date(exp.date).toISOString().split("T")[0];
       return expenseDate === date.toISOString().split("T")[0];
@@ -121,31 +216,56 @@ const TravelDiary = () => {
     }
   };
 
-  // 이미지 파일 변경 처리
-  // const handleImageChange = (file) => {
-  //   setNewEntry({ ...newEntry, image: file });
-  // };
   const handleImageChange = (file, id, type = "diary") => {
-    // const fileArray = Array.from(files).slice(0, 5); // 최대 5개 이미지 제한
-    // const newImages = fileArray.map((file) => URL.createObjectURL(file));
-    if (type === "diary") {
-      setDiaryInputs(
-        diaryInputs.map((input) =>
-          input.id === id ? { ...input, image: file } : input
-        )
-      );
-    } else {
-      setTravelContent(
-        travelContent.map((entry, index) =>
-          index === id ? { ...entry, image: file } : entry
-        )
-      );
+    if (file) {
+      if (type === "diary") {
+        setDiaryInputs(
+          diaryInputs.map((input) =>
+            input.id === id ? { ...input, image: file } : input
+          )
+        );
+      } else {
+        setTravelContent(
+          travelContent.map((entry, index) =>
+            index === id ? { ...entry, image: file } : entry
+          )
+        );
+      }
     }
+    let nes = newEntry;
+    nes.image = file;
+    setNewEntry(nes);
   };
+  const handleDiaryTitleChange = (title, id) => {
+    setDiaryInputs(
+      diaryInputs.map((input) =>
+        input.id === id ? { ...input, title } : input
+      )
+    );
+    //newEntry의 제목 변경
+    setNewEntry({ ...newEntry, diaryTitle: title });
+
+    let ti = newEntry;
+    ti.diaryTitle = title;
+    setNewEntry(ti);
+  };
+  const [selectedDiaryDates, setSelectedDiaryDates] = useState([]);
   const handleDiaryDateChange = (date, id) => {
     setDiaryInputs(
       diaryInputs.map((input) => (input.id === id ? { ...input, date } : input))
     );
+    // 선택된 날짜를 상태에 추가
+    setSelectedDiaryDates((prevDates) => {
+      const updatedDates = [...prevDates];
+      const index = diaryInputs.findIndex((input) => input.id === id);
+      updatedDates[index] = date;
+
+      let ne = newEntry;
+      ne.date = prevDates;
+      setNewEntry(ne);
+
+      return updatedDates;
+    });
   };
   // 설명 변경 처리
   // const handleDescriptionChange = (description) => {
@@ -165,6 +285,9 @@ const TravelDiary = () => {
         )
       );
     }
+    let de = newEntry;
+    de.description = type === "diary";
+    setNewEntry(de);
   };
 
   // 경비 입력 필드 추가
@@ -188,41 +311,65 @@ const TravelDiary = () => {
   //   setDiaryInputs;
   // };
   //날짜 선택 시 newEntry의 날짜를 업데이트
-  const handleDateChage = (date) => {
-    setNewEntry({ ...newEntry, date });
-  };
+  // const handleDateChage = (date) => {
+  //   setNewEntry({ ...newEntry, date });
+  // };
 
-  const handleImageClick = (index) => {
+  const handleImageClick = (index, type = "diary") => {
     fileInputRef.current.click();
     fileInputRef.current.onchange = (e) => {
       const file = e.target.files[0];
+      console.log(file);
       if (file) {
-        const updatedContent = [...travelContent];
-        updatedContent[index].image = file;
-        setTravelContent(updatedContent);
+        if (type === "diary") {
+          setDiaryInputs(
+            diaryInputs.map((input, i) =>
+              i === index ? { ...input, image: file } : input
+            )
+          );
+        } else {
+          setTravelContent(
+            travelContent.map((entry, i) =>
+              i === index ? { ...entry, image: file } : entry
+            )
+          );
+        }
       }
     };
   };
+  const deleteDiaryInput = (id) => {
+    const updatedInputs = diaryInputs.filter((input) => input.id !== id);
+    setDiaryInputs(updatedInputs);
+  };
+  const [modalContent, setModalContent] = useState({
+    date: "",
+    description: "",
+    image: null,
+  });
+  const handleOpenModal = (entry) => {
+    setModalContent(entry);
+    setModalIsOpen(true);
+  };
 
   return (
+    
     <div className="travel">
-      <div className="travel-diary">
-        <input
-          type="text"
-          placeholder="제목 입력"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="title-input"
-        />
-        <label className="publish-checkbox">
+      
+      <div className="title-publish">
           <input
-            type="checkbox"
-            checked={publish}
-            onChange={(e) => setPublish(e.target.checked)}
-          />
-          발행
-        </label>
-
+            type="text"
+            placeholder=" 여행일지 제목 입력"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="title-input"
+          /></div>
+          <div className="public">
+          <button onClick={handleSaveTravelDiary} className="save-travel-diary">
+            발행
+          </button>
+         
+        </div>
+        <div className="travel-diary">
         <div className="select-diary-date">
           {travelContent1.map((entry, index) => (
             <div>
@@ -262,50 +409,74 @@ const TravelDiary = () => {
             </div>
           </div>
         ))}
-        {diaryInputs.map((input) => (
-          <div key={input.id} className="entry-layout">
-            <div className="select-diary-date">
-              <DatePicker
-                selected={input.date}
-                onChange={(date) => handleDiaryDateChange(date, input.id)}
-                dateFormat="yyyy/MM/dd"
-                isClearable
-                showYearDropdown
-                scrollableMonthYearDropdown
-                className="date-block"
-                placeholderText="날짜"
-              />
-            </div>
-            <div className="upload-image-content">
-              <div className="image-upload-section">
-                <input
-                  type="file"
-                  onChange={(e) =>
-                    handleImageChange(e.target.files[0], input.id)
-                  }
-                  placeholderText="사진"
+        <div className="input-diary">
+          {diaryInputs.map((input) => (
+            <div key={input.id} className="entry-layout">
+              <div className="select-diary-date">
+                <DatePicker
+                  selected={input.date}
+                  onChange={(date) => handleDiaryDateChange(date, input.id)}
+                  dateFormat="yyyy/MM/dd"
+                  isClearable
+                  showYearDropdown
+                  scrollableMonthYearDropdown
+                  className="date-block"
+                  placeholderText="날짜"
                 />
-                {input.image && (
-                  <img
-                    src={URL.createObjectURL(input.image)}
-                    alt="Uploaded"
-                    className="preview-image"
+                <div className="diary-title">
+                  <input
+                    placeholder="여행기 제목 입력"
+                    // value={input.diarytTitle}
+                    onChange={(e) => handleDiaryTitleChange(e, input.id)}
+                    className="diary-title-input"
                   />
-                )}
+                </div>
+                <button
+                  onClick={() => deleteDiaryInput(input.id)}
+                  className="delete-button"
+                >
+                  x
+                </button>
               </div>
-              <div className="content-section">
-                <textarea
-                  className="fixed-size-textarea"
-                  placeholder="내용"
-                  value={input.description}
-                  onChange={(e) =>
-                    handleDescriptionChange(e.target.value, input.id)
-                  }
-                />
+              <div className="upload-image-content">
+                <div className="image-upload-section">
+                  <input
+                    type="file"
+                    multiple
+                    onChange={(e) =>
+                      handleImageChange(e.target.files[0], input.id)
+                    }
+                    placeholderText="사진"
+                  />
+                  {/* handleImageChange(e.target.files[0], input.id) */}
+                  {input.image && (
+                    <img
+                      src={URL.createObjectURL(input.image)}
+                      alt="Uploaded"
+                      className="preview-image"
+                    />
+                  )}
+                </div>
+                <div className="content-section">
+                  <textarea
+                    className="fixed-size-textarea"
+                    placeholder="내용"
+                    value={input.description}
+                    onChange={(e) =>
+                      handleDescriptionChange(e.target.value, input.id)
+                    }
+                  />
+                </div>
               </div>
+
+              {/* <div className="buttonAddEntry">
+                <button onClick={addDiary} className="add-button">
+                  +
+                </button>
+              </div> */}
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
 
         <div className="buttonAddEntry">
           <button onClick={addDiary} className="add-button">
@@ -313,22 +484,25 @@ const TravelDiary = () => {
           </button>
         </div>
         <div style={{ textAlign: "right" }}>
-          <button onClick={handleSave} className="save-button">
+          <button onClick={handleSaveDiary} className="save-button">
             저장
           </button>
         </div>
+
         <Modal
-          isOpen={modalIsOpen}
-          onRequestClose={() => setModalIsOpen(false)}
+          isOpen={modalIsOpendiary}
+          onRequestClose={() => setModalIsOpenDiary(false)}
           className="modaldiary"
           overlayClassName="overlaydiary"
         >
-          <label>
-            <input type="radio" name="privacy" /> 공개
-          </label>
-          <label>
-            <input type="radio" name="privacy" /> 비공개
-          </label>
+          {selectedDiaryDates.map((date, index) => (
+            <p key={index}>
+              날짜: {date ? date.toDateString() : "선택된 날짜 없음"}
+              <label>
+                <input type="checkbox" /> 비공개
+              </label>
+            </p>
+          ))}
           <select>
             <option>나라 선택</option>
             <option>미국</option>
@@ -526,9 +700,11 @@ const TravelDiary = () => {
             <option>우루과이</option>
             <option>베네수엘라</option>
           </select>
-          <button onClick={() => setModalIsOpen(false)}>완료</button>
+
+          <button onClick={() => setModalIsOpenDiary(false)}>완료</button>
         </Modal>
       </div>
+
       <div className="expenses">
         <div className="travel-expenses">
           <h4 style={{ textAlign: "left" }}>경비</h4>

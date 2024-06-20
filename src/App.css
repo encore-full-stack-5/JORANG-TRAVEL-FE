@@ -76,6 +76,7 @@ input[type="text"] {
   padding: 8px 12px;
   font-size: 15px;
   color: #606060;
+  margin-top: 10px;
 }
 
 input[type="date"] {
@@ -179,19 +180,23 @@ input[type="password"] {
   width: 80%;
   max-width: 900px;
 }
-
+.title-publish {
+  display: flex;
+  
+}
 .title-input {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-bottom: 10px;
+  margin-left: 510px;
 }
 
 .publish-checkbox {
-  display: contents;
-  align-items: right;
-  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .entry {
@@ -551,6 +556,7 @@ input[type="password"] {
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 300px; /* 또는 적절한 너비 */
+  overflow: visible;
 }
 
 .modaldiary label {
@@ -587,7 +593,7 @@ input[type="password"] {
   flex-basis: 40%; /* 부모 컨테이너의 40% 크기 */
   border: 2px solid #ccc; /* 회색 테두리 */
   border-radius: 8px; /* 모서리 둥글게 */
-  height: 150px; /* 높이 설정 */
+  height: 300px; /* 높이 설정 */
   display: flex;
   justify-content: center; /* 가로 중앙 정렬 */
   align-items: center; /* 세로 중앙 정렬 */
@@ -614,7 +620,7 @@ input[type="password"] {
 
 .content-section textarea {
   width: 100%;
-  height: 128px;
+  height: 270px;
   border: none;
   resize: none;
 }
@@ -634,8 +640,8 @@ input[type="password"] {
 }
 
 .preview-image {
-  width: 311px;
-  height: 150px;
+  width: 500px;
+  height: 300px;
 
   object-fit: fill;
 
@@ -694,11 +700,12 @@ input[type="password"] {
   justify-content: space-between;
   border: 1px solid #ccc;
   padding: 10px;
-
   border-radius: 8px;
 }
 
 .select-diary-date {
+  display: flex;
+  justify-content: space-between;
   border: #282c34;
   text-align: left;
   margin-left: 20px;
@@ -744,6 +751,7 @@ input[type="password"] {
   padding: 8px 12px;
   font-size: 15px;
   color: #606060;
+  margin: none;
 }
 
 .custom-file-upload input[type="file"] {
@@ -763,8 +771,48 @@ input[type="password"] {
   text-align: center;
   justify-content: space-between;
   border: 1px solid #ccc;
-  margin-top: 10px;
+  margin-top: 20px;
   margin-bottom: 10px;
+  height: 300px;
+}
+.delete-button {
+  color: red;
+  border: 2px solid lightgrey;
+  background-color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+  height: 30px;
+  width: 30px;
+  margin-top: 10px;
+}
+.entry-layout {
+  margin-top: 30px;
+}
+
+.diary-title-input {
+  display: flex;
+  justify-content: flex-start;
+  outline: none;
+  height: 10px;
+  width: 300px;
+  border: 3px solid #9cc7ee;
+  border-radius: 30px;
+  padding: 8px 12px;
+  font-size: 15px;
+  color: #606060;
+  margin-top: 10px;
+  margin-left: 170px;
+}
+.save-travel-diary {
+  border: 3px solid #9cc7ee;
+  border-radius: 30px;
+  background-color: white;
+  width: 60px;
+  height: 30px;
+  margin-left: 850px;
+  margin-bottom: 15px;
 }
 
 .post-signature-color-oval {
