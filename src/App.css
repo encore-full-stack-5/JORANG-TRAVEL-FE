@@ -161,7 +161,7 @@ input[type="password"] {
 }
 .title-publish {
   display: flex;
-  justify-content: space-between;
+  
 }
 .title-input {
   width: 100%;
@@ -169,7 +169,7 @@ input[type="password"] {
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-bottom: 10px;
-  margin-left: 250px;
+  margin-left: 510px;
 }
 
 .publish-checkbox {
@@ -730,6 +730,7 @@ input[type="password"] {
   padding: 8px 12px;
   font-size: 15px;
   color: #606060;
+  margin: none;
 }
 
 .custom-file-upload input[type="file"] {
@@ -763,7 +764,32 @@ input[type="password"] {
   margin-left: 10px;
   height: 30px;
   width: 30px;
+  margin-top: 10px;
 }
 .entry-layout {
   margin-top: 30px;
+}
+
+.diary-title-input {
+  display: flex;
+  justify-content: flex-start;
+  outline: none;
+  height: 10px;
+  width: 300px;
+  border: 3px solid #9cc7ee;
+  border-radius: 30px;
+  padding: 8px 12px;
+  font-size: 15px;
+  color: #606060;
+  margin-top: 10px;
+  margin-left: 170px;
+}
+.save-travel-diary {
+  border: 3px solid #9cc7ee;
+  border-radius: 30px;
+  background-color: white;
+  width: 60px;
+  height: 30px;
+  margin-left: 850px;
+  margin-bottom: 15px;
 }
