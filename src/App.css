@@ -91,7 +91,6 @@ input[type="date"] {
 
 input[type="email"] {
   outline: none;
-  margin: 5px;
   height: 10px;
   width: 400px;
   border: 3px solid #9cc7ee;
@@ -103,7 +102,6 @@ input[type="email"] {
 
 input[type="password"] {
   outline: none;
-  margin: 5px;
   height: 10px;
   width: 400px;
   border: 3px solid #9cc7ee;
@@ -767,4 +765,17 @@ input[type="password"] {
   border: 1px solid #ccc;
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.post-signature-color-oval {
+  background-color: #d7e9fa;
+  height: 30px;
+  width: 350px;
+  border-radius: 30px;
+  font-size: 15px;
+  color: #606060;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 3px solid #9cc7ee;
 }

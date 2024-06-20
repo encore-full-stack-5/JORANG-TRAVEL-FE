@@ -17,6 +17,7 @@ import FindPassword from "./component/FindPassword";
 import FindLoginId from "./component/FindLoginId";
 
 import Posts from "./component/Posts";
+import DetailPost from "./component/DetailPost";
 
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
             element={<ShareTripCountry />}
           ></Route>
           <Route path="/posts" element={<Posts />}></Route>
+          <Route path="/detail-post/:id" element={<DetailPost />}></Route>
 
         </Routes>
       </BrowserRouter>
