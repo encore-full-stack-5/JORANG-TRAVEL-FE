@@ -779,3 +779,10 @@ input[type="password"] {
   align-items: center;
   border: 3px solid #9cc7ee;
 }
+
+.mytrip-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-right: 150px;
+}
