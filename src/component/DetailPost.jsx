@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getDiaryAllByPostId, getPostById } from "../config/postApi";
+import { getDiaryAllByPostId, getPostById ,getExpenseDetailById} from "../config/postApi";
 
 const DetailPost = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [post, setPost] = useState({});
   const [diaries, setDiaries] = useState([]);
-
+  const [expenses, setExpenses] = useState([]);
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -42,11 +42,11 @@ const DetailPost = () => {
       console.log("error in getAllByPostIdApi");
     }
   };
-
-  useEffect(() => {
-    getPostByIdApi();
-    getAllByPostIdApi();
-  }, []);
+// const getExpenseDetailByIdApi = async () =>
+//   useEffect(() => {
+//     getPostByIdApi();
+//     getAllByPostIdApi();
+//   }, []);
 
   return (
     <div>
