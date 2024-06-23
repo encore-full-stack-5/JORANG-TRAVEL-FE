@@ -8,8 +8,7 @@ export const api = async (url, method, body, params) => {
     data: body,
     params: params,
     headers: {
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MSIsImV4cCI6MTcxODg3NDQ3Mn0.X4n3v4IOMyofM0qBF5Ddk1WEoRfLk7CCkP3XuwsDA0k",
+      Authorization: "",
     },
   });
 
