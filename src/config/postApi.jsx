@@ -43,3 +43,12 @@ export const getUserLikePosts = async () => {
     console.error("Error in getUserLikePosts", error);
   }
 };
+
+export const getPostByUser = async () => {
+  try {
+    const res = await api(`api/v1/posts/user`, "get");
+    return res.data;
+  } catch (error) {
+    console.error("Error in getPostByUser", error);
+  }
+};

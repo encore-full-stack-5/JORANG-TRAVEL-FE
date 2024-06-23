@@ -786,3 +786,10 @@ input[type="password"] {
   align-items: baseline;
   margin-right: 150px;
 }
+
+.mytrip-map-display {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-left: 10%;
+}

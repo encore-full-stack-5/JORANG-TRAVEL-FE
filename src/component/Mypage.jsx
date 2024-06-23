@@ -4,7 +4,7 @@ import SignatureColorOval from "./SignatureColorOval";
 import SignatureOval from "./SignatureOval";
 import {
   getDiaryByUserAndCountry,
-  getExpenseByUserAndCountry,
+  getExpenseDetailByUserAndCountry,
   getUserById,
   updateUser,
 } from "../config/authApi";
@@ -39,7 +39,7 @@ const Mypage = () => {
     };
     const getExpensesApi = async () => {
       try {
-        const response = await getExpenseByUserAndCountry();
+        const response = await getExpenseDetailByUserAndCountry();
         console.log(response);
         console.log(response.length);
         setExpenses(response);
@@ -176,9 +176,23 @@ const Mypage = () => {
             content={`지금까지 총 ${diaries.length}개의 나라를 여행했습니다`}
           ></SignatureColorOval>
 
-          <div className="row-center-space" style={{ marginTop: "20px" }}>
+          <div
+            className="row-center-space"
+            style={{
+              width: "450px",
+              marginTop: "20px",
+              flexWrap: "wrap",
+              justifyContent: "flex-start",
+            }}
+          >
             {diaries.map((diary, index) => (
-              <div key={index}>
+              <div
+                key={index}
+                style={{
+                  flex: "0 0 calc(33.333% - 20px)",
+                  marginBottom: "20px",
+                }}
+              >
                 <SignatureOval content={diary}></SignatureOval>
               </div>
             ))}

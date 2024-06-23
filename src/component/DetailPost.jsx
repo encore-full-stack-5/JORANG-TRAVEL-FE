@@ -88,9 +88,7 @@ const DetailPost = () => {
           <p style={{ color: "#606060", fontSize: "15px" }}>
             생성일 : {formatDate(post.createdAt)}
           </p>
-          <p style={{ color: "#606060", fontSize: "15px" }}>
-            나라 : {diaries[0].country}
-          </p>
+
           <div
             className="post-signature-color-oval"
             style={{ width: "80px", height: "30px" }}
@@ -111,6 +109,9 @@ const DetailPost = () => {
                     </p>
                     <p style={{ color: "#606060", fontSize: "15px" }}>
                       {diary.title}
+                    </p>
+                    <p style={{ color: "#606060", fontSize: "15px" }}>
+                      {diary.country}
                     </p>
                     <p style={{ color: "#606060", fontSize: "15px" }}>
                       {diary.content}
