@@ -17,6 +17,10 @@ import FindPassword from "./component/FindPassword";
 import FindLoginId from "./component/FindLoginId";
 
 import Posts from "./component/Posts";
+
+import ImageSlider from "./component/ImageSlider";
+import PostsPerCountry from "./component/PostsPerCountry";
+
 import DetailPost from "./component/DetailPost";
 
 
@@ -34,18 +38,20 @@ function App() {
           <Route path="/sharetrip" element={<ShareTrip />}></Route>
           <Route path="/chatbot" element={<Chatbot />}></Route>
           <Route path="/mytrip" element={<Mytrip />}></Route>
-
           <Route path="/findLoginId" element={<FindLoginId />}></Route>
           <Route path="/findPassword" element={<FindPassword />}></Route>
-
           <Route path="/traveldiary" element={<TravelDiary />}></Route>
           <Route
-            path="/country/:country"
+            path="/posts/country/:country/intro"
             element={<ShareTripCountry />}
           ></Route>
           <Route path="/posts" element={<Posts />}></Route>
+          <Route path="/slider" element={<ImageSlider />}></Route>
+          <Route
+            path="/posts/country/:country"
+            element={<PostsPerCountry />}
+          ></Route>
           <Route path="/detail-post/:id" element={<DetailPost />}></Route>
-
         </Routes>
       </BrowserRouter>
     </div>
