@@ -23,9 +23,16 @@ const Mytrip = () => {
   return (
     <div style={{ paddingTop: "20px" }}>
       {/* <Search placeholder="가고 싶은 나라나 도시를 선택해주세요" /> */}
-      <div className="row-center-space">
-        <div className="trip-text-display">
+      <div className="trip-text-display">
+        <div className="row-center-space">
           <p className="trip-font-color">최근 올라온 여행일지</p>
+          <Link
+            className="trip-font-color"
+            style={{ paddingLeft: "15px", fontSize: "14px" }}
+            to="/posts"
+          >
+            더보기
+          </Link>
         </div>
       </div>
       <div style={{ display: "flex", justifyContent: "center", margin: "10px 13% 0 13%" }}>
@@ -51,7 +58,16 @@ const Mytrip = () => {
       </div>
 
       <div className="trip-text-display">
-        <p className="trip-font-color">이번주 Hot한 여행일지 Top5</p>
+        <div className="row-center-space">
+          <p className="trip-font-color">이번주 Hot한 여행일지 Top5</p>
+          <Link
+            className="trip-font-color"
+            style={{ paddingLeft: "15px", fontSize: "14px" }}
+            to="/posts"
+          >
+            더보기
+          </Link>
+        </div>
       </div>
       <div style={{ display: "flex", justifyContent: "center", margin: "10px 13% 0 13%" }}>
         {topPosts?.map((post, i) => (
