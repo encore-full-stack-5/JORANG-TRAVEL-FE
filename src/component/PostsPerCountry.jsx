@@ -24,6 +24,7 @@ const PostsPerCountry = () => {
    3. 기간 설정 시 page번호도 변경이 필요하다. -> 완료
    4. 페이지 번호가 처음 렌더링 할 때 부터 나와야 한다. -> 완료
    5. 2페이지에서 기간 설정해서 포스트 갯수가 줄어들면 1페이지로 넘어와야 하는데 2페이지에서 머문다. -> 완료
+   6. 다른 URL 에 들어갔다가 다시 왔을 때 원래 꺼에 머물러 있다. 예를 들어 2페이지에
 */
 
 
@@ -34,12 +35,10 @@ const PostsPerCountry = () => {
   const getPostsAndSetPage = async () => {
     const res = await getRecentPostsByCountry(countryInEnglish);
     setPosts(res);
-    // setPostLength(res.length); // post 길이 초기값 설정
     updatePageNumbers(res);
     setCurrentPage(localStorage.getItem("currentPage"));
     console.log(localStorage.getItem("currentPage"));
   };
-  // console.log(setFilteredPostLength);
 
   const updatePageNumbers = (posts) => {
     const arr = [];
@@ -49,12 +48,8 @@ const PostsPerCountry = () => {
     setPages(arr);
   }
 
-  console.log(pages);
-  
-
 
   const clickOnFilter = (e) => {
-    // e.preventDefault(); // re rendering 없애야 함
     setShowFilter(!showFilter);
   };
 
@@ -70,8 +65,6 @@ const PostsPerCountry = () => {
     if (selected == "1") sortByDateDesc();
     else sortByLike();
   };
-
-  // console.log(posts);
 
   // 좋아요순
   const sortByLike = () => {
@@ -109,15 +102,6 @@ const PostsPerCountry = () => {
     setCurrentPage(e.target.innerHTML);
     localStorage.setItem("currentPage", e.target.innerHTML);
   };
-
-  // const filterPosts = () => {
-  //   const newPosts = [...posts].filter((post) => post.diaries.some((diary) =>
-  //   new Date(diary.date).getTime() >= date[0] &&
-  //   new Date(diary.date).getTime() <= date[1]));
-  //   updatePageNumbers(newPosts);
-  // }; 
-
-
 
   // const closeFilterBox = (e) => {
   //   console.log(e.target.className);

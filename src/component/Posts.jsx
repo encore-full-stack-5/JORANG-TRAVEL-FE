@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ImageText from "./ImageText";
 import filterImage from "./../image/filterImage.png";
-import Search from "./Search";
-import { getAllPosts, getRecentPostsFirst } from "../api/post-api";
+import { getRecentPostsFirst } from "../api/post-api";
 import "./Posts.css";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 
@@ -13,23 +12,31 @@ const Posts = () => {
     new DateObject().add(30, "years"),
   ]);
   const [showFilter, setShowFilter] = useState(false);
+  const [pages, setPages] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    getPosts();
+    getPostsAndSetPage();
   }, []);
 
-  // console.log(new Date(x).getTime() == new Date(z).getTime());
 
-  // console.log(date[0].toString());
-  // console.log(date[1].toString());
-
-  const getPosts = async () => {
+  const getPostsAndSetPage = async () => {
     const res = await getRecentPostsFirst();
     setPosts(res);
+    updatePageNumbers(res);
+    setCurrentPage(localStorage.getItem("currentPage"));
+    console.log(localStorage.getItem("currentPage"));
   };
 
+  const updatePageNumbers = (posts) => {
+    const arr = [];
+    for (let page = 1; page <= Math.ceil(posts.length/10); page++) {
+      arr.push(page);
+    }
+    setPages(arr);
+  }
+
   const clickOnFilter = (e) => {
-    // e.preventDefault(); // re rendering 없애야 함
     setShowFilter(!showFilter);
   };
 
@@ -46,8 +53,6 @@ const Posts = () => {
     else sortByLike();
   };
 
-  // console.log(posts);
-
   // 좋아요순
   const sortByLike = () => {
     setPosts([...posts].sort((a, b) => b.love - a.love));
@@ -55,11 +60,17 @@ const Posts = () => {
 
   // 기간 설정
   const filterByDuration = (e) => {
-    // e.preventDefault(); // re rendering 이 필요한가
     if (e.length == 2) {
       const startDate = new Date(e[0].toString().replace(/-/g, "-")).getTime();
       const endDate = new Date(e[1].toString().replace(/-/g, "-")).getTime();
       setDate([startDate, endDate]);
+      // page 번호 업데이트 
+      const newPosts = posts.filter((post) => post.diaries.some((diary) =>
+      new Date(diary.date).getTime() >= startDate &&
+      new Date(diary.date).getTime() <= endDate));
+      updatePageNumbers(newPosts);
+      // 기간을 변경하면 1페이지로 이동 
+      setCurrentPage(1);
     }
   };
 
@@ -67,6 +78,11 @@ const Posts = () => {
   //   console.log(e.target.className);
   //   if (e.target.className !== "filter-box") setShowFilter(false);
   // };
+
+  const showCurrentPage = (e) => {
+    setCurrentPage(e.target.innerHTML);
+    localStorage.setItem("currentPage", e.target.innerHTML);
+  };
 
   return (
     <div style={{ paddingTop: "20px", width: "100%" }}>
@@ -112,24 +128,33 @@ const Posts = () => {
           </div>
         )}
       </div>
-
-      <div className="posts-container">
-        {posts
-          ?.filter((post) =>
-            post.diaries.some(
-              (diary) =>
-                new Date(diary.date).getTime() >= date[0] &&
-                new Date(diary.date).getTime() <= date[1]
-            )
-          )
-          .map((post, i) => (
-            <ImageText
-              key={i}
-              src={post.diaries
-                .filter((diary) => diary.photos && diary.photos.length > 0)
-                .map((diary) => diary.photos[0].photoURL)}
-              content={post.title}
-            ></ImageText>
+      <div
+            className="country-posts"
+            style={{ width: "calc(5 * 180px + 5 * 30px + 5 * 6px)", height: "440px" }} // total width 고정 필요
+          >
+        <div className="posts-container">
+          {posts
+            ?.filter((post) =>
+              post.diaries.some(
+                (diary) =>
+                  new Date(diary.date).getTime() >= date[0] &&
+                  new Date(diary.date).getTime() <= date[1]
+              )
+            ).slice((currentPage-1)*10, currentPage*10)
+            .map((post, i) => (
+              <ImageText
+                key={i}
+                src={post.diaries
+                  .filter((diary) => diary.photos && diary.photos.length > 0)
+                  .map((diary) => diary.photos[0].photoURL)}
+                content={post.title}
+              ></ImageText>
+            ))}
+        </div>
+      </div>
+      <div>
+        {pages.map(page => (
+            <button key={page} onClick={showCurrentPage} style={{margin: "-20px 5px 100px 5px", backgroundColor: "white", border:"none", fontSize: "1.4rem"}}>{page}</button>
           ))}
       </div>
     </div>
