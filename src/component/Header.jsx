@@ -28,7 +28,7 @@ const Header = () => {
             <p className="font-color">여행에 대한 모든 것</p>
           </div>
 
-          <Search />
+          <Search placeholder="가고 싶은 나라나 도시를 입력해주세요" />
         </div>
       </nav>
     </div>
