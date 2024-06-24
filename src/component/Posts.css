@@ -1,6 +1,48 @@
+.filter-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+  margin-right: 150px;
+}
+
+.filter-box {
+  position: absolute;
+  top: 110%;
+  left: 78.2%;
+  background-color: white;
+  height: 30px;
+  width: 90px;
+  border-radius: 30px;
+  font-size: 15px;
+  border: 3px solid #9cc7ee;
+  color: #606060;
+  width: 300px;
+  height: 130px;
+}
+
+.filter-box select {
+  width: 70%;
+  font-size: 15px;
+  padding: 3px;
+  border-radius: 30px;
+  border: 3px solid #9cc7ee;
+  text-align: center;
+  margin: 20px 0;
+  cursor: pointer;
+}
+
+.date-picker {
+  width: 120px;
+  text-align: center;
+}
+
 .posts-container {
   display: flex;
   flex-wrap: wrap;
   margin-right: calc((100% - 5 * 180px - 5 * 30px - 5 * 6px) / 2);
   margin-left: calc((100% - 5 * 180px - 5 * 30px - 5 * 6px) / 2);
+  position: absolute;
+  z-index: -1;
 }

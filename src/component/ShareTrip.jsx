@@ -21,7 +21,7 @@ const Mytrip = () => {
 
   return (
     <div style={{ paddingTop: "20px" }}>
-      <Search placeholder="가고 싶은 나라나 도시를 선택해주세요" />
+      {/* <Search placeholder="가고 싶은 나라나 도시를 선택해주세요" /> */}
       <div className="row-center-space">
         <div className="trip-text-display">
           <p className="trip-font-color">최근 올라온 여행일지</p>

@@ -14,6 +14,7 @@ import ShareTripCountry from "./component/ShareTripCountry";
 import TravelDiary from "./component/TravelDiary";
 import Posts from "./component/Posts";
 import ImageSlider from "./component/ImageSlider";
+import PostsPerCountry from "./component/PostsPerCountry";
 
 function App() {
   return (
@@ -31,11 +32,15 @@ function App() {
           <Route path="/mytrip" element={<Mytrip />}></Route>
           <Route path="/traveldiary" element={<TravelDiary />}></Route>
           <Route
-            path="/country/:country"
+            path="/posts/country/:country/intro"
             element={<ShareTripCountry />}
           ></Route>
           <Route path="/posts" element={<Posts />}></Route>
           <Route path="/slider" element={<ImageSlider />}></Route>
+          <Route
+            path="/posts/country/:country"
+            element={<PostsPerCountry />}
+          ></Route>
         </Routes>
       </BrowserRouter>
     </div>

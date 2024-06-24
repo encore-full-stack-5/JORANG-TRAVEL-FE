@@ -63,6 +63,12 @@ const Home = () => {
     setSearch(e.target.value);
   };
 
+  const clickOutsideModal = (e) => {
+    if (e.target.className == "bg-modal") {
+      setIsHomeModalOpen(false);
+    }
+  };
+
   return (
     <>
       <div className="world-map-container" onMouseOver={handleMouseOver}>
@@ -72,7 +78,7 @@ const Home = () => {
         </span>
       </div>
       {isHomeModalOpen ? (
-        <div className="bg-modal">
+        <div className="bg-modal" onClick={clickOutsideModal}>
           <div className="home-modal">
             <div className="modal-content">
               <div className="button-container">
@@ -90,13 +96,19 @@ const Home = () => {
                 />
               </div>
               <div className="modal-container">
-                {countries[selectedContinent].sort().map((country, index) =>
-                  country.includes(search) ? (
-                    <Link className="modal-item" key={index}>
-                      {country}
-                    </Link>
-                  ) : null
-                )}
+                {Object.keys(countries[selectedContinent])
+                  .sort()
+                  .map((countryInKorean, index) =>
+                    countryInKorean.includes(search) ? (
+                      <Link
+                        className="modal-item"
+                        key={index}
+                        to={`/posts/country/${countries[selectedContinent][countryInKorean]}/intro`}
+                      >
+                        {countryInKorean}
+                      </Link>
+                    ) : null
+                  )}
               </div>
             </div>
           </div>

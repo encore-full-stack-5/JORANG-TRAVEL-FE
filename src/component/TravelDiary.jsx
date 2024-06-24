@@ -296,20 +296,20 @@ const TravelDiary = () => {
                   }}
                   placeholderText="사진"
                   multiple
+                  className="temp"
                 />
                 {input.image && (
                   <div className="image-slider-container">
                     <Slider {...settings}>
-                      {Object.keys(input.image).forEach((key) => {
+                      {Object.keys(input.image).map((key) => (
                         <div key={key}>
-                          {/* {console.log(URL.createObjectURL(input.image[key]))} */}
                           <img
                             src={URL.createObjectURL(input.image[key])}
                             alt="Uploaded"
                             className="preview-image"
                           />
-                        </div>;
-                      })}
+                        </div>
+                      ))}
                     </Slider>
                   </div>
                 )}
