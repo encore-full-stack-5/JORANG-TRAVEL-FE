@@ -6,6 +6,7 @@ import {
   getPostById,
   likeComment,
 } from "../config/postApi";
+import DonutChart from "./DonutChart";
 
 const DetailPost = () => {
   const { id } = useParams();
@@ -129,6 +130,8 @@ const DetailPost = () => {
           >
             경비
           </div>
+          <DonutChart style={{ width: "200px", height: "200px" }} postId={id} />
+
           {likeCheck ? (
             <button
               className="signature-oval"
