@@ -363,7 +363,6 @@ const TravelDiary = () => {
   return (
     
     <div className="travel">
-      
       <div className="title-publish">
           <input
             type="text"
@@ -459,7 +458,7 @@ const TravelDiary = () => {
                       ))}
                     </Slider>
                   </div>
-                )
+                )}
               </div>
               <div className="upload-image-content">
                 <div className="image-upload-section">
@@ -491,15 +490,9 @@ const TravelDiary = () => {
                   />
                 </div>
               </div>
-
-              {/* <div className="buttonAddEntry">
-                <button onClick={addDiary} className="add-button">
-                  +
-                </button>
-              </div> */}
             </div>
-          ))}
         </div>
+        ))}
 
         <div className="buttonAddEntry">
           <button onClick={addDiary} className="add-button">
