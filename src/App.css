@@ -432,7 +432,7 @@ input[type="password"] {
 
 .trip-image-display {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: flex-start;
   margin-top: 10px;
   margin-left: 13%;
   margin-right: 13%;
@@ -753,9 +753,9 @@ input[type="password"] {
   margin: none;
 }
 
-.custom-file-upload input[type="file"] {
+/* .custom-file-upload input[type="file"] {
   display: none;
-}
+} */
 .custom-file-upload {
   display: inline-block;
   padding: 6px 12px;
