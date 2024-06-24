@@ -33,6 +33,14 @@ export const getRecentPostsFirst = async () => {
   return res.data;
 };
 
+export const getTop5RecentPosts = async () => {
+  const res = await api("/api/v1/posts/top5/recent", "get");
+  console.log(res.data);
+  return res.data;
+};
+
+
+
 // 이번주 좋아요 순 post top5 가져오기
 export const getTopLikePostsFirst = async () => {
   const res = await api("/api/v1/posts/top5/like", "get");
@@ -44,7 +52,6 @@ export const getRecent5PostsByCountry = async (country) => {
   const res = await api("/api/v1/posts/top5/diaries", "get", null, {
     country: country,
   });
-  console.log(res.data);
   return res.data;
 };
 
