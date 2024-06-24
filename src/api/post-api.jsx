@@ -19,7 +19,7 @@ export const getAllPosts = async () => {
 // 나라별 최신순 post 가져오기
 
 export const getRecentPostsByCountry = async (country) => {
-  const res = await api("/api/v1/posts", "get", null, {
+  const res = await api("/api/v1/posts/recent/diaries", "get", null, {
     country: country,
   });
   console.log(res.data);
@@ -52,6 +52,7 @@ export const getRecent5PostsByCountry = async (country) => {
   const res = await api("/api/v1/posts/top5/diaries", "get", null, {
     country: country,
   });
+  console.log(res.data);
   return res.data;
 };
 
