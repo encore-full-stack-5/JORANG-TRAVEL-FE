@@ -12,6 +12,7 @@ const Header = () => {
               <p className="font-color">회원가입</p>
             </Link>
             <p className="font-color">/</p>
+
             <Link to="/signin" style={{ textDecoration: "none" }}>
               <p className="font-color">로그인</p>
             </Link>

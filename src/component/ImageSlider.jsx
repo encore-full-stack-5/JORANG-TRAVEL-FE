@@ -33,4 +33,5 @@ const ImageSlider = ({ images }) => {
   );
 };
 
+
 export default ImageSlider;

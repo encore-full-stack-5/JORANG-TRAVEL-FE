@@ -3,6 +3,7 @@ import ImageText from "./ImageText";
 import filterImage from "./../image/filterImage.png";
 import Search from "./Search";
 import { getRecentPostsFirst, getTopLikePostsFirst } from "../api/post-api";
+import { Link } from "react-router-dom";
 
 const Mytrip = () => {
   const [recentPosts, setRecentPosts] = useState([]);
@@ -36,18 +37,24 @@ const Mytrip = () => {
       </div>
       <div className="trip-image-display">
         {recentPosts?.map((post, i) => (
-          <ImageText
+          <Link
+            to={`/detail-post/${post.id}`}
             key={i}
-            src={post.diaries
-              .filter(
-                (diary) =>
-                  diary.photos &&
-                  diary.photos.length > 0 &&
-                  new Date(diary.date) > new Date(2024, 5, 8).getTime()
-              )
-              .map((diary) => diary.photos[0].photoURL)}
-            content={post.title}
-          ></ImageText>
+            style={{ textDecoration: "none" }}
+          >
+            {console.log(post.id)}
+            <ImageText
+              src={post.diaries
+                .filter(
+                  (diary) =>
+                    diary.photos &&
+                    diary.photos.length > 0 &&
+                    new Date(diary.date) > new Date(2024, 5, 8).getTime()
+                )
+                .map((diary) => diary.photos[0].photoURL)}
+              content={post.title}
+            ></ImageText>
+          </Link>
         ))}
       </div>
 
@@ -57,13 +64,19 @@ const Mytrip = () => {
 
       <div className="trip-image-display">
         {TopPosts?.map((post, i) => (
-          <ImageText
+          <Link
+            to={`/detail-post/${post.id}`}
             key={i}
-            src={post.diaries
-              .filter((diary) => diary.photos && diary.photos.length > 0)
-              .map((diary) => diary.photos[0].photoURL)}
-            content={post.title}
-          ></ImageText>
+            style={{ textDecoration: "none" }}
+          >
+            <ImageText
+              key={i}
+              src={post.diaries
+                .filter((diary) => diary.photos && diary.photos.length > 0)
+                .map((diary) => diary.photos[0].photoURL)}
+              content={post.title}
+            ></ImageText>
+          </Link>
         ))}
       </div>
     </div>
