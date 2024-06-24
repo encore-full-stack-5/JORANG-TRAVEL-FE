@@ -52,3 +52,15 @@ export const getPostByUser = async () => {
     console.error("Error in getPostByUser", error);
   }
 };
+
+export const getChartData = async (postId) => {
+  try {
+    const res = await api(
+      `/api/v1/expenseDetail/postId/${postId}/chart`,
+      "get"
+    );
+    return res.data;
+  } catch (error) {
+    console.error("Error in getChartData", error);
+  }
+};

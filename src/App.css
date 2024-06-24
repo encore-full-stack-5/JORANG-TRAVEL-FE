@@ -182,7 +182,6 @@ input[type="password"] {
 }
 .title-publish {
   display: flex;
-  
 }
 .title-input {
   width: 100%;
@@ -790,8 +789,7 @@ input[type="password"] {
 .entry-layout {
   margin-top: 30px;
 }
-
-.diary-title-input {
+s .diary-title-input {
   display: flex;
   justify-content: flex-start;
   outline: none;
@@ -838,6 +836,7 @@ input[type="password"] {
 .mytrip-map-display {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
   margin-left: 10%;
+  margin-right: 10%;
+  justify-content: space-between;
 }
