@@ -81,7 +81,7 @@ const ShareTripCountry = () => {
         </Link>
         </div>
       </div>
-      <div className="trip-image-display">
+      <div style={{ display: "flex", justifyContent: "center", margin: "10px 13% 0 13%" }}>
         {posts?.map((post, i) => (
           <ImageText
             key={i}
