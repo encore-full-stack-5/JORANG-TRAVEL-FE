@@ -64,3 +64,21 @@ export const getChartData = async (postId) => {
     console.error("Error in getChartData", error);
   }
 };
+
+export const postListByUser = async (pageNumber) => {
+  try {
+    const res = await api(`/api/v1/posts/user/list?page=${pageNumber}`, "get");
+    return res.data;
+  } catch (error) {
+    console.error("Error in getPostList", error);
+  }
+};
+
+export const postLikeListByUser = async (pageNumber) => {
+  try {
+    const res = await api(`/api/v1/likes/user/list?page=${pageNumber}`, "get");
+    return res.data;
+  } catch (error) {
+    console.error("Error in postLikeListByUser", error);
+  }
+};

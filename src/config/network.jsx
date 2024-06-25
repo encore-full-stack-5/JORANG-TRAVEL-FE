@@ -9,7 +9,7 @@ export const api = async (url, method, body, params) => {
     params: params,
     headers: {
       Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MSIsImV4cCI6MTcxOTIxNzQwNH0.TF23J-1iXDRSd9rlIOOJpxN3Te1D9s7i0anWWJf7KKI",
+        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MSIsImV4cCI6MTcxOTM0MzM3OH0.rmDJkAmaCids2A63aGl2hvgORH9Dtvm3BYZCO3oYUtQ",
     },
   });
 

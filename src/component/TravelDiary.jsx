@@ -361,24 +361,22 @@ const TravelDiary = () => {
   };
 
   return (
-    
     <div className="travel">
-      
       <div className="title-publish">
-          <input
-            type="text"
-            placeholder=" 여행일지 제목 입력"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="title-input"
-          /></div>
-          <div className="public">
-          <button onClick={handleSaveTravelDiary} className="save-travel-diary">
-            발행
-          </button>
-         
-        </div>
-        <div className="travel-diary">
+        <input
+          type="text"
+          placeholder=" 여행일지 제목 입력"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="title-input"
+        />
+      </div>
+      <div className="public">
+        <button onClick={handleSaveTravelDiary} className="save-travel-diary">
+          발행
+        </button>
+      </div>
+      <div className="travel-diary">
         <div className="select-diary-date">
           {travelContent1.map((entry, index) => (
             <div>
@@ -459,7 +457,7 @@ const TravelDiary = () => {
                       ))}
                     </Slider>
                   </div>
-                )
+                )}
               </div>
               <div className="upload-image-content">
                 <div className="image-upload-section">
@@ -498,8 +496,8 @@ const TravelDiary = () => {
                 </button>
               </div> */}
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
 
         <div className="buttonAddEntry">
           <button onClick={addDiary} className="add-button">

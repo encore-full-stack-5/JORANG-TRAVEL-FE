@@ -425,7 +425,7 @@ input[type="password"] {
   flex-direction: column;
   align-items: flex-start;
   margin-top: "15px";
-  margin-left: 15%;
+  /* margin-left: 15%; */
   justify-content: flex-start;
   flex-wrap: wrap;
 }
@@ -446,7 +446,7 @@ input[type="password"] {
   width: 180px;
   display: flex;
   flex-direction: column;
-  margin: 15px;
+  margin: 25px;
 }
 
 .image-container {
@@ -831,6 +831,8 @@ s .diary-title-input {
   justify-content: space-between;
   align-items: baseline;
   margin-right: 150px;
+  margin-left: 150px;
+  flex-wrap: wrap;
 }
 
 .mytrip-map-display {
@@ -838,5 +840,24 @@ s .diary-title-input {
   flex-wrap: wrap;
   margin-left: 10%;
   margin-right: 10%;
-  justify-content: space-between;
+  justify-content: flex-start;
+}
+
+.row-more {
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
+}
+
+@media (max-width: 400px) {
+  .mytrip-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.page-button-fix {
+  position: fixed;
+  bottom: 50px;
+  width: 100%;
 }
