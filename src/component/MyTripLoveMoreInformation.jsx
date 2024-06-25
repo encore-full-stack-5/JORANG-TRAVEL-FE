@@ -58,15 +58,14 @@ const MyTripLoveMoreInformation = () => {
           <div className="row-center">
             {Array.from({ length: totalPage }, (_, index) => (
               <button
-                className={
-                  index === currentPage
-                    ? "signature-color-oval"
-                    : "signature-oval"
-                }
-                style={{ width: "30px", height: "30px" }}
                 key={index}
                 onClick={() => handlePage(index)}
                 disabled={index === currentPage}
+                style={{
+                  backgroundColor: "white",
+                  border: "none",
+                  fontSize: "1.4rem",
+                }}
               >
                 {index + 1}
               </button>
