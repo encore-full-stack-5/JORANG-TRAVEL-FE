@@ -497,6 +497,7 @@ const TravelDiary = () => {
             </div>
           ))}
         </div>
+
         <div className="buttonAddEntry">
           <button onClick={addDiary} className="add-button">
             +
