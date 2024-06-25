@@ -149,11 +149,11 @@ input[type="password"] {
   margin-top: 10%;
 }
 
-.sign-up {
+.diary-date {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-top: 1%;
+  margin-left: 25px;
 }
 
 .center-right {
@@ -310,7 +310,7 @@ input[type="password"] {
   font-size: 13px;
 }
 
-.signature-color-oval {
+.signature-color-oval-post {
   background-color: #c2d6e9;
   height: 30px;
   width: 350px;
@@ -322,17 +322,26 @@ input[type="password"] {
   align-items: center;
 }
 
-.signature-oval {
+.signature-oval-post {
   background-color: white;
-  height: 30px;
-  width: 90px;
+  margin: auto;
   border-radius: 30px;
   font-size: 15px;
   border: 3px solid #9cc7ee;
   color: #606060;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 20px;
+  width: 80%;
+  max-width: 800px;
+  margin-top: 30px;
+  height: 350px;
+  
+  /* border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    margin: auto;
+    width: 80%;
+    max-width: 1000px; */
+
 }
 
 .row-center-space {
@@ -822,8 +831,65 @@ input[type="password"] {
   border-radius: 30px;
   font-size: 15px;
   color: #606060;
-  display: flex;
+  /* display: flex; */
   justify-content: center;
   align-items: center;
   border: 3px solid #9cc7ee;
+}
+
+.mytrip-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-right: 150px;
+}
+
+.mytrip-map-display {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-left: 10%;
+}
+.diary-date-title{
+  display: flex;
+}
+.diary-title{
+  margin-left: 30px;
+}
+.diary-image{
+  width: 300px;
+  height: 300px;
+}
+.diary-image-contnet{
+  display: flex;
+
+}
+.diary-content{
+  margin-right: 10px;
+  width: 500px;
+  height: 300px;
+}
+.signature-color-oval {
+  background-color: #c2d6e9;
+  height: 30px;
+  width: 350px;
+  border-radius: 30px;
+  font-size: 15px;
+  color: #606060;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.signature-oval {
+  background-color: white;
+  height: 30px;
+  width: 90px;
+  border-radius: 30px;
+  font-size: 15px;
+  border: 3px solid #9cc7ee;
+  color: #606060;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

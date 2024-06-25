@@ -18,6 +18,7 @@ import FindLoginId from "./component/FindLoginId";
 
 import Posts from "./component/Posts";
 import DetailPost from "./component/DetailPost";
+import ExpenseDetail from "./component/ExpenseDetail"
 
 
 function App() {
@@ -45,7 +46,7 @@ function App() {
           ></Route>
           <Route path="/posts" element={<Posts />}></Route>
           <Route path="/detail-post/:id" element={<DetailPost />}></Route>
-
+          {/* <Route path="/expensedetail" element={<ExpenseDetail/>}></Route> */}
         </Routes>
       </BrowserRouter>
     </div>
