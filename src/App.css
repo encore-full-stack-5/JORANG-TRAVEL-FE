@@ -76,7 +76,7 @@ input[type="text"] {
   padding: 8px 12px;
   font-size: 15px;
   color: #606060;
-  margin-top: 10px;
+  /* margin-top: 10px; */
 }
 
 input[type="date"] {
@@ -179,6 +179,7 @@ input[type="password"] {
   margin: auto;
   width: 80%;
   max-width: 900px;
+  height: 600px;
 }
 .title-publish {
   display: flex;
@@ -610,8 +611,14 @@ input[type="password"] {
   cursor: pointer; /* 마우스 오버 시 커서 변경 */
 }
 
+.image-upload-container {
+  display: flex;
+  gap: 20px;
+}
+
+
 .content-section {
-  flex-basis: 50%;
+  flex-basis: 70%;
   border: 2px solid #ccc;
   border-radius: 8px;
   padding: 8px;
@@ -657,8 +664,10 @@ input[type="password"] {
   margin-top: 20px;
 }
 
-.image-upload-section {
+.image-box {
+  flex: 1;
   margin-bottom: 10px;
+  height: 150px;
 }
 
 .entry-textarea {
@@ -767,6 +776,7 @@ input[type="password"] {
 }
 .upload-image-content {
   display: flex;
+  flex-direction: column;
   text-align: center;
   justify-content: space-between;
   border: 1px solid #ccc;
@@ -789,7 +799,7 @@ input[type="password"] {
 .entry-layout {
   margin-top: 30px;
 }
-s .diary-title-input {
+.diary-title-input {
   display: flex;
   justify-content: flex-start;
   outline: none;
