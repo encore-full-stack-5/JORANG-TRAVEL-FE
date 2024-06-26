@@ -24,6 +24,11 @@ import PostsPerCountry from "./component/PostsPerCountry";
 import DetailPost from "./component/DetailPost";
 import MyGallery from "./component/MyGallery";
 
+import ExpenseDetail from "./component/ExpenseDetail"
+
+import MyTripMoreInformation from "./component/MyTripMoreInformation";
+import MyTripLoveMoreInformation from "./component/MyTripLoveMoreInformation";
+
 
 function App() {
 
@@ -54,6 +59,18 @@ function App() {
             element={<PostsPerCountry />}
           ></Route>
           <Route path="/detail-post/:id" element={<DetailPost />}></Route>
+
+          {/* <Route path="/expensedetail" element={<ExpenseDetail/>}></Route> */}
+
+          <Route
+            path="/mytrip/more-information"
+            element={<MyTripMoreInformation />}
+          ></Route>
+          <Route
+            path="/mytrip/love/more-information"
+            element={<MyTripLoveMoreInformation />}
+          ></Route>
+
         </Routes>
       </BrowserRouter>
     </div>

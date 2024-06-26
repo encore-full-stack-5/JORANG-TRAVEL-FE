@@ -149,11 +149,11 @@ input[type="password"] {
   margin-top: 10%;
 }
 
-.sign-up {
+.diary-date {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-top: 1%;
+  margin-left: 25px;
 }
 
 .center-right {
@@ -310,7 +310,7 @@ input[type="password"] {
   font-size: 13px;
 }
 
-.signature-color-oval {
+.signature-color-oval-post {
   background-color: #c2d6e9;
   height: 30px;
   width: 350px;
@@ -322,17 +322,26 @@ input[type="password"] {
   align-items: center;
 }
 
-.signature-oval {
+.signature-oval-post {
   background-color: white;
-  height: 30px;
-  width: 90px;
+  margin: auto;
   border-radius: 30px;
   font-size: 15px;
   border: 3px solid #9cc7ee;
   color: #606060;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 20px;
+  width: 80%;
+  max-width: 800px;
+  margin-top: 30px;
+  height: 350px;
+  
+  /* border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    margin: auto;
+    width: 80%;
+    max-width: 1000px; */
+
 }
 
 .row-center-space {
@@ -426,7 +435,7 @@ input[type="password"] {
   flex-direction: column;
   align-items: flex-start;
   margin-top: "15px";
-  margin-left: 15%;
+  /* margin-left: 15%; */
   justify-content: flex-start;
   flex-wrap: wrap;
 }
@@ -447,7 +456,7 @@ input[type="password"] {
   width: 180px;
   display: flex;
   flex-direction: column;
-  margin: 15px;
+  margin: 25px;
 }
 
 .image-container {
@@ -830,7 +839,7 @@ input[type="password"] {
   border-radius: 30px;
   font-size: 15px;
   color: #606060;
-  display: flex;
+  /* display: flex; */
   justify-content: center;
   align-items: center;
   border: 3px solid #9cc7ee;
@@ -841,6 +850,8 @@ input[type="password"] {
   justify-content: space-between;
   align-items: baseline;
   margin-right: 150px;
+  margin-left: 150px;
+  flex-wrap: wrap;
 }
 
 .mytrip-map-display {
@@ -848,5 +859,140 @@ input[type="password"] {
   flex-wrap: wrap;
   margin-left: 10%;
   margin-right: 10%;
+  justify-content: flex-start;
+}
+
+.row-more {
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
+}
+
+@media (max-width: 400px) {
+  .mytrip-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.page-button-fix {
+  position: fixed;
+  bottom: 50px;
+  width: 100%;
+}
+.diary-date-title{
+  display: flex;
+}
+.diary-title{
+  margin-left: 30px;
+}
+.diary-image{
+  width: 300px;
+  height: 300px;
+}
+.diary-image-contnet{
+  display: flex;
+
+}
+.diary-content{
+  margin-right: 10px;
+  width: 500px;
+  height: 300px;
+}
+.signature-color-oval {
+  background-color: #c2d6e9;
+  height: 30px;
+  width: 350px;
+  border-radius: 30px;
+  font-size: 15px;
+  color: #606060;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.signature-oval {
+  background-color: white;
+  height: 30px;
+  width: 90px;
+  border-radius: 30px;
+  font-size: 15px;
+  border: 3px solid #9cc7ee;
+  color: #606060;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.signature-oval-expense{
+  background-color: white;
+  margin: auto;
+  border-radius: 30px;
+  font-size: 15px;
+  border: 3px solid #9cc7ee;
+  color: #606060;
+  padding: 20px;
+  width: 800px !important;
+  max-width: 800px;
+  margin-top: 30px;
+  height: 50px !important;
+  min-height: 30px;
+}
+/* .expense-detail{
+  display: flex;
   justify-content: space-between;
+  border: 3px solid #9cc7ee;
+  border-radius: 10px;
+  width: 800px;
+  margin: auto;
+  margin-bottom: 40px;
+} */
+
+.expense-details{
+  margin: 20px;
+  padding:10px ;
+  border: 3px solid #9cc7ee;
+  border-radius: 30px;
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;  
+  margin-left: 300px;
+  margin-right: 300px;
+}
+/* .all-expense{
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 3px solid #9cc7ee;  
+}
+
+.all-expense:last-of-type{
+  border: none;
+} */
+
+.all-expense {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 3px solid #9cc7ee;
+}
+
+
+.expense-details > div:last-child > div {
+  border: 0px;
+}
+
+
+/* .all-expense:last-of-type {
+  border-bottom: none;
+}
+.all-expense > :last-child {
+  border-bottom: none;
+} */
+
+
+.expense-cost{
+  margin-left: 20px;
+}
+.expense-category{
+  margin-right: 20px;
 }
