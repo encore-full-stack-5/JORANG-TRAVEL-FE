@@ -65,6 +65,24 @@ export const getChartData = async (postId) => {
   }
 };
 
+
+
+export const getExpenseDetailsByPostId = async (postId) => {
+  try {
+    const response = await api(`/api/v1/expense-details/by-post/${postId}`, "get");
+    return response.data;
+  } catch (error) {
+    console.error("게시물 ID로 경비 세부 정보 가져오기 오류", error);
+   
+  }
+};
+export const getById = async(id) => {
+  try{
+    const response = await api(`/api/v1/posts/${id}`,"get");
+    return response.data;
+  }catch (error) {
+    console.error("포스트id로 포스트 다 가져오기 오류", error);
+
 export const postListByUser = async (pageNumber) => {
   try {
     const res = await api(`/api/v1/posts/user/list?page=${pageNumber}`, "get");
@@ -80,5 +98,6 @@ export const postLikeListByUser = async (pageNumber) => {
     return res.data;
   } catch (error) {
     console.error("Error in postLikeListByUser", error);
+
   }
 };

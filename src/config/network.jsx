@@ -22,8 +22,13 @@ export const api = async (url, method, body, params) => {
     params: params,
     headers: {
       Authorization: getToken(),
+      // Authorization: []
     },
   });
 
   return res;
 };
+
+// Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZW95ZW9uIiwiZXhwIjoxNzE5MTM0MzcwfQ.8i5mAhtTkTJQ9QvrbI_V0RV6HMf_QcqFznzjP_Olo-8
+// eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJMaW1zZW95ZW9uIiwiZXhwIjoxNzE5MTU4OTY4fQ.rO6hjg_P__Az1ww2ljaiaeX4pWW73VbnkY98XknUL2E
+// Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJMaW1zZW95ZW9uIiwiZXhwIjoxNzE5MjAwNzY1fQ.TXsHu9zwDVnXKmX7XX-T18rCQeTVDe17CIWncePFB7A
