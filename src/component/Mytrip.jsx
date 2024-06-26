@@ -42,15 +42,23 @@ const Mytrip = () => {
   return (
     <div>
       <div className="mytrip-row">
-        <div className="trip-text-display">
-          <p className="trip-font-color">여행기</p>
+        <div className="row-more">
+          <p className="trip-font-color">여행일지</p>
+          <Link
+            to="/mytrip/more-information"
+            style={{ textDecoration: "none" }}
+          >
+            <p className="trip-font-color" style={{ fontSize: "14px" }}>
+              더보기
+            </p>
+          </Link>
         </div>
         <Link to="/traveldiary" style={{ textDecoration: "none" }}>
           <button
             className="post-signature-color-oval"
             style={{ width: "150px" }}
           >
-            여행기 추가하기
+            여행일지 추가하기
           </button>
         </Link>
       </div>
@@ -75,9 +83,20 @@ const Mytrip = () => {
         )}
       </div>
 
-      <div className="trip-text-display">
-        <p className="trip-font-color">찜한 여행기</p>
+      <div className="mytrip-row">
+        <div className="row-more">
+          <p className="trip-font-color">찜한 여행일지</p>
+          <Link
+            to="/mytrip/love/more-information"
+            style={{ textDecoration: "none" }}
+          >
+            <p className="trip-font-color" style={{ fontSize: "14px" }}>
+              더보기
+            </p>
+          </Link>
+        </div>
       </div>
+
       <div className="mytrip-map-display">
         {likePosts.length > 0 ? (
           displayPosts(likePosts).map((post, index) => (
@@ -92,7 +111,7 @@ const Mytrip = () => {
             </div>
           ))
         ) : (
-          <p className="trip-font-color">찜한 여행기가 없습니다.</p>
+          <p className="trip-font-color">찜한 여행일지가 없습니다.</p>
         )}
       </div>
     </div>

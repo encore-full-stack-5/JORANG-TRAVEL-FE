@@ -66,6 +66,7 @@ export const getChartData = async (postId) => {
 };
 
 
+
 export const getExpenseDetailsByPostId = async (postId) => {
   try {
     const response = await api(`/api/v1/expense-details/by-post/${postId}`, "get");
@@ -81,5 +82,22 @@ export const getById = async(id) => {
     return response.data;
   }catch (error) {
     console.error("포스트id로 포스트 다 가져오기 오류", error);
+
+export const postListByUser = async (pageNumber) => {
+  try {
+    const res = await api(`/api/v1/posts/user/list?page=${pageNumber}`, "get");
+    return res.data;
+  } catch (error) {
+    console.error("Error in getPostList", error);
+  }
+};
+
+export const postLikeListByUser = async (pageNumber) => {
+  try {
+    const res = await api(`/api/v1/likes/user/list?page=${pageNumber}`, "get");
+    return res.data;
+  } catch (error) {
+    console.error("Error in postLikeListByUser", error);
+
   }
 };

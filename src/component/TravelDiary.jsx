@@ -361,138 +361,142 @@ const TravelDiary = () => {
   };
 
   return (
-    
     <div className="travel">
-      <div className="title-publish">
+      <div>
+        <div className="title-publish">
           <input
             type="text"
             placeholder=" 여행일지 제목 입력"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className="title-input"
-          /></div>
-          <div className="public">
+          />
+        </div>
+        <div className="public">
           <button onClick={handleSaveTravelDiary} className="save-travel-diary">
             발행
           </button>
-         
         </div>
         <div className="travel-diary">
-        <div className="select-diary-date">
-          {travelContent1.map((entry, index) => (
-            <div>
-              <DatePicker
-                selected={(setSelectedDiaryDate, entry.date)}
-                onChange={
-                  ((date) => setSelectedDiaryDate(date), index, "travel")
-                }
-                dateFormat="yyyy/MM/dd"
-                isClearable
-                showYearDropdown
-                scrollableMonthYearDropdown
-                className="date-block"
-                placeholderText="날짜"
-              />
+          <div className="select-diary-date">
+            {travelContent1.map((entry, index) => (
+              <div>
+                <DatePicker
+                  selected={(setSelectedDiaryDate, entry.date)}
+                  onChange={
+                    ((date) => setSelectedDiaryDate(date), index, "travel")
+                  }
+                  dateFormat="yyyy/MM/dd"
+                  isClearable
+                  showYearDropdown
+                  scrollableMonthYearDropdown
+                  className="date-block"
+                  placeholderText="날짜"
+                />
+              </div>
+            ))}
+          </div>
+          {travelContent.map((entry, index) => (
+            <div key={index} className="preview-entry-layout">
+              {console.log(entry.image)}
+              {entry.image && (
+                <img
+                  src={URL.createObjectURL(entry.image)}
+                  alt="Uploaded"
+                  className="preview-image"
+                  onClick={() => handleImageClick(index, "travel")}
+                />
+              )}
+              <div
+                className="preview-description"
+                style={{ textAlign: "left" }}
+              >
+                <textarea
+                  className="fixed-size-textarea"
+                  value={entry.description}
+                  onChange={(e) =>
+                    handleDescriptionChange(e.target.value, index, "travel")
+                  }
+                />
+              </div>
             </div>
           ))}
-        </div>
-        {travelContent.map((entry, index) => (
-          <div key={index} className="preview-entry-layout">
-            {console.log(entry.image)}
-            {entry.image && (
-              <img
-                src={URL.createObjectURL(entry.image)}
-                alt="Uploaded"
-                className="preview-image"
-                onClick={() => handleImageClick(index, "travel")}
-              />
-            )}
-            <div className="preview-description" style={{ textAlign: "left" }}>
-              <textarea
-                className="fixed-size-textarea"
-                value={entry.description}
-                onChange={(e) =>
-                  handleDescriptionChange(e.target.value, index, "travel")
-                }
-              />
-            </div>
-          </div>
-        ))}
-        {diaryInputs.map((input) => (
-          <div key={input.id} className="entry-layout">
-            <div className="select-diary-date">
-              <DatePicker
-                selected={input.date}
-                onChange={(date) => handleDiaryDateChange(date, input.id)}
-                dateFormat="yyyy/MM/dd"
-                isClearable
-                showYearDropdown
-                scrollableMonthYearDropdown
-                className="date-block"
-                placeholderText="날짜"
-              />
-            </div>
-            <div className="upload-image-content">
-              <div className="image-upload-section">
-                <input
-                  type="file"
-                  onChange={(e) => {
-                    // console.log(e);
-                    handleImageChange(e.target.files, input.id);
-                  }}
-                  placeholderText="사진"
-                  multiple
-                  className="temp"
+          {diaryInputs.map((input) => (
+            <div key={input.id} className="entry-layout">
+              <div className="select-diary-date">
+                <DatePicker
+                  selected={input.date}
+                  onChange={(date) => handleDiaryDateChange(date, input.id)}
+                  dateFormat="yyyy/MM/dd"
+                  isClearable
+                  showYearDropdown
+                  scrollableMonthYearDropdown
+                  className="date-block"
+                  placeholderText="날짜"
                 />
-                {input.image && (
-                  <div className="image-slider-container">
-                    <Slider {...settings}>
-                      {Object.keys(input.image).map((key) => (
-                        <div key={key}>
-                          <img
-                            src={URL.createObjectURL(input.image[key])}
-                            alt="Uploaded"
-                            className="preview-image"
-                          />
-                        </div>
-                      ))}
-                    </Slider>
-                  </div>
-                )}
               </div>
               <div className="upload-image-content">
                 <div className="image-upload-section">
                   <input
                     type="file"
-                    multiple
-                    onChange={(e) =>
-                      handleImageChange(e.target.files[0], input.id)
-                    }
+                    onChange={(e) => {
+                      // console.log(e);
+                      handleImageChange(e.target.files, input.id);
+                    }}
                     placeholderText="사진"
+                    multiple
+                    className="temp"
                   />
-                  {/* handleImageChange(e.target.files[0], input.id) */}
                   {input.image && (
-                    <img
-                      src={URL.createObjectURL(input.image)}
-                      alt="Uploaded"
-                      className="preview-image"
-                    />
+                    <div className="image-slider-container">
+                      <Slider {...settings}>
+                        {Object.keys(input.image).map((key) => (
+                          <div key={key}>
+                            <img
+                              src={URL.createObjectURL(input.image[key])}
+                              alt="Uploaded"
+                              className="preview-image"
+                            />
+                          </div>
+                        ))}
+                      </Slider>
+                    </div>
                   )}
                 </div>
-                <div className="content-section">
-                  <textarea
-                    className="fixed-size-textarea"
-                    placeholder="내용"
-                    value={input.description}
-                    onChange={(e) =>
-                      handleDescriptionChange(e.target.value, input.id)
-                    }
-                  />
+                <div className="upload-image-content">
+                  <div className="image-upload-section">
+                    <input
+                      type="file"
+                      multiple
+                      onChange={(e) =>
+                        handleImageChange(e.target.files[0], input.id)
+                      }
+                      placeholderText="사진"
+                    />
+                    {/* handleImageChange(e.target.files[0], input.id) */}
+                    {input.image && (
+                      <img
+                        src={URL.createObjectURL(input.image)}
+                        alt="Uploaded"
+                        className="preview-image"
+                      />
+                    )}
+                  </div>
+                  <div className="content-section">
+                    <textarea
+                      className="fixed-size-textarea"
+                      placeholder="내용"
+                      value={input.description}
+                      onChange={(e) =>
+                        handleDescriptionChange(e.target.value, input.id)
+                      }
+                    />
+                  </div>
                 </div>
               </div>
             </div>
+          ))}
         </div>
-        ))}
 
         <div className="buttonAddEntry">
           <button onClick={addDiary} className="add-button">
@@ -504,7 +508,6 @@ const TravelDiary = () => {
             저장
           </button>
         </div>
-
         <Modal
           isOpen={modalIsOpendiary}
           onRequestClose={() => setModalIsOpenDiary(false)}
