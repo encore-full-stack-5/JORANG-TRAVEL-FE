@@ -30,7 +30,7 @@ const TravelDiary = () => {
     diaryTitle: "",
     date: null,
     description: "",
-    image: null,
+    image: {},
   });
   const [diary, setDiary] = useState([]);
   const [expenses, setExpenses] = useState([]);
@@ -41,7 +41,7 @@ const TravelDiary = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedDiaryDate, setSelectedDiaryDate] = useState(null);
   const [selectedDiartDateGet, setSelectedDiaryDateGet] = useState(null);
-
+  const [selectedDiaryDates, setSelectedDiaryDates] = useState([]);
   const [expenseInputs, setExpenseInputs] = useState([
     { id: Math.random(), amount: "", location: "" },
   ]);
@@ -52,10 +52,19 @@ const TravelDiary = () => {
       diarytTitle: "",
       date: null,
       description: "",
-      image: null,
+      image: {},
     },
   ]);
+
+  const [modalContent, setModalContent] = useState({
+    date: "",
+    description: "",
+    image: null,
+  });
+
   const fileInputRef = useRef(null);
+
+  console.log(diaryInputs[0].image);
 
   // 새로운 여행 항목 추가
   const addEntry = () => {
@@ -225,25 +234,28 @@ const TravelDiary = () => {
     }
   };
 
-  const handleImageChange = (file, id, type = "diary") => {
+  const handleImageChange = (key, file, id, type = "diary") => {
+    console.log(key, file);
+    console.log(id);
+    console.log(diaryInputs);
     if (file) {
       if (type === "diary") {
         setDiaryInputs(
           diaryInputs.map((input) =>
-            input.id === id ? { ...input, image: file } : input
+            input.id === id ? { ...input, image: {...(input.image), [key] : file} } : input
           )
         );
       } else {
         setTravelContent(
           travelContent.map((entry, index) =>
-            index === id ? { ...entry, image: file } : entry
+            index === id ? { ...entry, image: {...(entry.image), [key] : file} } : entry
           )
         );
       }
     }
-    let nes = newEntry;
-    nes.image = file;
-    setNewEntry(nes);
+    let copyEntry = newEntry;
+    copyEntry.image = {...(copyEntry.image), [key] : file};
+    setNewEntry(copyEntry);
   };
   const handleDiaryTitleChange = (title, id) => {
     setDiaryInputs(
@@ -258,7 +270,7 @@ const TravelDiary = () => {
     ti.diaryTitle = title;
     setNewEntry(ti);
   };
-  const [selectedDiaryDates, setSelectedDiaryDates] = useState([]);
+
   const handleDiaryDateChange = (date, id) => {
     setDiaryInputs(
       diaryInputs.map((input) => (input.id === id ? { ...input, date } : input))
@@ -327,19 +339,19 @@ const TravelDiary = () => {
   const handleImageClick = (index, type = "diary") => {
     fileInputRef.current.click();
     fileInputRef.current.onchange = (e) => {
-      const file = e.target.files;
+      const file = e.target.files[0];
       console.log(file);
       if (file) {
         if (type === "diary") {
           setDiaryInputs(
             diaryInputs.map((input, i) =>
-              i === index ? { ...input, image: file } : input
+              i === index ? { ...input, image: {...(input.image), [i] : file} } : input
             )
           );
         } else {
           setTravelContent(
             travelContent.map((entry, i) =>
-              i === index ? { ...entry, image: file } : entry
+              i === index ? { ...entry, image: {...(entry.image), [i] : file} } : entry
             )
           );
         }
@@ -350,19 +362,14 @@ const TravelDiary = () => {
     const updatedInputs = diaryInputs.filter((input) => input.id !== id);
     setDiaryInputs(updatedInputs);
   };
-  const [modalContent, setModalContent] = useState({
-    date: "",
-    description: "",
-    image: null,
-  });
+
   const handleOpenModal = (entry) => {
     setModalContent(entry);
     setModalIsOpen(true);
   };
 
   return (
-    <div className="travel">
-      <div>
+      <div className="travel">
         <div className="title-publish">
           <input
             type="text"
@@ -378,7 +385,7 @@ const TravelDiary = () => {
           </button>
         </div>
         <div className="travel-diary">
-          <div className="select-diary-date">
+          {/* <div className="select-diary-date">
             {travelContent1.map((entry, index) => (
               <div>
                 <DatePicker
@@ -395,22 +402,19 @@ const TravelDiary = () => {
                 />
               </div>
             ))}
-          </div>
+          </div> */}
           {travelContent.map((entry, index) => (
             <div key={index} className="preview-entry-layout">
-              {console.log(entry.image)}
+              {/* {console.log(entry.image)} */}
               {entry.image && (
                 <img
-                  src={URL.createObjectURL(entry.image)}
+                  src={URL.createObjectURL(entry.image[index])}
                   alt="Uploaded"
                   className="preview-image"
                   onClick={() => handleImageClick(index, "travel")}
                 />
               )}
-              <div
-                className="preview-description"
-                style={{ textAlign: "left" }}
-              >
+              <div className="preview-description" style={{ textAlign: "left" }}>
                 <textarea
                   className="fixed-size-textarea"
                   value={entry.description}
@@ -436,68 +440,40 @@ const TravelDiary = () => {
                 />
               </div>
               <div className="upload-image-content">
-                <div className="image-upload-section">
-                  <input
-                    type="file"
-                    onChange={(e) => {
-                      // console.log(e);
-                      handleImageChange(e.target.files, input.id);
-                    }}
-                    placeholderText="사진"
-                    multiple
-                    className="temp"
+                <div className="content-section">
+                  <textarea
+                    className="fixed-size-textarea"
+                    placeholder="내용"
+                    value={input.description}
+                    onChange={(e) =>
+                      handleDescriptionChange(e.target.value, input.id)
+                    }
                   />
-                  {input.image && (
-                    <div className="image-slider-container">
-                      <Slider {...settings}>
-                        {Object.keys(input.image).map((key) => (
-                          <div key={key}>
-                            <img
-                              src={URL.createObjectURL(input.image[key])}
-                              alt="Uploaded"
-                              className="preview-image"
-                            />
-                          </div>
-                        ))}
-                      </Slider>
-                    </div>
-                  )}
                 </div>
-                <div className="upload-image-content">
-                  <div className="image-upload-section">
+                <div className="image-upload-container">
+                  {[0,1,2,3,4].map((el,i) => (
+                  <div className="image-upload-section image-box" key={i}>
                     <input
+                      key={i}
                       type="file"
-                      multiple
-                      onChange={(e) =>
-                        handleImageChange(e.target.files[0], input.id)
+                      onChange={(e) =>{
+                        handleImageChange(i, e.target.files[0], input.id)}
                       }
                       placeholderText="사진"
-                    />
-                    {/* handleImageChange(e.target.files[0], input.id) */}
-                    {input.image && (
+                    />  
+                    {/* {input.image && (
                       <img
-                        src={URL.createObjectURL(input.image)}
+                        src={URL.createObjectURL(input.image[i])}
                         alt="Uploaded"
                         className="preview-image"
                       />
-                    )}
+                    )} */}
                   </div>
-                  <div className="content-section">
-                    <textarea
-                      className="fixed-size-textarea"
-                      placeholder="내용"
-                      value={input.description}
-                      onChange={(e) =>
-                        handleDescriptionChange(e.target.value, input.id)
-                      }
-                    />
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
           ))}
-        </div>
-
         <div className="buttonAddEntry">
           <button onClick={addDiary} className="add-button">
             +

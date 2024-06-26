@@ -82,7 +82,8 @@ export const getById = async(id) => {
     return response.data;
   }catch (error) {
     console.error("포스트id로 포스트 다 가져오기 오류", error);
-
+  }
+}
 export const postListByUser = async (pageNumber) => {
   try {
     const res = await api(`/api/v1/posts/user/list?page=${pageNumber}`, "get");

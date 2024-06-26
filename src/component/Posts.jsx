@@ -4,6 +4,7 @@ import filterImage from "./../image/filterImage.png";
 import { getRecentPostsFirst } from "../api/post-api";
 import "./Posts.css";
 import DatePicker, { DateObject } from "react-multi-date-picker";
+import { useNavigate } from "react-router-dom";
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
@@ -14,11 +15,15 @@ const Posts = () => {
   const [showFilter, setShowFilter] = useState(false);
   const [pages, setPages] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getPostsAndSetPage();
   }, []);
 
+  useEffect(() => {
+    removeItem();
+  }, [navigate]);
 
   const getPostsAndSetPage = async () => {
     const res = await getRecentPostsFirst();
@@ -27,6 +32,10 @@ const Posts = () => {
     setCurrentPage(localStorage.getItem("currentPage"));
     console.log(localStorage.getItem("currentPage"));
   };
+  
+  const removeItem = () => {
+    localStorage.removeItem("currentPage");
+  }
 
   const updatePageNumbers = (posts) => {
     const arr = [];
@@ -34,7 +43,7 @@ const Posts = () => {
       arr.push(page);
     }
     setPages(arr);
-  }
+  };
 
   const clickOnFilter = (e) => {
     setShowFilter(!showFilter);
