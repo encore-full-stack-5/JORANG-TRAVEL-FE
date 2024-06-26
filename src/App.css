@@ -789,7 +789,7 @@ input[type="password"] {
 .entry-layout {
   margin-top: 30px;
 }
-s .diary-title-input {
+.diary-title-input {
   display: flex;
   justify-content: flex-start;
   outline: none;
