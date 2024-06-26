@@ -182,7 +182,6 @@ input[type="password"] {
 }
 .title-publish {
   display: flex;
-  
 }
 .title-input {
   width: 100%;
@@ -442,7 +441,7 @@ input[type="password"] {
 
 .trip-image-display {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: flex-start;
   margin-top: 10px;
   margin-left: 13%;
   margin-right: 13%;
@@ -763,9 +762,9 @@ input[type="password"] {
   margin: none;
 }
 
-.custom-file-upload input[type="file"] {
+/* .custom-file-upload input[type="file"] {
   display: none;
-}
+} */
 .custom-file-upload {
   display: inline-block;
   padding: 6px 12px;
@@ -799,8 +798,7 @@ input[type="password"] {
 .entry-layout {
   margin-top: 30px;
 }
-
-.diary-title-input {
+s .diary-title-input {
   display: flex;
   justify-content: flex-start;
   outline: none;
@@ -847,8 +845,9 @@ input[type="password"] {
 .mytrip-map-display {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
   margin-left: 10%;
+  margin-right: 10%;
+  justify-content: space-between;
 }
 .diary-date-title{
   display: flex;
@@ -892,4 +891,77 @@ input[type="password"] {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+
+.signature-oval-expense{
+  background-color: white;
+  margin: auto;
+  border-radius: 30px;
+  font-size: 15px;
+  border: 3px solid #9cc7ee;
+  color: #606060;
+  padding: 20px;
+  width: 800px !important;
+  max-width: 800px;
+  margin-top: 30px;
+  height: 50px !important;
+  min-height: 30px;
+}
+/* .expense-detail{
+  display: flex;
+  justify-content: space-between;
+  border: 3px solid #9cc7ee;
+  border-radius: 10px;
+  width: 800px;
+  margin: auto;
+  margin-bottom: 40px;
+} */
+
+.expense-details{
+  margin: 20px;
+  padding:10px ;
+  border: 3px solid #9cc7ee;
+  border-radius: 30px;
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;  
+  margin-left: 300px;
+  margin-right: 300px;
+}
+/* .all-expense{
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 3px solid #9cc7ee;  
+}
+
+.all-expense:last-of-type{
+  border: none;
+} */
+
+.all-expense {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 3px solid #9cc7ee;
+}
+
+
+.expense-details > div:last-child > div {
+  border: 0px;
+}
+
+
+/* .all-expense:last-of-type {
+  border-bottom: none;
+}
+.all-expense > :last-child {
+  border-bottom: none;
+} */
+
+
+.expense-cost{
+  margin-left: 20px;
+}
+.expense-category{
+  margin-right: 20px;
 }

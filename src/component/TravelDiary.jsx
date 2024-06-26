@@ -1,14 +1,23 @@
 // import React, { useState } from "react";
 import React, { useState, useRef } from "react";
-
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import "./ImageSlider.css";
 import Modal from "react-modal";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
-import ImageSlider from "./ImageSlider.jsx";
+import Slider from "react-slick";
 Modal.setAppElement("#root");
+
+const settings = {
+  dots: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+};
 
 const TravelDiary = () => {
   const [title, setTitle] = useState("");
@@ -318,7 +327,7 @@ const TravelDiary = () => {
   const handleImageClick = (index, type = "diary") => {
     fileInputRef.current.click();
     fileInputRef.current.onchange = (e) => {
-      const file = e.target.files[0];
+      const file = e.target.files;
       console.log(file);
       if (file) {
         if (type === "diary") {
@@ -354,7 +363,6 @@ const TravelDiary = () => {
   return (
     
     <div className="travel">
-      
       <div className="title-publish">
           <input
             type="text"
@@ -390,6 +398,7 @@ const TravelDiary = () => {
         </div>
         {travelContent.map((entry, index) => (
           <div key={index} className="preview-entry-layout">
+            {console.log(entry.image)}
             {entry.image && (
               <img
                 src={URL.createObjectURL(entry.image)}
@@ -409,34 +418,47 @@ const TravelDiary = () => {
             </div>
           </div>
         ))}
-        <div className="input-diary">
-          {diaryInputs.map((input) => (
-            <div key={input.id} className="entry-layout">
-              <div className="select-diary-date">
-                <DatePicker
-                  selected={input.date}
-                  onChange={(date) => handleDiaryDateChange(date, input.id)}
-                  dateFormat="yyyy/MM/dd"
-                  isClearable
-                  showYearDropdown
-                  scrollableMonthYearDropdown
-                  className="date-block"
-                  placeholderText="날짜"
+        {diaryInputs.map((input) => (
+          <div key={input.id} className="entry-layout">
+            <div className="select-diary-date">
+              <DatePicker
+                selected={input.date}
+                onChange={(date) => handleDiaryDateChange(date, input.id)}
+                dateFormat="yyyy/MM/dd"
+                isClearable
+                showYearDropdown
+                scrollableMonthYearDropdown
+                className="date-block"
+                placeholderText="날짜"
+              />
+            </div>
+            <div className="upload-image-content">
+              <div className="image-upload-section">
+                <input
+                  type="file"
+                  onChange={(e) => {
+                    // console.log(e);
+                    handleImageChange(e.target.files, input.id);
+                  }}
+                  placeholderText="사진"
+                  multiple
+                  className="temp"
                 />
-                <div className="diary-title">
-                  <input
-                    placeholder="여행기 제목 입력"
-                    // value={input.diarytTitle}
-                    onChange={(e) => handleDiaryTitleChange(e, input.id)}
-                    className="diary-title-input"
-                  />
-                </div>
-                <button
-                  onClick={() => deleteDiaryInput(input.id)}
-                  className="delete-button"
-                >
-                  x
-                </button>
+                {input.image && (
+                  <div className="image-slider-container">
+                    <Slider {...settings}>
+                      {Object.keys(input.image).map((key) => (
+                        <div key={key}>
+                          <img
+                            src={URL.createObjectURL(input.image[key])}
+                            alt="Uploaded"
+                            className="preview-image"
+                          />
+                        </div>
+                      ))}
+                    </Slider>
+                  </div>
+                )}
               </div>
               <div className="upload-image-content">
                 <div className="image-upload-section">
@@ -468,15 +490,9 @@ const TravelDiary = () => {
                   />
                 </div>
               </div>
-
-              {/* <div className="buttonAddEntry">
-                <button onClick={addDiary} className="add-button">
-                  +
-                </button>
-              </div> */}
             </div>
-          ))}
         </div>
+        ))}
 
         <div className="buttonAddEntry">
           <button onClick={addDiary} className="add-button">

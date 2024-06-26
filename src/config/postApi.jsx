@@ -53,48 +53,33 @@ export const getPostByUser = async () => {
   }
 };
 
-export const getExpenseDetailById = async (id) => {
+export const getChartData = async (postId) => {
   try {
-    const res = await api ('/api/v1/expenseDetail/${id}',"get");
+    const res = await api(
+      `/api/v1/expenseDetail/postId/${postId}/chart`,
+      "get"
+    );
     return res.data;
-  }catch (error) {
-    console.error("getExpenseDetailById에서 오류 발생", error);
-  }
-};
-export const getExpenseDetailsByExpenseId = async (expenseId) => {
-  try {
-    const response = await api(`/api/v1/expense-details/expense/${expenseId}`, "get");
-    return response.data;  
   } catch (error) {
-    console.error("Error fetching expense details", error);
+    console.error("Error in getChartData", error);
   }
 };
-// postApi.js
-// export const getExpenseDetailsByPostId = async (postId) => {
-//   try {
-//     const response = await api(`/api/v1/expense-details/by-post/${postId}`, "get");
-//     return response.data;
-//   } catch (error) {
-//     console.error("Error fetching expense details by post ID", error);
-//   }
-// };
+
 
 export const getExpenseDetailsByPostId = async (postId) => {
   try {
     const response = await api(`/api/v1/expense-details/by-post/${postId}`, "get");
     return response.data;
   } catch (error) {
-    console.error("게시물 ID로 경비 세부 정보 가져오기 오류:", error);
+    console.error("게시물 ID로 경비 세부 정보 가져오기 오류", error);
+   
   }
 };
-// postApi.js
-export const getExpensesByPostId = async (postId) => {
-  try {
-    const response = await api(`/api/v1/expenses/by-post/${postId}`, "get");
+export const getById = async(id) => {
+  try{
+    const response = await api(`/api/v1/posts/${id}`,"get");
     return response.data;
-  } catch (error) {
-    console.error("게시물 ID로 경비 정보 가져오기 오류:", error);
-    return []; // 오류 발생 시 빈 배열 반환
+  }catch (error) {
+    console.error("포스트id로 포스트 다 가져오기 오류", error);
   }
 };
-

@@ -5,10 +5,12 @@ import {
   getLikeCheck,
   getPostById,
   likeComment,
+  getById,
+  
   getExpenseDetailsByPostId,
  
-getExpenseDetailById
 } from "../config/postApi";
+import DonutChart from "./DonutChart";
 
 const DetailPost = () => {
   const { id } = useParams();
@@ -17,9 +19,10 @@ const DetailPost = () => {
   const [diaries, setDiaries] = useState([]);
   const [like, setLike] = useState();
   const [likeCheck, setLikeCheck] = useState();
+  const [postExpenses, setPostExpenses] = useState([]);
   const [expenseDetails, setExpenseDetails] = useState([]);
 
-  const [expenses, setExpenses] = useState([]);
+  const [expenses, setExpenses] = useState(null);
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -54,18 +57,7 @@ const DetailPost = () => {
       console.log("error in getAllByPostIdApi");
     }
   };
-const getExpenseDetailByIdApi = async () =>{
-  try {
-    console.log("------" + id);
-    const response = await getExpenseDetailById(id);
-    console.log(response);
-    setExpenses(response);
-  }catch{
-    console.log("error in getExpenseDetialByIdApi");
-  }
 
-
-  };
 
 
 
@@ -90,27 +82,18 @@ const getExpenseDetailByIdApi = async () =>{
       console.log("error in checkLikeApi");
     }
   };
-  // const fetchExpenseDetails = async () => {
-  //   const expenses = await getExpensesByPostId(id);
-  //   if (expenses) {
-  //     const expenseDetailsPromises = expenses.map(expense => 
-  //       getExpenseDetailsByExpenseId(expense.id));
-  //     const expenseDetails = await Promise.all(expenseDetailsPromises);
-  //     setExpenseDetails(expenseDetails.flat()); // 여러 Expense-Detail 배열을 단일 배열로 결합
-  //   }
-  // };
-  // const expensesResponse = await getExpenseDetailsByPostId(id);
-  // setExpenses(expensesResponse || []);
-  const fetchExpenseDetailsByPostId = async () => {
-    try {
-      const response = await getExpenseDetailsByPostId(id);
-      console.log(response); // 옵셔널: 응답 로깅
-      setExpenses(response || []);
-    } catch (error) {
-      console.error("Error in fetchExpenseDetailsByPostId", error);
-      setExpenses([]); // 에러 발생 시 expenses를 빈 배열로 설정
+
+  const getByIdApi = async () => {
+    try{
+      const response = await getById(id);
+      console.log(response);
+      setExpenses(response);
+    }catch{
+      console.log("error in getByIdApi");
     }
   };
+
+ 
   
 
 
@@ -118,11 +101,9 @@ const getExpenseDetailByIdApi = async () =>{
     getPostByIdApi();
     getAllByPostIdApi();
     checkLikeApi();
-     getExpenseDetailByIdApi();
-    //  fetchExpenseDetails();
-    fetchExpenseDetailsByPostId();
-  }, []);
+    getByIdApi();
 
+  }, []);
 
   return (
     <div>
@@ -143,9 +124,9 @@ const getExpenseDetailByIdApi = async () =>{
 
           <div
             className="post-signature-color-oval-post"
-            style={{ width: "80px", height: "30px" }}
+            
           >
-            여행기
+            <h3 style={{marginLeft:"250px",textAlign:"left"}}>여행기</h3>
           </div>
           <div>
             {diaries?.map((diary, index) =>
@@ -187,46 +168,45 @@ const getExpenseDetailByIdApi = async () =>{
             )}
           </div>
           <div
-            className="post-signature-color-oval"
-            style={{ width: "80px", height: "30px" }}
+            className="post-signature-color-oval-expense"
+            
           >
-            경비
+            <h3 style={{marginLeft:"250px",textAlign:"left",marginBottom:"30px",marginTop:"30px"}}>경비</h3>
 
           </div>
-          <div>
-            {expenses?.map((expense, index) =>
-              expense.scope === "PUBLIC" ? (
-                <div
-                  className="signature-oval"
-                  style={{ width: "700px", height: "200px" }}
-                  key={index}
-                >
-                  <div className="sign-up">
-                    <p style={{ color: "#606060", fontSize: "15px" }}>
-                      {expense.date}
-                    </p>
-                    <p style={{ color: "#606060", fontSize: "15px" }}>
-                      {expense.title}
-                    </p>
-                    <p style={{ color: "#606060", fontSize: "15px" }}>
-                      {expense.country}
-                    </p>
-                    <p style={{ color: "#606060", fontSize: "15px" }}>
-                      {expense.content}
-                    </p>
-                  </div>
+         
+
+
+     {expenses && expenses.expenses.map((expense, index) => (
+        <div key={index} className="expense-box" >
+          <h3 style={{textAlign:"left", marginLeft:"300px",marginBottom:"30px"}}> {expense.date}</h3>
+          <div className="expense-detail">
+          {expense.expenseDetails && expense.expenseDetails.length > 0 ? (
+            <div className="expense-details">
+              {expense.expenseDetails.map((detail, idx) => (
+                <div key={idx}>
+                  <div className="all-expense">
+                   <div className="expense-cost">
+                  비용: ${detail.cost}</div>
+                  <div className="expense-place">
+                   장소: {detail.place}</div>
+                   <div className="expense-category">
+                   카테고리: {detail.category}</div>
                 </div>
-              ) : (
-                <div></div>
-              )
-            )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>이 날짜에 해당하는 경비 내역이 없습니다.</p>
+          )}
           </div>
+        </div>
+      ))}
+    
+
           
-          
-          
-          
-         
-         
+          <DonutChart style={{ width: "200px", height: "200px" }} postId={id} />
+
           {likeCheck ? (
             <button
               className="signature-oval"

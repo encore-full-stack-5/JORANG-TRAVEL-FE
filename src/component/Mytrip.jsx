@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Norway from "./../image/Norway.png";
 import ImageText from "./ImageText";
-import jorangImage from "./../image/jorangImage.png";
-import filterImage from "./../image/filterImage.png";
 import { Link } from "react-router-dom";
-import {
-  getPostById,
-  getPostByUser,
-  getUserLikePosts,
-} from "../config/postApi";
+import { getPostByUser, getUserLikePosts } from "../config/postApi";
 
 const Mytrip = () => {
   const [likePosts, setLikePosts] = useState([]);
@@ -41,6 +35,10 @@ const Mytrip = () => {
     getUserLikePostsApi();
   }, []);
 
+  const displayPosts = (posts) => {
+    return posts.slice(0, 5);
+  };
+
   return (
     <div>
       <div className="mytrip-row">
@@ -56,6 +54,7 @@ const Mytrip = () => {
           </button>
         </Link>
       </div>
+
       <div className="mytrip-map-display">
         {/* {console.log(myPosts)} */}
         {myPosts && myPosts.length > 0 ? (
@@ -81,7 +80,7 @@ const Mytrip = () => {
       </div>
       <div className="mytrip-map-display">
         {likePosts.length > 0 ? (
-          likePosts.map((post, index) => (
+          displayPosts(likePosts).map((post, index) => (
             <div key={index}>
               <Link
                 to={`/detail-post/${post.post.id}`}

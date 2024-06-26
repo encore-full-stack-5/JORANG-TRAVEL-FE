@@ -1,6 +1,17 @@
 import axios from "axios";
 
 export const api = async (url, method, body, params) => {
+  const getToken = () => {
+    if (url === "/api/v1/auths/signUp" || 
+    url === "/api/v1/auths/signIn" || 
+    url === "/api/v1/posts/top5/recent" ||
+    url === "/api/v1/posts/top5/like" || 
+    url === "/api/v1/posts/top5/diaries" ||
+    url === "/api/v1/posts/recent"
+    ) return "";
+    return "Bearer " + localStorage.getItem("token");
+  }
+  
   const res = await axios({
     url,
     method,
@@ -8,7 +19,8 @@ export const api = async (url, method, body, params) => {
     data: body,
     params: params,
     headers: {
-      Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJMaW1zZW95ZW9uIiwiZXhwIjoxNzE5MjgwMjM1fQ.P1lP3sfOsQ3ttx9pd6npoFReAwfcK-2PVVS2fVlfQlc",
+      Authorization: getToken(),
+      // Authorization: []
     },
   });
 
