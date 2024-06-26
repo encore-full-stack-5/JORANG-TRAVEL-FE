@@ -380,9 +380,6 @@ const TravelDiary = () => {
           />
         </div>
         <div className="public">
-          />
-        </div>
-        <div className="public">
           <button onClick={handleSaveTravelDiary} className="save-travel-diary">
             발행
           </button>
