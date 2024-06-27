@@ -69,7 +69,29 @@
 
 input[type="text"] {
   outline: none;
-  margin: 5px;
+  height: 10px;
+  width: 400px;
+  border: 3px solid #9cc7ee;
+  border-radius: 30px;
+  padding: 8px 12px;
+  font-size: 15px;
+  color: #606060;
+  /* margin-top: 10px; */
+}
+
+input[type="date"] {
+  outline: none;
+  height: 10px;
+  width: 400px;
+  border: 3px solid #9cc7ee;
+  border-radius: 30px;
+  padding: 8px 12px;
+  font-size: 15px;
+  color: #606060;
+}
+
+input[type="email"] {
+  outline: none;
   height: 10px;
   width: 400px;
   border: 3px solid #9cc7ee;
@@ -81,7 +103,6 @@ input[type="text"] {
 
 input[type="password"] {
   outline: none;
-  margin: 5px;
   height: 10px;
   width: 400px;
   border: 3px solid #9cc7ee;
@@ -89,12 +110,6 @@ input[type="password"] {
   padding: 8px 12px;
   font-size: 15px;
   color: #606060;
-}
-
-.row-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .nav-font-background {
@@ -115,6 +130,12 @@ input[type="password"] {
   background-color: #9cc7ee;
 }
 
+.row-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .vertical-center {
   display: table;
   vertical-align: middle;
@@ -128,11 +149,11 @@ input[type="password"] {
   margin-top: 10%;
 }
 
-.sign-up {
+.diary-date {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-top: 1%;
+  margin-left: 25px;
 }
 
 .center-right {
@@ -142,4 +163,849 @@ input[type="password"] {
   align-content: center;
   align-items: flex-end;
   flex-wrap: wrap;
+}
+
+/*여행 일지css*/
+.travel,
+.expenses {
+  margin-top: 25px;
+}
+
+.travel-diary,
+.travel-expenses {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  margin: auto;
+  width: 80%;
+  max-width: 900px;
+  height: fit-content;
+}
+.title-publish {
+  display: flex;
+}
+.title-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  margin-left: 510px;
+}
+
+.publish-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.entry {
+  /* border-bottom: 1px solid #ccc;
+  padding: 10px 0; */
+  width: 300px; /* 원하는 박스 크기 설정 */
+  height: 200px; /* 원하는 박스 크기 설정 */
+  overflow: hidden; /* 박스를 넘치는 부분을 숨김 */
+  position: relative;
+}
+.entry-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /*이미지가 박스에 맞게 조정됨 */
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.new-entry {
+  display: flex; /* flexbox로 자식 요소들을 정렬 */
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.content-upload {
+  /* flex: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; */
+  width: 50%;
+}
+
+.new-entry input[type="text"],
+.new-entry {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.file-input {
+  width: 100;
+  height: 100;
+}
+
+.image-upload label {
+  cursor: pointer;
+  padding: 10px;
+  background-color: #f8f8f8;
+  border-radius: 5px;
+}
+.image-upload {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #ccc;
+  border-radius: 5px;
+  height: 150px;
+  cursor: pointer;
+}
+.private {
+  /* display: flex; */
+  margin-right: 20px;
+}
+.private input[type="radio"] {
+  margin-right: 5px;
+}
+
+/* 이미지 업로드 입력란이 컨테이너 내에 맞도록 합니다 */
+.image-upload input[type="file"] {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.image-upload:hover {
+  border-color: #9cc7ee;
+}
+.add-button-expense {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: white;
+  border: 2.5px solid #9cc7ee;
+  align-items: center;
+}
+.add-button {
+  margin-right: 10px; /* 오른쪽 마진 추가 */
+  background-color: white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  border: 2.5px solid #9cc7ee;
+  align-items: center;
+}
+
+.change-button {
+  outline: none;
+  background-color: white;
+  margin: 5px;
+  height: 35px;
+  width: 60px;
+  border: 3px solid #9cc7ee;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.signature-color-oval-post {
+  background-color: #c2d6e9;
+  height: 30px;
+  width: 350px;
+  border-radius: 30px;
+  font-size: 15px;
+  color: #606060;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.signature-oval-post {
+  background-color: white;
+  margin: auto;
+  border-radius: 30px;
+  font-size: 15px;
+  border: 3px solid #9cc7ee;
+  color: #606060;
+  padding: 20px;
+  width: 80%;
+  max-width: 1050px;
+  margin-top: 30px;
+  height: 450px;
+  
+  /* border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    margin: auto;
+    width: 80%;
+    max-width: 1000px; */
+
+}
+
+.row-center-space {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* margin-right: 150px; */
+}
+
+.row-left-center-space {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.country-image-container {
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay p {
+  text-align: start;
+  color: #606060;
+  padding: 15px;
+}
+
+.country-image-container:hover .overlay {
+  opacity: 1;
+}
+
+.chat-signature-color-oval {
+  background-color: #c2d6e9;
+  border-radius: 30px;
+  font-size: 15px;
+  color: #606060;
+  display: inline-flex; /* inline-flex로 변경하여 정렬을 쉽게 합니다 */
+  align-items: center; /* 세로 중앙 정렬 */
+  justify-content: center; /* 가로 중앙 정렬 */
+  min-width: 100px; /* 최소 너비를 설정하여 텍스트 양이 적을 때도 적절한 크기 유지 */
+  max-width: 60%; /* 최대 너비를 설정 */
+  padding: 10px 20px; /* 여백을 추가하여 텍스트가 테두리와 붙지 않게 합니다 */
+  word-wrap: break-word; /* 긴 단어를 자동으로 줄바꿈 */
+  text-align: start; /* 텍스트를 가로 중앙에 위치시킴 */
+  box-sizing: border-box; /* 패딩과 테두리를 요소의 전체 크기에 포함시킴 */
+  overflow: hidden; /* 스크롤 비활성화 */
+  height: auto; /* 텍스트 양이 늘어나면 자동으로 세로 길이가 늘어남 */
+}
+
+.chat-signature-oval {
+  background-color: white;
+  height: 30px;
+  border-radius: 30px;
+  font-size: 15px;
+  border: 3px solid #9cc7ee;
+  color: #606060;
+  display: inline-flex; /* inline-flex로 변경하여 정렬을 쉽게 합니다 */
+  align-items: center; /* 세로 중앙 정렬 */
+  justify-content: center; /* 가로 중앙 정렬 */
+  min-width: 100px; /* 최소 너비를 설정하여 텍스트 양이 적을 때도 적절한 크기 유지 */
+  max-width: 60%; /* 최대 너비를 설정 */
+  padding: 10px 20px; /* 여백을 추가하여 텍스트가 테두리와 붙지 않게 합니다 */
+  word-wrap: break-word; /* 긴 단어를 자동으로 줄바꿈 */
+  text-align: start; /* 텍스트를 가로 중앙에 위치시킴 */
+  box-sizing: border-box; /* 패딩과 테두리를 요소의 전체 크기에 포함시킴 */
+  overflow: hidden; /* 스크롤 비활성화 */
+  height: auto; /* 텍스트 양이 늘어나면 자동으로 세로 길이가 늘어남 */
+}
+
+.trip-font-color {
+  font-size: 20px;
+  color: #606060;
+  padding-top: 30px;
+}
+
+.trip-text-display {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: "15px";
+  /* margin-left: 15%; */
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.post-per-country{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: "15px";
+  margin-left: 15%;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+
+.trip-image-display {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 10px;
+  margin-left: 13%;
+  margin-right: 13%;
+}
+
+.image-text-box {
+  border-radius: 30px;
+  border: 3px solid #9cc7ee;
+  background-color: white;
+  height: 180px;
+  width: 180px;
+  display: flex;
+  flex-direction: column;
+  margin: 15px;
+}
+
+.image-container {
+  flex: 8; /* 80% 높이 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-container img {
+  width: 180px;
+  height: 144px;
+  object-fit: cover; /* 이미지를 컨테이너에 맞게 자르지 않고 채우기 */
+  border-top-left-radius: 27px;
+  border-top-right-radius: 27px;
+}
+
+.text-container {
+  flex: 2; /* 20% 높이 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  border-bottom-left-radius: 27px;
+  border-bottom-right-radius: 27px;
+  box-sizing: border-box; /* 패딩을 요소의 전체 크기에 포함 */
+  overflow: hidden;
+}
+
+.text-container p {
+  padding-left: 8px;
+  white-space: nowrap; /* 텍스트를 한 줄로 유지 */
+  overflow: hidden; /* 넘치는 텍스트를 숨김 */
+  text-overflow: ellipsis; /* 넘치는 텍스트에 줄임표시 추가 */
+}
+
+/* 경비모달 스타일 */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 500px;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.modal h3 {
+  margin-top: 0;
+  font-size: 24px;
+}
+
+.modal input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.modal button {
+  padding: 10px 20px;
+
+  background-color: white;
+  color: #9cc7ee;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border: 2.5px solid;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  margin-left: 230px;
+}
+
+/* 다이어리 모달 */
+.overlaydiary {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명 검은색 배경 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modaldiary {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 300px; /* 또는 적절한 너비 */
+  overflow: visible;
+}
+
+.modaldiary label {
+  display: block;
+  margin: 10px 0;
+}
+
+.modaldiary input[type="radio"] {
+  margin-right: 5px;
+}
+
+.modaldiary select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 10px;
+}
+
+.modaldiary button {
+  background-color: #9cc7ee;
+  color: white;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  border-radius: 5px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.modaldiary button:hover {
+  background-color: #9cc7ee;
+}
+
+.image-upload-section {
+  flex-basis: 40%; /* 부모 컨테이너의 40% 크기 */
+  border: 2px solid #ccc; /* 회색 테두리 */
+  border-radius: 8px; /* 모서리 둥글게 */
+  height: 300px; /* 높이 설정 */
+  display: flex;
+  justify-content: center; /* 가로 중앙 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
+  position: relative; /* 포지션 상대적 */
+  overflow: hidden; /* 내부 콘텐츠가 넘치면 숨김 */
+}
+
+.image-upload-section input[type="file"] {
+  position: absolute; /* 절대 위치 */
+  width: 100%; /* 전체 너비 */
+  height: 100%; /* 전체 높이 */
+  top: 0; /* 상단에서부터 0 */
+  left: 0; /* 좌측에서부터 0 */
+  opacity: 0; /* 투명도 0 */
+  cursor: pointer; /* 마우스 오버 시 커서 변경 */
+}
+
+.image-upload-container {
+  display: flex;
+  gap: 20px;
+}
+
+
+.content-section {
+  flex-basis: 70%;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 8px;
+  margin-bottom: 20px;
+}
+
+.content-section textarea {
+  width: 100%;
+  height: 270px;
+  border: none;
+  resize: none;
+}
+
+.buttonAddEntry {
+  padding: 15px;
+}
+.saveExpense {
+  display: flex;
+  justify-content: end;
+}
+.expenseInput {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+.preview-image {
+  width: 500px;
+  height: 300px;
+
+  object-fit: fill;
+
+  border: none;
+  border-radius: 5px;
+}
+
+.entry-description {
+  font-size: 16px;
+  color: #333;
+}
+
+.entry-inputs {
+  margin-top: 20px;
+}
+
+.image-box {
+  flex: 1;
+  margin-bottom: 10px;
+  height: 150px;
+}
+
+.entry-textarea {
+  width: 300px;
+  height: 100px;
+  resize: none;
+}
+
+.modal select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.save-button {
+  width: 50px;
+  height: 30px;
+  background-color: #9cc7ee;
+  border: none;
+  border-radius: 5px;
+}
+
+.preview-description {
+  width: 408px;
+  height: 150px;
+  object-fit: cover;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  /* flex-basis: 50%; */
+}
+
+.prview-entry-layout {
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.select-diary-date {
+  display: flex;
+  justify-content: space-between;
+  border: #282c34;
+  text-align: left;
+  margin-left: 20px;
+}
+
+.entry-image-content {
+  border: 2px solid #606060;
+}
+.datestyle {
+  text-align: left;
+  margin-left: 10px;
+}
+/* .select-diary-date {
+  /* display: flex;
+  justify-content: space-between;} */
+
+.date-block input[type="text"] {
+  text-align: left;
+  color: #9cc7ee;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.date-block input:focus {
+  border-color: #0056b3;
+  box-shadow: 0 0 8px rgba(0, 86, 179, 0.5);
+}
+
+.preview-description textarea {
+  width: 98%;
+  height: 128px;
+  border: none;
+  resize: none;
+}
+
+.react-datepicker__input-container input.date-block {
+  outline: none;
+  height: 10px;
+  width: 120px;
+  border: 3px solid #9cc7ee;
+  border-radius: 30px;
+  padding: 8px 12px;
+  font-size: 15px;
+  color: #606060;
+  margin: none;
+}
+
+/* .custom-file-upload input[type="file"] {
+  display: none;
+} */
+.custom-file-upload {
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  /* color: ; */
+  /* background-color: #f0f0f0; */
+  /* border: 1px solid #ccc;
+  border-radius: 4px; */
+}
+.upload-image-content {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: space-between;
+  /* border: 1px solid #ccc; */
+  margin-top: 20px;
+  margin-bottom: 10px;
+  height: 470px;
+}
+.delete-button {
+  color: red;
+  border: 2px solid lightgrey;
+  background-color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+  height: 30px;
+  width: 30px;
+  margin-top: 10px;
+}
+.entry-layout {
+  margin-top: 30px;
+}
+.diary-title-input {
+  display: flex;
+  justify-content: flex-start;
+  outline: none;
+  height: 10px;
+  width: 300px;
+  border: 3px solid #9cc7ee;
+  border-radius: 30px;
+  padding: 8px 12px;
+  font-size: 15px;
+  color: #606060;
+  margin-top: 10px;
+  margin-left: 170px;
+}
+.save-travel-diary {
+  border: 3px solid #9cc7ee;
+  border-radius: 30px;
+  background-color: white;
+  width: 60px;
+  height: 30px;
+  margin-left: 850px;
+  margin-bottom: 15px;
+}
+
+.post-signature-color-oval {
+  background-color: #d7e9fa;
+  height: 30px;
+  width: 350px;
+  border-radius: 30px;
+  font-size: 15px;
+  color: #606060;
+  /* display: flex; */
+  justify-content: center;
+  align-items: center;
+  border: 3px solid #9cc7ee;
+}
+
+.mytrip-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-right: 150px;
+  margin-left: 150px;
+  flex-wrap: wrap;
+}
+
+.mytrip-map-display {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 10%;
+  margin-right: 10%;
+  justify-content: flex-start;
+}
+
+.row-more {
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
+}
+
+@media (max-width: 400px) {
+  .mytrip-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.page-button-fix {
+  position: fixed;
+  bottom: 50px;
+  width: 100%;
+}
+.diary-date-title{
+  display: flex;
+}
+.diary-title{
+  margin-left: 30px;
+}
+.diary-image{
+  width: 300px;
+  height: 300px;
+}
+.diary-image-contnet{
+  display: flex;
+
+}
+.diary-content{
+  margin-right: 10px;
+  width: 500px;
+  height: 300px;
+  margin-left: 30px;
+}
+.signature-color-oval {
+  background-color: #c2d6e9;
+  height: 30px;
+  width: 350px;
+  border-radius: 30px;
+  font-size: 15px;
+  color: #606060;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.signature-oval {
+  background-color: white;
+  height: 30px;
+  width: 90px;
+  border-radius: 30px;
+  font-size: 15px;
+  border: 3px solid #9cc7ee;
+  color: #606060;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.signature-oval-expense{
+  background-color: white;
+  margin: auto;
+  border-radius: 30px;
+  font-size: 15px;
+  border: 3px solid #9cc7ee;
+  color: #606060;
+  padding: 20px;
+  width: 800px !important;
+  max-width: 800px;
+  margin-top: 30px;
+  height: 50px !important;
+  min-height: 30px;
+}
+/* .expense-detail{
+  display: flex;
+  justify-content: space-between;
+  border: 3px solid #9cc7ee;
+  border-radius: 10px;
+  width: 800px;
+  margin: auto;
+  margin-bottom: 40px;
+} */
+
+.expense-details{
+  margin: 20px;
+  padding:10px ;
+  border: 3px solid #9cc7ee;
+  border-radius: 30px;
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;  
+  margin-left: 300px;
+  margin-right: 300px;
+}
+/* .all-expense{
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 3px solid #9cc7ee;  
+}
+
+.all-expense:last-of-type{
+  border: none;
+} */
+
+.all-expense {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 3px solid #9cc7ee;
+}
+
+
+.expense-details > div:last-child > div {
+  border: 0px;
+}
+
+
+/* .all-expense:last-of-type {
+  border-bottom: none;
+}
+.all-expense > :last-child {
+  border-bottom: none;
+} */
+
+
+.expense-cost{
+  margin-left: 20px;
+}
+.expense-category{
+  margin-right: 20px;
 }

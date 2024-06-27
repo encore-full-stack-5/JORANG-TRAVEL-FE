@@ -1,0 +1,30 @@
+.image-gallery-image {
+    max-width: 300px !important;
+    height: 300px !important;
+}
+
+.image-gallery-thumbnail-image {
+    width: 90px !important;
+    height: 60px !important;
+    object-fit: cover !important;
+}
+
+.image-gallery-play-button {
+    display: none !important;
+}
+
+.image-gallery-fullscreen-button {
+    display: none !important;
+}
+.image-gallery-content  .image-gallery-thumbnails-bottom {
+    width: 100% !important;
+}
+
+.image-gallery-left-nav .image-gallery-svg, .image-gallery-right-nav .image-gallery-svg {
+    height: 60px !important;
+}
+
+.image-gallery-slide .image-gallery-image {
+    object-fit: cover !important;
+}
+
