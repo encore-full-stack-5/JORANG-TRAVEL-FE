@@ -15,27 +15,21 @@ const Posts = () => {
   const [showFilter, setShowFilter] = useState(false);
   const [pages, setPages] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const navigate = useNavigate();
+
 
   useEffect(() => {
     getPostsAndSetPage();
   }, []);
-
-  useEffect(() => {
-    removeItem();
-  }, [navigate]);
 
   const getPostsAndSetPage = async () => {
     const res = await getRecentPostsFirst();
     setPosts(res);
     updatePageNumbers(res);
     setCurrentPage(localStorage.getItem("currentPage"));
-    console.log(localStorage.getItem("currentPage"));
+    console.log(currentPage);
+    // console.log(localStorage.getItem("currentPage"));
   };
   
-  const removeItem = () => {
-    localStorage.removeItem("currentPage");
-  }
 
   const updatePageNumbers = (posts) => {
     const arr = [];

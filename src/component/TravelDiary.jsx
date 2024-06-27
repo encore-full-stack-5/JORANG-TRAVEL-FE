@@ -385,24 +385,6 @@ const TravelDiary = () => {
           </button>
         </div>
         <div className="travel-diary">
-          {/* <div className="select-diary-date">
-            {travelContent1.map((entry, index) => (
-              <div>
-                <DatePicker
-                  selected={(setSelectedDiaryDate, entry.date)}
-                  onChange={
-                    ((date) => setSelectedDiaryDate(date), index, "travel")
-                  }
-                  dateFormat="yyyy/MM/dd"
-                  isClearable
-                  showYearDropdown
-                  scrollableMonthYearDropdown
-                  className="date-block"
-                  placeholderText="날짜"
-                />
-              </div>
-            ))}
-          </div> */}
           {travelContent.map((entry, index) => (
             <div key={index} className="preview-entry-layout">
               {/* {console.log(entry.image)} */}
@@ -438,6 +420,20 @@ const TravelDiary = () => {
                   className="date-block"
                   placeholderText="날짜"
                 />
+                <div className="diary-title">
+                  <input
+                    placeholder="여행기 제목 입력"
+                    // value={input.diarytTitle}
+                    onChange={(e) => handleDiaryTitleChange(e, input.id)}
+                    className="diary-title-input"
+                  />
+                </div>
+                <button
+                  onClick={() => deleteDiaryInput(input.id)}
+                  className="delete-button"
+                >
+                  x
+                </button>
               </div>
               <div className="upload-image-content">
                 <div className="content-section">
@@ -451,7 +447,7 @@ const TravelDiary = () => {
                   />
                 </div>
                 <div className="image-upload-container">
-                  {[0,1,2,3,4].map((el,i) => (
+                  {[0,1,2,3,4]?.map((el,i) => (
                   <div className="image-upload-section image-box" key={i}>
                     <input
                       key={i}
@@ -459,15 +455,15 @@ const TravelDiary = () => {
                       onChange={(e) =>{
                         handleImageChange(i, e.target.files[0], input.id)}
                       }
-                      placeholderText="사진"
+                      placeholder="사진"
                     />  
-                    {/* {input.image && (
+                    {input.image && input.image[i] && (
                       <img
                         src={URL.createObjectURL(input.image[i])}
                         alt="Uploaded"
                         className="preview-image"
                       />
-                    )} */}
+                    )}
                   </div>
                   ))}
                 </div>
