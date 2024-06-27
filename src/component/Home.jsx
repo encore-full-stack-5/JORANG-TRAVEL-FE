@@ -77,7 +77,7 @@ const Home = () => {
           {hoveredContinent}
         </span>
       </div>
-      {isHomeModalOpen ? (
+      {isHomeModalOpen && (
         <div className="bg-modal" onClick={clickOutsideModal}>
           <div className="home-modal">
             <div className="modal-content">
@@ -113,7 +113,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-      ) : null}
+      )}
     </>
   );
 };

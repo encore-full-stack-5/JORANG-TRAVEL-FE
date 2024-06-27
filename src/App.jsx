@@ -22,7 +22,7 @@ import ImageSlider from "./component/ImageSlider";
 import PostsPerCountry from "./component/PostsPerCountry";
 
 import DetailPost from "./component/DetailPost";
-import MyGallery from "./component/MyGallery";
+import MyGallery from "./component/ImageSlider";
 
 import ExpenseDetail from "./component/ExpenseDetail"
 
@@ -53,7 +53,7 @@ function App() {
             element={<ShareTripCountry />}
           ></Route>
           <Route path="/posts" element={<Posts />}></Route>
-          <Route path="/slider" element={<MyGallery />}></Route>
+          <Route path="/slider" element={<ImageSlider />}></Route>
           <Route
             path="/posts/country/:country"
             element={<PostsPerCountry />}
