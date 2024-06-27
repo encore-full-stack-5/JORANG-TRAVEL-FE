@@ -22,6 +22,7 @@
   height: 130px;
 }
 
+
 .filter-box select {
   width: 70%;
   font-size: 15px;
@@ -41,8 +42,9 @@
 .posts-container {
   display: flex;
   flex-wrap: wrap;
-  margin-right: calc((100% - 5 * 180px - 5 * 30px - 5 * 6px) / 2);
-  margin-left: calc((100% - 5 * 180px - 5 * 30px - 5 * 6px) / 2);
+  margin: 0 auto;
+  margin-right: calc((100% - 5 * 180px - 5 * 30px - 5 * 5px) / 2);
+  margin-left: calc((100% - 5 * 180px - 5 * 30px - 5 * 5px) / 2);
   position: absolute;
   z-index: -1;
 }
