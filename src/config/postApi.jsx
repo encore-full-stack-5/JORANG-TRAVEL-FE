@@ -82,3 +82,12 @@ export const postLikeListByUser = async (pageNumber) => {
     console.error("Error in postLikeListByUser", error);
   }
 };
+
+export const getMyDiary = async () => {
+  try {
+    const res = await api(`/api/v1/diaries/mydiary`, "get");
+    return res.data;
+  } catch (error) {
+    console.error("Error in getMyDiary", error);
+  }
+};

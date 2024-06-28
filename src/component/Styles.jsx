@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
 export const Background = styled.div`
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
+  // position: absolute;
+  width: 8vw;
+  height: 8vh;
   top: 0;
   left: 0;
   background: #ffffffb7;
