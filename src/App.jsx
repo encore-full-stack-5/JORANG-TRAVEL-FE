@@ -52,7 +52,7 @@ function App() {
           <Route path="/mytrip" element={<Mytrip />}></Route>
           <Route path="/findLoginId" element={<FindLoginId />}></Route>
           <Route path="/findPassword" element={<FindPassword />}></Route>
-          <Route path="/traveldiary" element={<TravelDiary />}></Route>
+          <Route path="/posts/:id/write" element={<TravelDiary />}></Route>
           <Route
             path="/posts/country/:country/intro"
             element={<ShareTripCountry />}
