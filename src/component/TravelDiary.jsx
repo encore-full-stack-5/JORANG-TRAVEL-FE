@@ -9,6 +9,7 @@ import "react-calendar/dist/Calendar.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Slider from "react-slick";
+
 import travelCountries from "../travelCountries";
 import axios from "axios";
 import { api } from "../config/network";
@@ -24,15 +25,12 @@ import { api } from "../config/network";
     
 //   }
 // } 
+
+import { deleteDiary, saveDiary } from "../config/diaryApi";
+import { useParams } from "react-router-dom";
+
 Modal.setAppElement("#root");
 
-const settings = {
-  dots: true,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-};
 
 const TravelDiary = () => {
   const [title, setTitle] = useState("");
@@ -58,6 +56,14 @@ const TravelDiary = () => {
   const [selectedDiaryDate, setSelectedDiaryDate] = useState(null);
   const [selectedDiartDateGet, setSelectedDiaryDateGet] = useState(null);
   const [selectedDiaryDates, setSelectedDiaryDates] = useState([]);
+  const [showPostTitle, setShowPostTitle] = useState(false);
+  const [showDiary, setShowDiary] = useState(false);
+  const [showExpense, setShowExpense] = useState(false);
+  const [initDiary, setInitDiary] = useState(true);
+  const [initExpense, setInitExpense] = useState(true);
+  const params = useParams();
+  const postId = params.id;
+
   const [expenseInputs, setExpenseInputs] = useState([
     { id: Math.random(), amount: "", location: "" },
   ]);
@@ -80,7 +86,7 @@ const TravelDiary = () => {
 
   const fileInputRef = useRef(null);
 
-  console.log(diaryInputs[0].image);
+  
 
   // 새로운 여행 항목 추가
   const addEntry = () => {
@@ -91,6 +97,7 @@ const TravelDiary = () => {
       setNewEntry({ diaryTitle: "", date: null, description: "", image: null });
     }
   };
+
 
   
  
@@ -112,6 +119,15 @@ const TravelDiary = () => {
   //   setModalIsOpenSaveTravelDiary(true);
 
   // };
+
+  const handleSaveDiary = () => {
+    setModalIsOpenDiary(true);
+  };
+  const handleSave = () => {
+    setModalIsOpen(true);
+  };
+ 
+
   const handleSaveTravelDiary = () => {
     setModalIsOpen(true);
   };
@@ -219,7 +235,7 @@ const TravelDiary = () => {
   };
 
   //다이어리 추가
-  const addDiary = () => {
+  const addDiary = async () => {
     setDiary([
       ...diary,
       ...diaryInputs.map((input) => ({
@@ -229,11 +245,12 @@ const TravelDiary = () => {
         image: input.image,
       })),
     ]);
+    const res = await saveDiary(postId);
     //입력 필드 추가
     setDiaryInputs([
       ...diaryInputs,
       {
-        id: Math.random(),
+        id: res,
         diarytTitle: "",
         date: "",
         description: "",
@@ -241,6 +258,7 @@ const TravelDiary = () => {
       },
     ]);
   };
+
 
   // 날짜를 클릭했을 때 실행되는 함수
   const handleDateClick = (date) => {
@@ -426,7 +444,8 @@ const TravelDiary = () => {
       }
     };
   };
-  const deleteDiaryInput = (id) => {
+  const deleteDiaryInput = async (id) => {
+    await deleteDiary(id);
     const updatedInputs = diaryInputs.filter((input) => input.id !== id);
     setDiaryInputs(updatedInputs);
   };
@@ -436,8 +455,37 @@ const TravelDiary = () => {
     setModalIsOpen(true);
   };
 
+  const createDiaryId = async () => {
+    const res = await saveDiary(postId);
+    setDiaryInputs([
+      {
+        id: res,
+        diarytTitle: "",
+        date: null,
+        description: "",
+        image: {},
+      },
+    ]);
+  }
+  console.log(diaryInputs);
+
+  const createDiary = () => {
+    setShowPostTitle(true);
+    setShowDiary(true);
+    setInitDiary(false);
+    createDiaryId();
+  }
+  
+  const createExpense = () => {
+    setShowPostTitle(true);
+    setShowExpense(true);
+    setInitExpense(false);
+  }
+
+  console.log(diaryInputs);
   return (
       <div className="travel">
+
         <div className="title-publish">
           <input
             type="text"
@@ -539,25 +587,36 @@ const TravelDiary = () => {
 
 
         </div>
+
+        {initDiary && 
+        <div>
+          <p style={{fontSize: "1.6rem"}}>여행기 작성</p>
+          <button className="create-diary-button" onClick={createDiary}>+</button>
+        </div>
+        }
+        
+        
+        {showPostTitle && 
+        <>
+          <div className="title-publish">
+            <input
+              type="text"
+              placeholder=" 여행일지 제목 입력"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="title-input"
+            />
+          </div>
+          <div className="public">
+            <button onClick={handleSaveTravelDiary} className="save-travel-diary">
+              발행
+            </button>
+          </div>
+        </>
+        }
+        {showDiary && 
+
         <div className="travel-diary">
-          {/* <div className="select-diary-date">
-            {travelContent1.map((entry, index) => (
-              <div>
-                <DatePicker
-                  selected={(setSelectedDiaryDate, entry.date)}
-                  onChange={
-                    ((date) => setSelectedDiaryDate(date), index, "travel")
-                  }
-                  dateFormat="yyyy/MM/dd"
-                  isClearable
-                  showYearDropdown
-                  scrollableMonthYearDropdown
-                  className="date-block"
-                  placeholderText="날짜"
-                />
-              </div>
-            ))}
-          </div> */}
           {travelContent.map((entry, index) => (
             <div key={index} className="preview-entry-layout">
               {/* {console.log(entry.image)} */}
@@ -593,6 +652,22 @@ const TravelDiary = () => {
                   className="date-block"
                   placeholderText="날짜"
                 />
+                <div className="diary-title">
+                  <input
+                    placeholder="여행기 제목 입력"
+                    // value={input.diarytTitle}
+                    onChange={(e) => handleDiaryTitleChange(e, input.id)}
+                    className="diary-title-input"
+                  />
+                  <input type="checkbox" name="PERSONAL" value="PERSONAL" onChange={e => console.log(e)}/>
+                  <label htmlFor="PERSONAL">비공개</label>
+                </div>
+                <button
+                  onClick={() => deleteDiaryInput(input.id)}
+                  className="delete-button"
+                >
+                  x
+                </button>
               </div>
               <div className="upload-image-content">
                 <div className="content-section">
@@ -615,17 +690,19 @@ const TravelDiary = () => {
                       onChange={(e) =>{
                         handleImageChange(i, e.target.files[0], input.id)}
                       }
-                      placeholderText="사진"
+                      placeholder="사진"
                     />  
-                    {input.image && (
+
+
+                    {input.image && input.image[i] && (
+
                       <img
                         src={URL.createObjectURL(input.image[i])}
                         alt="Uploaded"
                         className="preview-image"
                       />
                     )}
-                   
-
+v
                   </div>
                   ))}
                 </div> */}
@@ -661,8 +738,13 @@ const TravelDiary = () => {
           </button>
         </div>
         <div style={{ textAlign: "right" }}>
+
           <button onClick={handleSaveTravelDiary} className="save-button">
             저장
+
+         // <button onClick={handleSaveDiary} className="save-button">
+           // 임시 저장
+
           </button>
         </div>
         <Modal
@@ -689,7 +771,14 @@ const TravelDiary = () => {
           <button onClick={() => setModalIsOpenDiary(false)}>완료</button>
         </Modal>
       </div>
-
+      }
+      {initExpense && 
+        <div>
+          <p style={{fontSize: "1.6rem"}}>여행경비 작성</p>
+          <button className="create-expense-button" onClick={createExpense}>+</button>
+        </div>
+      }      
+      {showExpense && 
       <div className="expenses">
         <div className="travel-expenses">
           <h4 style={{ textAlign: "left" }}>경비</h4>
@@ -777,6 +866,8 @@ const TravelDiary = () => {
           </Modal>
         </div>
       </div>
+      }
+      
     </div>
   );
 };

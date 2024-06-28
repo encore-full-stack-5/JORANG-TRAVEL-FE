@@ -5,6 +5,8 @@ import { useParams } from "react-router-dom";
 import ImageText from "./ImageText";
 import filterImage from "./../image/filterImage.png";
 import countries from "../countries.js";
+import "./PostsPerCountry.css"
+import "./Posts.css"
 
 const PostsPerCountry = () => {
   const [posts, setPosts] = useState([]);
@@ -140,7 +142,7 @@ const PostsPerCountry = () => {
                 </div>
               </div>
               {showFilter && (
-                <div className="filter-box">
+                <div className="filter-box-country">
                   <select id="filter" onChange={changeSort}>
                     <option className="filter-option" style={{ display: "none" }}>
                       정렬 기준

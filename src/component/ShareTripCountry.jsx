@@ -67,7 +67,7 @@ const ShareTripCountry = () => {
           )}
         </div>
       </div>
-      <div className="trip-text-display">
+      <div className="post-per-country">
         <div className="row-center-space" style={{ alignItems: "baseline" }}>
           <p className="trip-font-color" style={{ paddingTop: "10px" }}>
             {getCountryInKorean()} 여행일지

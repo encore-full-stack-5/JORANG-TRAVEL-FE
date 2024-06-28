@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import WorldMap from "react-world-map";
 import "./Home.css";
 import countries from "../countries.js";
 import { Link } from "react-router-dom";
+import { getCountryInfo } from "../config/country-info.jsx";
 
 const Home = () => {
   const [selectedContinent, setSelectedContinent] = useState();
@@ -69,6 +70,11 @@ const Home = () => {
     }
   };
 
+  useEffect(() => 
+    console.log(getCountryInfo(1)), []
+  )
+
+
   return (
     <>
       <div className="world-map-container" onMouseOver={handleMouseOver}>
@@ -77,7 +83,7 @@ const Home = () => {
           {hoveredContinent}
         </span>
       </div>
-      {isHomeModalOpen ? (
+      {isHomeModalOpen && (
         <div className="bg-modal" onClick={clickOutsideModal}>
           <div className="home-modal">
             <div className="modal-content">
@@ -113,7 +119,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-      ) : null}
+      )}
     </>
   );
 };

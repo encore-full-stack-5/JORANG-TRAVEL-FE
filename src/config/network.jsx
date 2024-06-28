@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const api = async (url, method, body, params) => {
+export const api = async (url, method, body, params, baseURL) => {
   const getToken = () => {
     if (
       url === "/api/v1/auths/signUp" ||
@@ -8,8 +8,13 @@ export const api = async (url, method, body, params) => {
       url === "/api/v1/posts/top5/recent" ||
       url === "/api/v1/posts/top5/like" ||
       url === "/api/v1/posts/top5/diaries" ||
+
       url === "/api/v1/posts/recent" 
       // url === "/api/v1/expense-details"
+
+      url === "/api/v1/posts/recent" ||
+      url === "/api/v1/posts/recent/diaries"
+
     )
       return "";
     return "Bearer " + localStorage.getItem("token");

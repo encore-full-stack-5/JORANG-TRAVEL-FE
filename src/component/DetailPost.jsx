@@ -11,6 +11,7 @@ import {
  
 } from "../config/postApi";
 import DonutChart from "./DonutChart";
+import ImageSlider from "./ImageSlider";
 
 const DetailPost = () => {
   const { id } = useParams();
@@ -50,7 +51,7 @@ const DetailPost = () => {
     try {
       console.log("-------" + id);
       const response = await getDiaryAllByPostId(id);
-      console.log(response);
+      console.log("xxx", response);
       setDiaries(response);
       setLoading(false);
     } catch {
@@ -143,13 +144,13 @@ const DetailPost = () => {
                     </p>
                     </div>
                     <div classname="diary-title">
-                    <p style={{ color: "#9cc7ee", fontSize: "18px", marginLeft:"180px"}}>
+                    <p style={{ color: "#9cc7ee", fontSize: "18px", marginLeft:"419px"}}>
                       {diary.title}
                     </p>
                     </div>
                     </div>
                     <div className="diary-image-contnet">
-                    <div className="diary-image"></div>
+                    <ImageSlider content={diary.photos}/>
                    
                     {/* <p style={{ color: "#606060", fontSize: "15px" }}>
                       {diary.country}
