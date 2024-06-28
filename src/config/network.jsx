@@ -8,8 +8,13 @@ export const api = async (url, method, body, params, baseURL) => {
       url === "/api/v1/posts/top5/recent" ||
       url === "/api/v1/posts/top5/like" ||
       url === "/api/v1/posts/top5/diaries" ||
+
+      url === "/api/v1/posts/recent" 
+      // url === "/api/v1/expense-details"
+
       url === "/api/v1/posts/recent" ||
       url === "/api/v1/posts/recent/diaries"
+
     )
       return "";
     return "Bearer " + localStorage.getItem("token");
