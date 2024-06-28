@@ -102,3 +102,23 @@ export const postLikeListByUser = async (pageNumber) => {
 
   }
 };
+
+export const savePost = async () => {
+  try {
+  const res = await api("/api/v1/posts", "post");
+  console.log(res.data);
+  return res.data;
+  } catch (error) {
+    console.error("Error in savePost", error);
+  }
+}
+
+export const updatePost = async (id, title) => {
+  try {
+  const res = await api(`/api/v1/posts/$${id}`, "put", {title: title});
+  return res.data;
+  } catch (error) {
+    console.error("Error in savePost", error);
+  }
+}
+

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const api = async (url, method, body, params) => {
+export const api = async (url, method, body, params, baseURL) => {
   const getToken = () => {
     if (
       url === "/api/v1/auths/signUp" ||

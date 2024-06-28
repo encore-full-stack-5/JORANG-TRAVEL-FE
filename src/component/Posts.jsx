@@ -5,6 +5,7 @@ import { getRecentPostsFirst } from "../api/post-api";
 import "./Posts.css";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import { useNavigate } from "react-router-dom";
+import { savePost } from "../config/postApi";
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
@@ -15,7 +16,7 @@ const Posts = () => {
   const [showFilter, setShowFilter] = useState(false);
   const [pages, setPages] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-
+  const navigate = useNavigate();
 
   useEffect(() => {
     getPostsAndSetPage();
@@ -87,6 +88,13 @@ const Posts = () => {
     localStorage.setItem("currentPage", e.target.innerHTML);
   };
 
+  const writePost = async () => {
+    const res = await savePost();
+    console.log(res);
+    navigate(`/posts/${res}/write`);
+  }
+ 
+
   return (
     <div style={{ paddingTop: "20px", width: "100%" }}>
       {/* <Search placeholder="가고 싶은 나라나 도시를 선택해주세요" /> */}
@@ -130,6 +138,9 @@ const Posts = () => {
             />
           </div>
         )}
+        <div style={{marginRight: "100px"}}>
+          <button onClick={writePost}>글쓰기</button>
+        </div>
       </div>
       <div
             className="country-posts"
