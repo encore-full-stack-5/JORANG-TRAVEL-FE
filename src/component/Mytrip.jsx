@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Norway from "./../image/Norway.png";
 import ImageText from "./ImageText";
-import { Link } from "react-router-dom";
-import { getPostByUser, getUserLikePosts } from "../config/postApi";
+import { Link, useNavigate } from "react-router-dom";
+import { getPostByUser, getUserLikePosts, savePost } from "../config/postApi";
 
 const Mytrip = () => {
   const [likePosts, setLikePosts] = useState([]);
   const [myPosts, setMyPosts] = useState([]);
+  const navigate = useNavigate();
 
   const getUserLikePostsApi = async () => {
     try {
@@ -40,6 +41,12 @@ const Mytrip = () => {
     return posts.slice(0, 5);
   };
 
+  const writePost = async () => {
+    const res = await savePost();
+    console.log(res);
+    navigate(`/posts/${res}/write`);
+  }
+
   return (
     <div>
       <div className="mytrip-row">
@@ -58,6 +65,7 @@ const Mytrip = () => {
           <button
             className="post-signature-color-oval"
             style={{ width: "150px" }}
+            onClick={writePost}
           >
             여행일지 추가하기
           </button>
