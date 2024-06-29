@@ -10,9 +10,10 @@ export const saveDiary = async (postId) => {
     }
   }
   
-  export const updateDiary = async (id, title, content, date, scope, country) => {
+  export const updateDiary = async (id, diaryContents) => {
+
     try {
-      const res = await api(`/api/v1/diaries/${id}`, "put", {title: title, content: content, date: date, scope: scope, country: country});
+      const res = await api(`/api/v1/diaries/${id}`, "put", diaryContents);
       return res.data;
     } catch (error) {
       console.log("Error in updateDiary", error)

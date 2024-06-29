@@ -9,24 +9,7 @@ import "react-calendar/dist/Calendar.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Slider from "react-slick";
-
-import travelCountries from "../travelCountries";
-import axios from "axios";
-import { api } from "../config/network";
-// import {usesParams} from "react-router-dom";
-// import {
-//   saveExpenses
-// } from "../config/traveldiaryApi";
-// const saveExpenseDetailbyExpenseId = async () => {
-//   try{
-//     console.log("------" + id);
-//     const response = await saveExpenses (id);
-//     console.log(response);
-    
-//   }
-// } 
-
-import { deleteDiary, saveDiary } from "../config/diaryApi";
+import { deleteDiary, saveDiary, updateDiary } from "../config/diaryApi";
 import { useParams } from "react-router-dom";
 
 Modal.setAppElement("#root");
@@ -481,6 +464,21 @@ const TravelDiary = () => {
     setShowExpense(true);
     setInitExpense(false);
   }
+
+  const saveDiaryAndPhoto = () => {
+    // {title: title, content: content, date: date, scope: scope, country: country};
+
+    // diaryTitle: "",
+    // date: null,
+    // description: "",
+    // image: {},
+    const diaryRequestDto = [];
+    travelContent.forEach(tripInput => {
+      diary.push({title: tripInput.diarytTitle, content: tripInput.description, date: tripInput.date, scope: tripInput.scope});
+    })
+    
+  }
+
 
   console.log(diaryInputs);
   return (
