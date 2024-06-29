@@ -28,6 +28,7 @@ import { api } from "../config/network";
 
 import { deleteDiary, saveDiary } from "../config/diaryApi";
 import { useParams } from "react-router-dom";
+import { saveExpense } from "../config/traveldiaryApi";
 
 Modal.setAppElement("#root");
 
@@ -123,9 +124,9 @@ const TravelDiary = () => {
   const handleSaveDiary = () => {
     setModalIsOpenDiary(true);
   };
-  const handleSave = () => {
-    setModalIsOpen(true);
-  };
+  // const handleSave = () => {
+  //   setModalIsOpen(true);
+  // };
  
 
   const handleSaveTravelDiary = () => {
@@ -221,7 +222,7 @@ const TravelDiary = () => {
   }
 
   // 경비 추가 함수
-  const addExpense = () => {
+  const addExpense = async() => {
     setExpenses([
       ...expenseInputs.map((input) => ({
         date: selectedExpenseDate,
@@ -229,6 +230,7 @@ const TravelDiary = () => {
         location: input.location,
       })),
     ]);
+    // const response = await saveExpense();
     // // 입력 필드 초기화
     setExpenseInputs([{ id: Math.random(), amount: "", location: "" }]);
     setIsExpenseModalOpen(false);
@@ -469,6 +471,55 @@ const TravelDiary = () => {
   }
   console.log(diaryInputs);
 
+  //  const createExpenseId = async (date) => {
+  //   const response = await saveExpense(date);
+  //   setExpenseInputs([
+  //     { 
+  //       // id:response ,
+  //      id: Math.random(),
+  //        amount: "", 
+  //        date : response,
+  //        location: "",
+
+  //     },
+  //   ]);
+  //  }
+  const createExpenseId = async (date) => {
+    try {
+        const response = await saveExpense(date); 
+        if (response && response.id) { 
+            setExpenseInputs([
+                ...expenseInputs,
+                { 
+                    id: response.id,  
+                    amount: "", 
+                    date: date.toISOString().split('T')[0], 
+                    location: "",
+                },
+            ]);
+        }
+    } catch (error) {
+        console.error("Error creating expense:", error);
+    }
+}
+
+   console.log(expenseInputs);
+// createExpense 함수가 saveExpense를 트리거한다고 가정
+// const createExpenseId = async () => {
+//   const response = await saveExpense();
+//   try {
+//     const expenseData = {
+//       date: new Date(), // 현재 날짜나 관련 데이터를 넘기려고 한다고 가정
+//       postId: postId, // postId 상태나 prop이 사용 가능하다고 가정
+//     };
+//     // const response = await api(`api/v1/expense`,"post",expenseData);
+//     console.log('경비 저장 성공:', response);
+//     // 경비 저장 후 추가적인 로직 처리, 상태나 UI 업데이트 등
+//   } catch (error) {
+//     console.error('경비 생성 중 오류:', error);
+//   }
+// }
+
   const createDiary = () => {
     setShowPostTitle(true);
     setShowDiary(true);
@@ -480,6 +531,7 @@ const TravelDiary = () => {
     setShowPostTitle(true);
     setShowExpense(true);
     setInitExpense(false);
+    createExpenseId();
   }
 
   console.log(diaryInputs);
@@ -742,8 +794,8 @@ v
           <button onClick={handleSaveTravelDiary} className="save-button">
             저장
 
-         // <button onClick={handleSaveDiary} className="save-button">
-           // 임시 저장
+         {/* <button onClick={handleSaveDiary} className="save-button">
+           임시 저장 */}
 
           </button>
         </div>
