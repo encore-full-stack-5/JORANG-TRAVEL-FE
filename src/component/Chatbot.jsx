@@ -1,18 +1,48 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import jorangImage from "./../image/jorangImage.png";
-import ChatSignatureColorOval from "./ChatSignatureColorOval copy";
-import ChatSignatureOval from "./ChatSignatureOval copy";
+import { Link, Outlet } from "react-router-dom";
 
 const Chatbot = () => {
   return (
     <div>
-      <div>
-        <img style={{ width: "50px", height: "50px" }} src={jorangImage}></img>
+      <div className="row-left-center-space">
+        <div>
+          <img
+            style={{ width: "50px", height: "50px" }}
+            src={jorangImage}
+          ></img>
+        </div>
+
+        <Link
+          to="/chatbot/landmark-recommend"
+          style={{ textDecoration: "none" }}
+        >
+          <button
+            className="signature-oval"
+            style={{ width: "130px", margin: "15px" }}
+          >
+            명소 추천
+          </button>
+        </Link>
+        <Link to="/chatbot/place-recommend" style={{ textDecoration: "none" }}>
+          <button
+            className="signature-oval"
+            style={{ width: "130px", margin: "15px" }}
+          >
+            여행지 추천
+          </button>
+        </Link>
+
+        <Link to="/chatbot/plan-recommend" style={{ textDecoration: "none" }}>
+          <button
+            className="signature-oval"
+            style={{ width: "130px", margin: "15px" }}
+          >
+            여행 계획 추천
+          </button>
+        </Link>
       </div>
-      <div>
-        <ChatSignatureColorOval content="usedfmkdfggggggggggggggggggggggggggggggggggggggggggggwersdvcxwtesrdfvc55estrdfhgtawersefbhkjtrtsxfcuhnjkgdrseadrfguhlgrdteswsuetsrdfktherdfnkl프랑스 여행가는데 필요한 걸 추천해줘! 조랭이에게 여행에 관한 모든 걸 물어보세요!!"></ChatSignatureColorOval>
-        <ChatSignatureOval content="usedfmkdfggggggggggggggggggggggggggggggggggggggggggggwersdvcxwtesrdfvc55estrdfhgtawersefbhkjtrtsxfcuhnjkgdrseadrfguhlgrdteswsuetsrdfktherdfnkl프랑스 여행가는데 필요한 걸 추천해줘!"></ChatSignatureOval>
-      </div>
+      <Outlet />
     </div>
   );
 };

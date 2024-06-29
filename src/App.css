@@ -334,14 +334,13 @@ input[type="password"] {
   max-width: 1050px;
   margin-top: 30px;
   height: 450px;
-  
+
   /* border: 1px solid #ccc;
     border-radius: 10px;
     padding: 20px;
     margin: auto;
     width: 80%;
     max-width: 1000px; */
-
 }
 
 .row-center-space {
@@ -440,7 +439,7 @@ input[type="password"] {
   flex-wrap: wrap;
 }
 
-.post-per-country{
+.post-per-country {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -449,7 +448,6 @@ input[type="password"] {
   justify-content: flex-start;
   flex-wrap: wrap;
 }
-
 
 .trip-image-display {
   display: flex;
@@ -635,7 +633,6 @@ input[type="password"] {
   display: flex;
   gap: 20px;
 }
-
 
 .content-section {
   flex-basis: 70%;
@@ -902,21 +899,20 @@ input[type="password"] {
   bottom: 50px;
   width: 100%;
 }
-.diary-date-title{
+.diary-date-title {
   display: flex;
 }
-.diary-title{
+.diary-title {
   margin-left: 30px;
 }
-.diary-image{
+.diary-image {
   width: 300px;
   height: 300px;
 }
-.diary-image-contnet{
+.diary-image-contnet {
   display: flex;
-
 }
-.diary-content{
+.diary-content {
   margin-right: 10px;
   width: 500px;
   height: 300px;
@@ -947,8 +943,7 @@ input[type="password"] {
   align-items: center;
 }
 
-
-.signature-oval-expense{
+.signature-oval-expense {
   background-color: white;
   margin: auto;
   border-radius: 30px;
@@ -972,14 +967,14 @@ input[type="password"] {
   margin-bottom: 40px;
 } */
 
-.expense-details{
+.expense-details {
   margin: 20px;
-  padding:10px ;
+  padding: 10px;
   border: 3px solid #9cc7ee;
   border-radius: 30px;
   margin: auto;
   margin-top: 10px;
-  margin-bottom: 10px;  
+  margin-bottom: 10px;
   margin-left: 300px;
   margin-right: 300px;
 }
@@ -999,11 +994,9 @@ input[type="password"] {
   border-bottom: 3px solid #9cc7ee;
 }
 
-
 .expense-details > div:last-child > div {
   border: 0px;
 }
-
 
 /* .all-expense:last-of-type {
   border-bottom: none;
@@ -1012,10 +1005,53 @@ input[type="password"] {
   border-bottom: none;
 } */
 
-
-.expense-cost{
+.expense-cost {
   margin-left: 20px;
 }
-.expense-category{
+.expense-category {
   margin-right: 20px;
+}
+
+.chatbot-font {
+  font-size: 17px;
+  color: #606060;
+  margin-top: 17px;
+  padding: 10px;
+  display: flex;
+  justify-content: flex-start;
+  text-align: start;
+  background-color: #d7e9fa;
+  width: fit-content;
+  border-radius: 10px;
+  max-width: 80%;
+}
+
+.chatbot-user-font {
+  /* position: absolute;
+  left: 100%; */
+  width: 95%;
+  font-size: 17px;
+  color: #606060;
+  margin-top: 17px;
+  padding: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+.chatbot-user-font > div {
+  width: fit-content;
+  padding: 10px;
+  background-color: #fffaaf;
+  border-radius: 10px;
+  max-width: 80%;
+  text-align: start;
+}
+
+.chatbot-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  left: 15%;
+  right: 15%;
+  bottom: 2%;
 }
