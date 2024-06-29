@@ -11,13 +11,24 @@ import { api } from "./network";
 //     }
 
 // }
-export const saveExpenses = async (id) => {
+export const saveExpense = async (date) => {
+    const formattedDate = new Date().toISOString().split('T')[0]; 
     try{
-        const response = await axios.post(`/api/v1/expense-details/${id}`,expense);
+        const response = await api(`/api/v1/expenses`,"post",{date:formattedDate })
+        console.log(response.data);
         return response.data;
     } catch(error){
-        console.error("Error in saveExpenses")
+        console.error("Error in saveExpense",error.response || error)
     }
-
 }
+// export const updateExpense = async (id) => {
+//     try{
+//         const response = await api(`/api/v1/expenses/update/${id}`)
+//     }
+// }
+// export const deleteExpense = async () =>{
+//     try{
+//         const res = await api
+//     }
+// }
 
