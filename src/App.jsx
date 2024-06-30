@@ -24,14 +24,15 @@ import PostsPerCountry from "./component/PostsPerCountry";
 import DetailPost from "./component/DetailPost";
 import MyGallery from "./component/ImageSlider";
 
-import ExpenseDetail from "./component/ExpenseDetail"
+import ExpenseDetail from "./component/ExpenseDetail";
 
 import MyTripMoreInformation from "./component/MyTripMoreInformation";
 import MyTripLoveMoreInformation from "./component/MyTripLoveMoreInformation";
-
+import Place from "./component/Place";
+import Landmark from "./component/Landmark";
+import Plan from "./component/Plan";
 
 function App() {
-
   return (
     <div className="App">
       <BrowserRouter>
@@ -43,7 +44,11 @@ function App() {
           <Route path="/signin" element={<SignIn />}></Route>
           <Route path="/mypage" element={<Mypage />}></Route>
           <Route path="/sharetrip" element={<ShareTrip />}></Route>
-          <Route path="/chatbot" element={<Chatbot />}></Route>
+          <Route path="/chatbot" element={<Chatbot />}>
+            <Route path="landmark-recommend" element={<Landmark />}></Route>
+            <Route path="place-recommend" element={<Place />}></Route>
+            <Route path="plan-recommend" element={<Plan />}></Route>
+          </Route>
           <Route path="/mytrip" element={<Mytrip />}></Route>
           <Route path="/findLoginId" element={<FindLoginId />}></Route>
           <Route path="/findPassword" element={<FindPassword />}></Route>
@@ -70,7 +75,6 @@ function App() {
             path="/mytrip/love/more-information"
             element={<MyTripLoveMoreInformation />}
           ></Route>
-
         </Routes>
       </BrowserRouter>
     </div>
