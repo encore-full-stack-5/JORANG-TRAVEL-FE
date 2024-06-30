@@ -14,10 +14,14 @@ import { useParams } from "react-router-dom";
 import { saveExpense } from "../config/traveldiaryApi";
 
 import { savePhotos } from "../config/photoApi";
+import travelCountries from "../travelCountries";
+import axios from "axios";
+import { api } from "../config/network";
 Modal.setAppElement("#root");
 
-
 const TravelDiary = () => {
+  const [expenseEntries, setExpenseEntries] = useState([]);
+
 
   const [title, setTitle] = useState("");
 
@@ -50,10 +54,11 @@ const TravelDiary = () => {
   const [initExpense, setInitExpense] = useState(true);
   const params = useParams();
   const postId = params.id;
-  const [expenseInputs, setExpenseInputs] = useState([
-    { id: Math.random(), amount: "", location: "" },
-  ]);
+  // const [scope, setScope] = useState();
 
+  const [expenseInputs, setExpenseInputs] = useState([
+    { id: Math.random(), amount: "", location: "" ,scope:"",category:"",country:""},
+  ]);
 
   const [diaryInputs, setDiaryInputs] = useState([
     {
@@ -121,18 +126,37 @@ const TravelDiary = () => {
   // handleSave
   // handleSaveTravelDiary
   const handleSave = async () => {
-    // `expenseInputs`가 `amount`와 `location`을 포함한 객체 배열이라고 가정합니다.
-    const newExpenses = expenseInputs.map(input => ({
-      cost: input.amount, // "input.amount"에서 input.amount로 변경
-      place: input.location, // "input.location"에서 input.location로 변경
+    // setExpenseEntries([
+      
+    //   ...expenseInputs.map((input) => ({
+    //     date: selectedExpenseDate,
+    //     amount: input.amount,
+    //     location: input.location,
+    //     scope:input.scope,
+    //     category:input.category,
+        
+    //   })),
+    // ]);
+    const newExpenses = expenseEntries.map(entry => ({
+      cost: entry.amount, 
+      place: entry.location, 
       category: "입장료",
-      scope: "PUBLIC",
+      // scope:entry.scope,
+      scope:"public",
       country: "일본"
     }));
+    // const newExpenses = expenseInputs.map(input => ({
+    //   cost: input.amount, 
+    //   place: input.location, 
+    //   category: "입장료",
+    //   // scope:input.scope,
+    //   scope:"public",
+    //   country: "일본"
+    // }));
   
     // 새로운 경비를 저장하기 위해 API 호출
     const response = await api(`api/v1/expense-details`, "post", newExpenses);
-  
+    setModalIsOpen(true);
     // API 호출이 성공한 후에만 상태 업데이트
     if (response.ok) { // API가 성공 시 'ok' 속성을 반환한다고 가정
       setExpenses([
@@ -141,7 +165,7 @@ const TravelDiary = () => {
       ]);
   
       // 경비 업데이트 후 모달 오픈
-      setModalIsOpen(true);
+     
     } else {
       console.error('경비 저장 실패', response);
     }
@@ -209,13 +233,39 @@ const TravelDiary = () => {
 
   // 경비 추가 함수
   const addExpense = async() => {
-    setExpenses([
+    setExpenseEntries([
+      
       ...expenseInputs.map((input) => ({
         date: selectedExpenseDate,
         amount: input.amount,
         location: input.location,
+        scope:input.scope,
+        category:input.category,
+        
       })),
     ]);
+    setExpenses([
+      
+      ...expenseInputs.map((input) => ({
+        date: selectedExpenseDate,
+        amount: input.amount,
+        location: input.location,
+        scope:input.scope,
+      })),
+    ]);
+      setExpenseEntries([
+      
+      ...expenseInputs.map((input) => ({
+        date: selectedExpenseDate,
+        amount: input.amount,
+        location: input.location,
+        scope:input.scope,
+        category:input.category,
+        
+      })),
+    ]);
+    
+
     // const response = await saveExpense();
     // // 입력 필드 초기화
     setExpenseInputs([{ id: Math.random(), amount: "", location: "" }]);
@@ -251,20 +301,41 @@ const TravelDiary = () => {
 
 
   // 날짜를 클릭했을 때 실행되는 함수
-  const handleDateClick = (date) => {
-    setselectedExpenseDate(date);
-    const expensesForDate = expenses.filter((exp) => {
-      const expenseDate = new Date(exp.date).toISOString().split("T")[0];
-      return expenseDate === date.toISOString().split("T")[0];
-    });
-    // 날짜에 해당하는 경비 항목이 있으면 그 항목들을, 없으면 빈 입력 필드를 설정
-    setExpenseInputs(
-      expensesForDate.length > 0
-        ? expensesForDate
-        : [{ id: Math.random(), amount: "", location: "" }]
-    );
-    setIsExpenseModalOpen(true);
-  };
+  // const handleDateClick = (date) => {
+  //   setselectedExpenseDate(date);
+  //   const expensesForDate = expenses.filter((exp) => {
+  //     const expenseDate = new Date(exp.date).toISOString().split("T")[0];
+  //     return expenseDate === date.toISOString().split("T")[0];
+  //   });
+  //   // 날짜에 해당하는 경비 항목이 있으면 그 항목들을, 없으면 빈 입력 필드를 설정
+  //   setExpenseInputs(
+  //     expensesForDate.length > 0
+  //       ? expensesForDate
+  //       : [{ id: Math.random(), amount: "", location: "" }]
+  //   );
+    
+  //   setIsExpenseModalOpen(true);
+  //   createExpenseId();
+  // };
+  const handleDateClick = async (date) => {
+  setselectedExpenseDate(date);
+  const expensesForDate = expenses.filter((exp) => {
+    const expenseDate = new Date(exp.date).toISOString().split("T")[0];
+    return expenseDate === date.toISOString().split("T")[0];
+  });
+  
+  // 날짜에 해당하는 경비 항목이 있으면 그 항목들을, 없으면 빈 입력 필드를 설정
+  setExpenseInputs(
+    expensesForDate.length > 0
+      ? expensesForDate
+      : [{ id: Math.random(), amount: "", location: "", date: date.toISOString().split("T")[0]  }]
+  );
+  
+  setIsExpenseModalOpen(true);
+  
+  // 새로운 경비 ID 생성
+  await createExpenseId(date);
+};
 
   // 일일 경비 합계 계산
   const getDailyExpensesTotal = (date) => {
@@ -403,6 +474,14 @@ const TravelDiary = () => {
       )
     );
   };
+  //공개범위
+  const handleScopeChange = (id,newScope) =>{
+    setExpenseInputs(
+      expenseInputs.map(input =>
+        input.id === id ? {...input, scope:newScope} : input
+      )
+    )
+  }
   //다이어리 입력 필드 추가
   // const addDiaryInput = () => {
   //   setDiaryInputs;
@@ -460,6 +539,73 @@ const TravelDiary = () => {
   }
   console.log(diaryInputs);
 
+  //  const createExpenseId = async (date) => {
+  //   const response = await saveExpense(date);
+  //   setExpenseInputs([
+  //     { 
+  //       // id:response ,
+  //      id: Math.random(),
+  //        amount: "", 
+  //        date : response,
+  //        location: "",
+
+  //     },
+  //   ]);
+  //  }
+//   const createExpenseId = async (date) => {
+//     try {
+//         const response = await saveExpense(date); 
+//         if (response && response.id) { 
+//             setExpenseInputs([
+//                 ...expenseInputs,
+//                 { 
+//                     id: response.id,  
+//                     amount: "", 
+//                     date: date.toISOString().split('T')[0], 
+//                     location: "",
+//                 },
+//             ]);
+//         }
+//     } catch (error) {
+//         console.error("Error creating expense:", error);
+//     }
+// }
+
+//    console.log(expenseInputs);
+const createExpenseId = async (date) => {
+  try {
+    const response = await saveExpense(date);
+    if (response && response.id) {
+      setExpenseInputs((prevInputs) => [
+        ...prevInputs,
+        {
+          id: response.id,
+          amount: "",
+          date: date.toISOString().split('T')[0],
+          location: "",
+        },
+      ]);
+    }
+  } catch (error) {
+    console.error("Error creating expense:", error);
+  }
+};
+// createExpense 함수가 saveExpense를 트리거한다고 가정
+// const createExpenseId = async () => {
+//   const response = await saveExpense();
+//   try {
+//     const expenseData = {
+//       date: new Date(), // 현재 날짜나 관련 데이터를 넘기려고 한다고 가정
+//       postId: postId, // postId 상태나 prop이 사용 가능하다고 가정
+//     };
+//     // const response = await api(`api/v1/expense`,"post",expenseData);
+//     console.log('경비 저장 성공:', response);
+//     // 경비 저장 후 추가적인 로직 처리, 상태나 UI 업데이트 등
+//   } catch (error) {
+//     console.error('경비 생성 중 오류:', error);
+//   }
+// }
+
   const createDiary = () => {
     setShowPostTitle(true);
     setShowDiary(true);
@@ -471,7 +617,7 @@ const TravelDiary = () => {
     setShowPostTitle(true);
     setShowExpense(true);
     setInitExpense(false);
-    createExpenseId();
+    // createExpenseId();
   }
 
   const saveDiaryAndPhoto = async () => {
@@ -513,6 +659,109 @@ const TravelDiary = () => {
 
   return (
       <div className="travel">
+
+        <div className="title-publish">
+          <input
+            type="text"
+            placeholder=" 여행일지 제목 입력"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="title-input"
+          />
+        </div>
+        <div style={{ textAlign: "right" }}>
+          <button onClick={handleSaveTravelDiaryPublic} className="save-button">
+            발행
+          </button>
+        </div>
+      
+        <div className="public">
+          {/* <button onClick={handleSaveTravelDiaryPublic} className="save-travel-diary">
+            발행 */}
+            <Modal
+          isOpen={modalIsOpenSaveTravelDiary}
+          onRequestClose={() => setModalIsOpenSaveTravelDiary(false)}
+          className="modaldiary"
+          overlayClassName="overlaydiary"
+        >
+          <select>
+            <option>나라 선택</option>
+            {Object.entries(travelCountries).map(([code, name]) => (
+        <option key={code} value={code}>{name}</option>
+      ))}
+          </select>
+
+          <button onClick={() => {
+          // alert("발행되었습니다.");
+            setModalIsOpenSaveTravelDiary(false);
+            if (window.confirm("여행기를 발행 하시겠습니까?")) {
+              // 다이어리 입력 항목 중 하나라도 비어있는지 확인
+              const isDiaryInputsEmpty = diaryInputs.some((input) => {
+                const isEmpty =
+                  // !input.diarytTitle ||
+                  !input.date || !input.description || !input.image;
+                // if (!input.diarytTitle) {
+                //   console.log("Empty diary title:", input);
+                // }
+                if (!input.date) {
+                  console.log("Empty diary date:", input);
+                }
+                if (!input.description) {
+                  console.log("Empty diary description:", input);
+                }
+                if (!input.image) {
+                  console.log("Empty diary image:", input);
+                }
+                return isEmpty;
+              });
+        
+              const isNewEntryEmpty =
+                !newEntry.diaryTitle ||
+                !newEntry.date ||
+                !newEntry.description ||
+                !newEntry.image;
+              if (!newEntry.diaryTitle) {
+                console.log("Empty new entry title:", newEntry);
+              }
+              if (!newEntry.date) {
+                console.log("Empty new entry date:", newEntry);
+              }
+              if (!newEntry.description) {
+                console.log("Empty new entry description:", newEntry);
+              }
+              if (!newEntry.image) {
+                console.log("Empty new entry image:", newEntry);
+              }
+        
+              if (isDiaryInputsEmpty || isNewEntryEmpty) {
+                alert("아직 내용이 입력되지 않았습니다. 계속해서 내용을 작성해주세요");
+              } else {
+                if(window.confirm("여행기를 발행 하시겠습니까?")){
+                  setModalIsOpenSaveTravelDiary(false);
+                }
+                // alert("발행되었습니다.");
+              
+             else {
+              alert("발행이 취소되었습니다");
+              setModalIsOpenSaveTravelDiary(false);
+            }
+          }
+        }
+          }}>완료</button>
+        
+        </Modal>
+        {/* </button> */}
+    
+          
+
+
+
+
+
+
+
+        </div>
+
         {initDiary && 
         <div>
           <p style={{fontSize: "1.6rem"}}>여행기 작성</p>
@@ -747,12 +996,40 @@ v
             className="modaldiary"
             overlayClassName="overlaydiary"
           >
-            <label>
-              <input type="radio" name="privacy" /> 공개
+            {/* <label>
+              <input 
+              type="radio"
+               name="privacy"
+               checked={scope === "PUBLIC"}
+               onChange={() => setScope("PUBLIC")} /> 공개
             </label>
             <label>
-              <input type="radio" name="privacy" /> 비공개
-            </label>
+              <input 
+              type="radio" 
+              name="privacy"
+              checked ={scope === "PERSONAL"}
+              onchange={()=> setScope("PERSONAL")} /> 비공개
+            </label> */}
+            {expenseInputs.map((input,index) => (
+              <div key={input.id}>
+                <label>
+                  <input 
+        type="radio" 
+        name={`privacy-${input.id}`} 
+        checked={input.scope === "PUBLIC"} 
+        onChange={() => handleScopeChange(input.id, "PUBLIC")}
+      /> 공개
+    </label>
+    <label>
+      <input 
+        type="radio" 
+        name={`privacy-${input.id}`} 
+        checked={input.scope === "PERSONAL"} 
+        onChange={() => handleScopeChange(input.id, "PERSONAL")}
+      /> 비공개
+    </label>
+              </div>
+            ))}
             {/* <select>
             <option>나라 선택</option>
             {Object.entries(travelCountries).map(([code, name]) => (
