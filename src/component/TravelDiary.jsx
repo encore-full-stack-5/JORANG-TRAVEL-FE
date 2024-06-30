@@ -156,7 +156,8 @@ const TravelDiary = () => {
   
     // 새로운 경비를 저장하기 위해 API 호출
     const response = await api(`api/v1/expense-details`, "post", newExpenses);
-    setModalIsOpen(true);
+    // setModalIsOpen(true);
+    if (window.confirm("임시저장되었습니다")) {
     // API 호출이 성공한 후에만 상태 업데이트
     if (response.ok) { // API가 성공 시 'ok' 속성을 반환한다고 가정
       setExpenses([
@@ -169,6 +170,7 @@ const TravelDiary = () => {
     } else {
       console.error('경비 저장 실패', response);
     }
+  }
   };
   
  
