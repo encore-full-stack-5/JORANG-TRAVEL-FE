@@ -987,29 +987,16 @@ v
           </Modal>
           <div style={{ textAlign: "right" }}>
             <button onClick={handleSave} className="save-button">
-              저장
+              임시저장
             </button>
           </div>
-          <Modal
+          {/* <Modal
             isOpen={modalIsOpen}
             onRequestClose={() => setModalIsOpen(false)}
             className="modaldiary"
             overlayClassName="overlaydiary"
           >
-            {/* <label>
-              <input 
-              type="radio"
-               name="privacy"
-               checked={scope === "PUBLIC"}
-               onChange={() => setScope("PUBLIC")} /> 공개
-            </label>
-            <label>
-              <input 
-              type="radio" 
-              name="privacy"
-              checked ={scope === "PERSONAL"}
-              onchange={()=> setScope("PERSONAL")} /> 비공개
-            </label> */}
+          
             {expenseInputs.map((input,index) => (
               <div key={input.id}>
                 <label>
@@ -1030,14 +1017,9 @@ v
     </label>
               </div>
             ))}
-            {/* <select>
-            <option>나라 선택</option>
-            {Object.entries(travelCountries).map(([code, name]) => (
-        <option key={code} value={code}>{name}</option>
-      ))}
-            </select> */}
+      
             <button onClick={() => setModalIsOpen(false)}>완료</button>
-          </Modal>
+          </Modal> */}
         </div>
       </div>
       }
