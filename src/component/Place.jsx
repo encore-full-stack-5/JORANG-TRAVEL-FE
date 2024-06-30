@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { getChatbotPlace } from "../config/chatbotApi";
-import Loading from "./Loading";
 import searchImage from "./../image/searchImage.png";
+import Loading from "./Loading";
+console.log(Loading);
 const Place = () => {
   const [continent, setContinent] = useState("");
   const [tripStyle, setTripStyle] = useState("");

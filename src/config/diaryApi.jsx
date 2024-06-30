@@ -10,21 +10,21 @@ export const saveDiary = async (postId) => {
     }
   }
   
-  export const updateDiary = async (id, title, content, date, scope, country) => {
-    try {
-      const res = await api(`/api/v1/diaries/${id}`, "put", {title: title, content: content, date: date, scope: scope, country: country});
-      return res.data;
-    } catch (error) {
-      console.log("Error in updateDiary", error)
-    }
+export const updateDiary = async (diaryRequestDto) => {
+  try {
+    const res = await api(`/api/v1/diaries`, "put", diaryRequestDto);
+    return res.data;
+  } catch (error) {
+    console.log("Error in updateDiary", error)
   }
+}
 
-  export const deleteDiary = async (id) => {
-    try {
-      const res = await api(`/api/v1/diaries/${id}`, "delete");
-    } catch (error) {
-      console.log("Error in deleteDiary", error)
-    }
+export const deleteDiary = async (id) => {
+  try {
+    const res = await api(`/api/v1/diaries/${id}`, "delete");
+  } catch (error) {
+    console.log("Error in deleteDiary", error)
   }
-  
+}
+
   

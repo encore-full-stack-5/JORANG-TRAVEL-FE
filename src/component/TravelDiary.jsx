@@ -9,12 +9,20 @@ import "react-calendar/dist/Calendar.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Slider from "react-slick";
-import { deleteDiary, saveDiary } from "../config/diaryApi";
+import { deleteDiary, saveDiary, updateDiary } from "../config/diaryApi";
 import { useParams } from "react-router-dom";
+import { saveExpense } from "../config/traveldiaryApi";
+
+import { savePhotos } from "../config/photoApi";
+import travelCountries from "../travelCountries";
+import axios from "axios";
+import { api } from "../config/network";
 Modal.setAppElement("#root");
 
-
 const TravelDiary = () => {
+  const [expenseEntries, setExpenseEntries] = useState([]);
+
+
   const [title, setTitle] = useState("");
 
   const [publish, setPublish] = useState(false);
@@ -25,6 +33,7 @@ const TravelDiary = () => {
     diaryTitle: "",
     date: null,
     description: "",
+    scope: "PUBLIC",
     image: {},
   });
   const [diary, setDiary] = useState([]);
@@ -32,6 +41,7 @@ const TravelDiary = () => {
   const [selectedExpenseDate, setselectedExpenseDate] = useState(null);
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
   const [modalIsOpendiary, setModalIsOpenDiary] = useState(false);
+  const [modalIsOpenSaveTravelDiary, setModalIsOpenSaveTravelDiary] = useState(false);
   const [isTravelDiaryOpen, setIsTravelDiaryOpen] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedDiaryDate, setSelectedDiaryDate] = useState(null);
@@ -44,17 +54,19 @@ const TravelDiary = () => {
   const [initExpense, setInitExpense] = useState(true);
   const params = useParams();
   const postId = params.id;
+  // const [scope, setScope] = useState();
 
   const [expenseInputs, setExpenseInputs] = useState([
-    { id: Math.random(), amount: "", location: "" },
+    { id: Math.random(), amount: "", location: "" ,scope:"",category:"",country:""},
   ]);
 
   const [diaryInputs, setDiaryInputs] = useState([
     {
-      id: Math.random(),
+      id: "",
       diarytTitle: "",
       date: null,
       description: "",
+      scope: "PUBLIC",
       image: {},
     },
   ]);
@@ -67,7 +79,6 @@ const TravelDiary = () => {
 
   const fileInputRef = useRef(null);
 
-  
 
   // 새로운 여행 항목 추가
   const addEntry = () => {
@@ -78,14 +89,90 @@ const TravelDiary = () => {
       setNewEntry({ diaryTitle: "", date: null, description: "", image: null });
     }
   };
+
+
+  
+ 
+
+
+  // const handleSaveTravelDiary = async() => {
+  // const test = await api(`api/v1/expense-details`,"post", {
+  //   setExpenses([
+  //     ...expenses,
+  //     ...expenseInputs.map((input) => ({    
+  //       // "expenseId": 96,
+  //       cost: "input.amoount",
+  //       place: "input.location",
+  //       "category": "입장료",
+  //       "scope": "PUBLIC",
+  //       "country": "일본"}) 
+  //     ]);
+  //   })
+  //   setModalIsOpenSaveTravelDiary(true);
+
+  // };
+
   const handleSaveDiary = () => {
     setModalIsOpenDiary(true);
   };
-  const handleSave = () => {
+  // const handleSave = () => {
+  //   setModalIsOpen(true);
+  // };
+ 
+
+  const handleSaveTravelDiary = () => {
     setModalIsOpen(true);
   };
+  // handleSave
+  // handleSaveTravelDiary
+  const handleSave = async () => {
+    // setExpenseEntries([
+      
+    //   ...expenseInputs.map((input) => ({
+    //     date: selectedExpenseDate,
+    //     amount: input.amount,
+    //     location: input.location,
+    //     scope:input.scope,
+    //     category:input.category,
+        
+    //   })),
+    // ]);
+    const newExpenses = expenseEntries.map(entry => ({
+      cost: entry.amount, 
+      place: entry.location, 
+      category: "입장료",
+      // scope:entry.scope,
+      scope:"public",
+      country: "일본"
+    }));
+    // const newExpenses = expenseInputs.map(input => ({
+    //   cost: input.amount, 
+    //   place: input.location, 
+    //   category: "입장료",
+    //   // scope:input.scope,
+    //   scope:"public",
+    //   country: "일본"
+    // }));
+  
+    // 새로운 경비를 저장하기 위해 API 호출
+    const response = await api(`api/v1/expense-details`, "post", newExpenses);
+    setModalIsOpen(true);
+    // API 호출이 성공한 후에만 상태 업데이트
+    if (response.ok) { // API가 성공 시 'ok' 속성을 반환한다고 가정
+      setExpenses([
+        ...expenses,
+        ...newExpenses
+      ]);
+  
+      // 경비 업데이트 후 모달 오픈
+     
+    } else {
+      console.error('경비 저장 실패', response);
+    }
+  };
+  
  
-  const handleSaveTravelDiary = () => {
+  const handleSaveTravelDiaryPublic = () => {
     if (window.confirm("여행기를 발행 하시겠습니까?")) {
       // 다이어리 입력 항목 중 하나라도 비어있는지 확인
       const isDiaryInputsEmpty = diaryInputs.some((input) => {
@@ -128,24 +215,59 @@ const TravelDiary = () => {
       if (isDiaryInputsEmpty || isNewEntryEmpty) {
         alert("아직 내용이 입력되지 않았습니다. 계속해서 내용을 작성해주세요");
       } else {
-        alert("발행되었습니다.");
-      }
-    } else {
+        if(window.confirm("여행기를 발행 하시겠습니까?")){
+          setModalIsOpenSaveTravelDiary(true);
+        }
+        // alert("발행되었습니다.");
+      
+     else {
       alert("발행이 취소되었습니다");
     }
+  }
+}
   };
+  const finalizePublication = () => {
+    alert("발행되었습니다");
+    setModalIsOpenSaveTravelDiary(false);
+  }
 
   // 경비 추가 함수
-  const addExpense = () => {
-    setExpenses([
-      ...expenses,
+  const addExpense = async() => {
+    setExpenseEntries([
+      
       ...expenseInputs.map((input) => ({
         date: selectedExpenseDate,
         amount: input.amount,
         location: input.location,
+        scope:input.scope,
+        category:input.category,
+        
       })),
     ]);
-    // 입력 필드 초기화
+    setExpenses([
+      
+      ...expenseInputs.map((input) => ({
+        date: selectedExpenseDate,
+        amount: input.amount,
+        location: input.location,
+        scope:input.scope,
+      })),
+    ]);
+      setExpenseEntries([
+      
+      ...expenseInputs.map((input) => ({
+        date: selectedExpenseDate,
+        amount: input.amount,
+        location: input.location,
+        scope:input.scope,
+        category:input.category,
+        
+      })),
+    ]);
+    
+
+    // const response = await saveExpense();
+    // // 입력 필드 초기화
     setExpenseInputs([{ id: Math.random(), amount: "", location: "" }]);
     setIsExpenseModalOpen(false);
   };
@@ -158,6 +280,7 @@ const TravelDiary = () => {
         diaryTitle: input.diarytTitle,
         date: input.date,
         description: input.description,
+        scope: input.scope,
         image: input.image,
       })),
     ]);
@@ -168,29 +291,51 @@ const TravelDiary = () => {
       {
         id: res,
         diarytTitle: "",
-        date: "",
+        date: null,
         description: "",
-        image: "",
+        scope: "PUBLIC",
+        image: {},
       },
     ]);
   };
 
 
   // 날짜를 클릭했을 때 실행되는 함수
-  const handleDateClick = (date) => {
-    setselectedExpenseDate(date);
-    const expensesForDate = expenses.filter((exp) => {
-      const expenseDate = new Date(exp.date).toISOString().split("T")[0];
-      return expenseDate === date.toISOString().split("T")[0];
-    });
-    // 날짜에 해당하는 경비 항목이 있으면 그 항목들을, 없으면 빈 입력 필드를 설정
-    setExpenseInputs(
-      expensesForDate.length > 0
-        ? expensesForDate
-        : [{ id: Math.random(), amount: "", location: "" }]
-    );
-    setIsExpenseModalOpen(true);
-  };
+  // const handleDateClick = (date) => {
+  //   setselectedExpenseDate(date);
+  //   const expensesForDate = expenses.filter((exp) => {
+  //     const expenseDate = new Date(exp.date).toISOString().split("T")[0];
+  //     return expenseDate === date.toISOString().split("T")[0];
+  //   });
+  //   // 날짜에 해당하는 경비 항목이 있으면 그 항목들을, 없으면 빈 입력 필드를 설정
+  //   setExpenseInputs(
+  //     expensesForDate.length > 0
+  //       ? expensesForDate
+  //       : [{ id: Math.random(), amount: "", location: "" }]
+  //   );
+    
+  //   setIsExpenseModalOpen(true);
+  //   createExpenseId();
+  // };
+  const handleDateClick = async (date) => {
+  setselectedExpenseDate(date);
+  const expensesForDate = expenses.filter((exp) => {
+    const expenseDate = new Date(exp.date).toISOString().split("T")[0];
+    return expenseDate === date.toISOString().split("T")[0];
+  });
+  
+  // 날짜에 해당하는 경비 항목이 있으면 그 항목들을, 없으면 빈 입력 필드를 설정
+  setExpenseInputs(
+    expensesForDate.length > 0
+      ? expensesForDate
+      : [{ id: Math.random(), amount: "", location: "", date: date.toISOString().split("T")[0]  }]
+  );
+  
+  setIsExpenseModalOpen(true);
+  
+  // 새로운 경비 ID 생성
+  await createExpenseId(date);
+};
 
   // 일일 경비 합계 계산
   const getDailyExpensesTotal = (date) => {
@@ -215,33 +360,54 @@ const TravelDiary = () => {
     }
   };
 
-  const handleImageChange = (key, file, id, type = "diary") => {
-    console.log(key, file);
-    console.log(id);
-    console.log(diaryInputs);
-    if (file) {
-      if (type === "diary") {
-        setDiaryInputs(
-          diaryInputs.map((input) =>
-            input.id === id ? { ...input, image: {...(input.image), [key] : file} } : input
-          )
-        );
-      } else {
-        setTravelContent(
-          travelContent.map((entry, index) =>
-            index === id ? { ...entry, image: {...(entry.image), [key] : file} } : entry
-          )
-        );
+  // const handleImageChange = (key, file, id, type = "diary") => {
+  //   console.log(key, file);
+  //   console.log(id);
+  //   console.log(diaryInputs);
+  //   if (file) {
+  //     if (type === "diary") {
+  //       setDiaryInputs(
+  //         diaryInputs.map((input) =>
+  //           input.id === id ? { ...input, image: {...(input.image), [key] : file} } : input
+  //         )
+  //       );
+  //     } else {
+  //       setTravelContent(
+  //         travelContent.map((entry, index) =>
+  //           index === id ? { ...entry, image: {...(entry.image), [key] : file} } : entry
+  //         )
+  //       );
+  //     }
+  //   }
+  //   let copyEntry = newEntry;
+  //   copyEntry.image = {...(copyEntry.image), [key] : file};
+  //   setNewEntry(copyEntry);
+  // };
+  // function ImageUploader({ diaryInputs, setDiaryInputs, travelContent, setTravelContent, newEntry, setNewEntry }) {
+    // 이미지 변경 처리 함수
+    const handleImageChange = (index, file, id, type = "diary") => {
+      if (file) {
+        if (type === "diary") {
+          setDiaryInputs(diaryInputs.map(input =>
+            input.id === id ? { ...input, image: { ...(input.image), [index]: file } } : input
+          ));
+        } else {
+          setTravelContent(travelContent.map(entry =>
+            entry.id === id ? { ...entry, image: { ...(entry.image), [index]: file } } : entry
+          ));
+        }
       }
-    }
-    let copyEntry = newEntry;
-    copyEntry.image = {...(copyEntry.image), [key] : file};
-    setNewEntry(copyEntry);
-  };
+  
+      // newEntry 상태 업데이트 예시
+      const updatedEntry = { ...newEntry, image: { ...(newEntry.image), [index]: file } };
+      setNewEntry(updatedEntry);
+    };
+  // };
+  
   const handleDiaryTitleChange = (title, id) => {
     setDiaryInputs(
       diaryInputs.map((input) =>
-        input.id === id ? { ...input, title } : input
+        input.id === id ? { ...input, diarytTitle: title } : input
       )
     );
     //newEntry의 제목 변경
@@ -254,7 +420,7 @@ const TravelDiary = () => {
 
   const handleDiaryDateChange = (date, id) => {
     setDiaryInputs(
-      diaryInputs.map((input) => (input.id === id ? { ...input, date } : input))
+      diaryInputs.map((input) => (input.id === id ? { ...input, date: date } : input))
     );
     // 선택된 날짜를 상태에 추가
     setSelectedDiaryDates((prevDates) => {
@@ -308,6 +474,14 @@ const TravelDiary = () => {
       )
     );
   };
+  //공개범위
+  const handleScopeChange = (id,newScope) =>{
+    setExpenseInputs(
+      expenseInputs.map(input =>
+        input.id === id ? {...input, scope:newScope} : input
+      )
+    )
+  }
   //다이어리 입력 필드 추가
   // const addDiaryInput = () => {
   //   setDiaryInputs;
@@ -358,11 +532,79 @@ const TravelDiary = () => {
         diarytTitle: "",
         date: null,
         description: "",
+        scope: "PUBLIC",
         image: {},
       },
     ]);
   }
   console.log(diaryInputs);
+
+  //  const createExpenseId = async (date) => {
+  //   const response = await saveExpense(date);
+  //   setExpenseInputs([
+  //     { 
+  //       // id:response ,
+  //      id: Math.random(),
+  //        amount: "", 
+  //        date : response,
+  //        location: "",
+
+  //     },
+  //   ]);
+  //  }
+//   const createExpenseId = async (date) => {
+//     try {
+//         const response = await saveExpense(date); 
+//         if (response && response.id) { 
+//             setExpenseInputs([
+//                 ...expenseInputs,
+//                 { 
+//                     id: response.id,  
+//                     amount: "", 
+//                     date: date.toISOString().split('T')[0], 
+//                     location: "",
+//                 },
+//             ]);
+//         }
+//     } catch (error) {
+//         console.error("Error creating expense:", error);
+//     }
+// }
+
+//    console.log(expenseInputs);
+const createExpenseId = async (date) => {
+  try {
+    const response = await saveExpense(date);
+    if (response && response.id) {
+      setExpenseInputs((prevInputs) => [
+        ...prevInputs,
+        {
+          id: response.id,
+          amount: "",
+          date: date.toISOString().split('T')[0],
+          location: "",
+        },
+      ]);
+    }
+  } catch (error) {
+    console.error("Error creating expense:", error);
+  }
+};
+// createExpense 함수가 saveExpense를 트리거한다고 가정
+// const createExpenseId = async () => {
+//   const response = await saveExpense();
+//   try {
+//     const expenseData = {
+//       date: new Date(), // 현재 날짜나 관련 데이터를 넘기려고 한다고 가정
+//       postId: postId, // postId 상태나 prop이 사용 가능하다고 가정
+//     };
+//     // const response = await api(`api/v1/expense`,"post",expenseData);
+//     console.log('경비 저장 성공:', response);
+//     // 경비 저장 후 추가적인 로직 처리, 상태나 UI 업데이트 등
+//   } catch (error) {
+//     console.error('경비 생성 중 오류:', error);
+//   }
+// }
 
   const createDiary = () => {
     setShowPostTitle(true);
@@ -375,9 +617,46 @@ const TravelDiary = () => {
     setShowPostTitle(true);
     setShowExpense(true);
     setInitExpense(false);
+    // createExpenseId();
   }
 
+  const saveDiaryAndPhoto = async () => {
+    const diaryRequestDto = [];
+    diaryInputs.forEach((el) => diaryRequestDto.push({id: el.id, title: el.diarytTitle, content: el.description, date: el.date, scope: el.scope}));
+    await updateDiary(diaryRequestDto);
+
+    const photoPaths = [];
+    const photoRequestDto = [];
+    // const formData = new FormData();
+    diaryInputs.forEach((el) => {
+      const photoIndex = Object.keys(el.image);
+      photoIndex.forEach(index => {
+        console.log(URL.createObjectURL(el.image[index]).substring(5));
+        // formData.append('file', el.image[index]);}
+        photoPaths.push(URL.createObjectURL(el.image[index]).substring(5));}
+      ); // file 형태로 보내면 에러 뜸
+      photoRequestDto.push({diaryId: el.id, paths: photoPaths});
+    });
+    console.log(photoRequestDto);
+    await savePhotos(photoRequestDto);
+  }
+
+  const handleDiaryScope = (isChecked, id) => {
+    setDiaryInputs(
+      diaryInputs.map((input) => 
+        {
+          if (input.id === id) {
+            if (isChecked) return {...input, scope : "PERSONAL"}
+            else return {...input, scope : "PUBLIC"}
+          } 
+        }
+      )
+    );
+  };
+
+
   console.log(diaryInputs);
+
   return (
       <div className="travel">
         {initDiary && 
@@ -386,8 +665,6 @@ const TravelDiary = () => {
           <button className="create-diary-button" onClick={createDiary}>+</button>
         </div>
         }
-        
-        
         {showPostTitle && 
         <>
           <div className="title-publish">
@@ -400,7 +677,7 @@ const TravelDiary = () => {
             />
           </div>
           <div className="public">
-            <button onClick={handleSaveTravelDiary} className="save-travel-diary">
+            <button onClick={handleSaveTravelDiaryPublic} className="save-travel-diary">
               발행
             </button>
           </div>
@@ -408,28 +685,6 @@ const TravelDiary = () => {
         }
         {showDiary && 
         <div className="travel-diary">
-          {travelContent.map((entry, index) => (
-            <div key={index} className="preview-entry-layout">
-              {/* {console.log(entry.image)} */}
-              {entry.image && (
-                <img
-                  src={URL.createObjectURL(entry.image[index])}
-                  alt="Uploaded"
-                  className="preview-image"
-                  onClick={() => handleImageClick(index, "travel")}
-                />
-              )}
-              <div className="preview-description" style={{ textAlign: "left" }}>
-                <textarea
-                  className="fixed-size-textarea"
-                  value={entry.description}
-                  onChange={(e) =>
-                    handleDescriptionChange(e.target.value, index, "travel")
-                  }
-                />
-              </div>
-            </div>
-          ))}
           {diaryInputs.map((input) => (
             <div key={input.id} className="entry-layout">
               <div className="select-diary-date">
@@ -447,10 +702,10 @@ const TravelDiary = () => {
                   <input
                     placeholder="여행기 제목 입력"
                     // value={input.diarytTitle}
-                    onChange={(e) => handleDiaryTitleChange(e, input.id)}
+                    onChange={(e) => handleDiaryTitleChange(e.target.value, input.id)}
                     className="diary-title-input"
                   />
-                  <input type="checkbox" name="PERSONAL" value="PERSONAL" onChange={e => console.log(e)}/>
+                  <input id="diary-scope" type="checkbox" name="PERSONAL" onChange={(e) => handleDiaryScope(e.target.checked, input.id)}/>
                   <label htmlFor="PERSONAL">비공개</label>
                 </div>
                 <button
@@ -471,6 +726,33 @@ const TravelDiary = () => {
                     }
                   />
                 </div>
+                {/* <div className="image-upload-container">
+                  {[0,1,2,3,4].map((el,i) => (
+                  <div className="image-upload-section image-box" key={i}>
+                
+                    <input
+                      key={i}
+                      type="file"
+                      onChange={(e) =>{
+                        console.log(e);
+                        handleImageChange(i, e.target.files[0], input.id)}
+                      }
+                      placeholder="사진"
+                    />  
+
+
+                    {input.image && input.image[i] && (
+
+                      <img
+                        src={URL.createObjectURL(input.image[i])}
+                        alt="Uploaded"
+                        className="preview-image"
+                      />
+                    )}
+v
+                  </div>
+                  ))}
+                </div> */}
                 <div className="image-upload-container">
                   {[0,1,2,3,4].map((el,i) => (
                   <div className="image-upload-section image-box" key={i}>
@@ -478,6 +760,7 @@ const TravelDiary = () => {
                       key={i}
                       type="file"
                       onChange={(e) =>{
+                        console.log(e);
                         handleImageChange(i, e.target.files[0], input.id)}
                       }
                       placeholder="사진"
@@ -521,200 +804,9 @@ const TravelDiary = () => {
           ))}
           <select>
             <option>나라 선택</option>
-            <option>미국</option>
-            <option>일본</option>
-            <option>중국</option>
-            <option>호주</option>
-            <option>아르메니아</option>
-            <option>아제르바이잔</option>
-            <option>바레인</option>
-            <option>방글라데시</option>
-            <option>부탄</option>
-            <option>브루나이</option>
-            <option>캄보디아</option>
-            <option>사이프러스</option>
-            <option>조지아</option>
-            <option>인도</option>
-            <option>인도네시아</option>
-            <option>이란</option>
-            <option>이라크</option>
-            <option>이스라엘</option>
-            <option>요르단</option>
-            <option>카자흐스탄</option>
-            <option>쿠웨이트</option>
-            <option>키르기스스탄</option>
-            <option>라오스</option>
-            <option>레바논</option>
-            <option>말레이시아</option>
-            <option>몰디브</option>
-            <option>몽골</option>
-            <option>미얀마</option>
-            <option>네팔</option>
-            <option>북한</option>
-            <option>오만</option>
-            <option>파키스탄</option>
-            <option>필리핀</option>
-            <option>카타르</option>
-            <option>러시아</option>
-            <option>사우디아라비아</option>
-            <option>싱가포르</option>
-            <option>대한민국</option>
-            <option>스리랑카</option>
-            <option>시리아</option>
-            <option>타이완</option>
-            <option>타지키스탄</option>
-            <option>태국</option>
-            <option>동티모르</option>
-            <option>터키</option>
-            <option>투르크메니스탄</option>
-            <option>아랍에미리트</option>
-            <option>우즈베키스탄</option>
-            <option>베트남</option>
-            <option>예멘</option>
-            <option>오스트레일리아</option>
-            <option>뉴질랜드</option>
-            <option>파푸아뉴기니</option>
-            <option>피지</option>
-            <option>솔로몬 제도</option>
-            <option>바누아투</option>
-            <option>사모아</option>
-            <option>키리바시</option>
-            <option>통가</option>
-            <option>미크로네시아 연방</option>
-            <option>팔라우</option>
-            <option>나우루</option>
-            <option>투발루</option>
-            <option>마셜 제도</option>
-            <option>알제리</option>
-            <option>앙골라</option>
-            <option>베냉</option>
-            <option>보츠와나</option>
-            <option>부르키나파소</option>
-            <option>부룬디</option>
-            <option>카보베르데</option>
-            <option>카메룬</option>
-            <option>중앙아프리카 공화국</option>
-            <option>차드</option>
-            <option>코모로</option>
-            <option>콩고 공화국</option>
-            <option>콩고 민주 공화국</option>
-            <option>지부티</option>
-            <option>이집트</option>
-            <option>적도 기니</option>
-            <option>에리트레아</option>
-            <option>에스와티니</option>
-            <option>에티오피아</option>
-            <option>가봉</option>
-            <option>감비아</option>
-            <option>가나</option>
-            <option>기니</option>
-            <option>기니비사우</option>
-            <option>케냐</option>
-            <option>레소토</option>
-            <option>라이베리아</option>
-            <option>리비아</option>
-            <option>마다가스카르</option>
-            <option>말라위</option>
-            <option>말리</option>
-            <option>모리타니</option>
-            <option>모리셔스</option>
-            <option>모로코</option>
-            <option>모잠비크</option>
-            <option>나미비아</option>
-            <option>니제르</option>
-            <option>나이지리아</option>
-            <option>르완다</option>
-            <option>상투메 프린시페</option>
-            <option>세네갈</option>
-            <option>세이셸</option>
-            <option>시에라리온</option>
-            <option>소말리아</option>
-            <option>남아프리카 공화국</option>
-            <option>남수단</option>
-            <option>수단</option>
-            <option>탄자니아</option>
-            <option>토고</option>
-            <option>튀니지</option>
-            <option>우간다</option>
-            <option>잠비아</option>
-            <option>짐바브웨</option>
-            <option>알바니아</option>
-            <option>안도라</option>
-            <option>오스트리아</option>
-            <option>벨라루스</option>
-            <option>벨기에</option>
-            <option>보스니아 헤르체고비나</option>
-            <option>불가리아</option>
-            <option>크로아티아</option>
-            <option>체코</option>
-            <option>덴마크</option>
-            <option>에스토니아</option>
-            <option>핀란드</option>
-            <option>프랑스</option>
-            <option>독일</option>
-            <option>그리스</option>
-            <option>헝가리</option>
-            <option>아이슬란드</option>
-            <option>아일랜드</option>
-            <option>이탈리아</option>
-            <option>라트비아</option>
-            <option>리히텐슈타인</option>
-            <option>리투아니아</option>
-            <option>룩셈부르크</option>
-            <option>몰타</option>
-            <option>몰도바</option>
-            <option>모나코</option>
-            <option>몬테네그로</option>
-            <option>네덜란드</option>
-            <option>북마케도니아</option>
-            <option>노르웨이</option>
-            <option>폴란드</option>
-            <option>포르투갈</option>
-            <option>루마니아</option>
-            <option>산마리노</option>
-            <option>세르비아</option>
-            <option>슬로바키아</option>
-            <option>슬로베니아</option>
-            <option>스페인</option>
-            <option>스웨덴</option>
-            <option>스위스</option>
-            <option>우크라이나</option>
-            <option>영국</option>
-            <option>바티칸 시국</option>
-            <option>앤티가 바부다</option>
-            <option>바하마</option>
-            <option>바베이도스</option>
-            <option>벨리즈</option>
-            <option>캐나다</option>
-            <option>코스타리카</option>
-            <option>쿠바</option>
-            <option>도미니카</option>
-            <option>도미니카 공화국</option>
-            <option>엘살바도르</option>
-            <option>그레나다</option>
-            <option>과테말라</option>
-            <option>아이티</option>
-            <option>온두라스</option>
-            <option>자메이카</option>
-            <option>멕시코</option>
-            <option>니카라과</option>
-            <option>파나마</option>
-            <option>세인트키츠 네비스</option>
-            <option>세인트루시아</option>
-            <option>세인트빈센트 그레나딘</option>
-            <option>트리니다드 토바고</option>
-            <option>아르헨티나</option>
-            <option>볼리비아</option>
-            <option>브라질</option>
-            <option>칠레</option>
-            <option>콜롬비아</option>
-            <option>에콰도르</option>
-            <option>가이아나</option>
-            <option>파라과이</option>
-            <option>페루</option>
-            <option>수리남</option>
-            <option>우루과이</option>
-            <option>베네수엘라</option>
+            {Object.entries(travelCountries).map(([code, name]) => (
+        <option key={code} value={code}>{name}</option>
+      ))}
           </select>
 
           <button onClick={() => setModalIsOpenDiary(false)}>완료</button>
@@ -777,11 +869,16 @@ const TravelDiary = () => {
             <button onClick={addExpenseInput} className="add-button">
               +
             </button>
-            <div className="saveExpense" style={{ textAlign: "right" }}>
+            {/* <div className="saveExpense" style={{ textAlign: "right" }}>
               <button onClick={addExpense} className="save-button-expense">
                 저장
               </button>
-            </div>
+            </div> */}
+            <div style={{ textAlign: "right" }}>
+            <button onClick={addExpense} className="save-button">
+              저장
+            </button>
+          </div>
           </Modal>
           <div style={{ textAlign: "right" }}>
             <button onClick={handleSave} className="save-button">
@@ -794,209 +891,46 @@ const TravelDiary = () => {
             className="modaldiary"
             overlayClassName="overlaydiary"
           >
-            <label>
-              <input type="radio" name="privacy" /> 공개
+            {/* <label>
+              <input 
+              type="radio"
+               name="privacy"
+               checked={scope === "PUBLIC"}
+               onChange={() => setScope("PUBLIC")} /> 공개
             </label>
             <label>
-              <input type="radio" name="privacy" /> 비공개
-            </label>
-            <select>
-              <option>나라 선택</option>
-              <option>미국</option>
-              <option>일본</option>
-              <option>중국</option>
-              <option>호주</option>
-              <option>아르메니아</option>
-              <option>아제르바이잔</option>
-              <option>바레인</option>
-              <option>방글라데시</option>
-              <option>부탄</option>
-              <option>브루나이</option>
-              <option>캄보디아</option>
-              <option>사이프러스</option>
-              <option>조지아</option>
-              <option>인도</option>
-              <option>인도네시아</option>
-              <option>이란</option>
-              <option>이라크</option>
-              <option>이스라엘</option>
-              <option>요르단</option>
-              <option>카자흐스탄</option>
-              <option>쿠웨이트</option>
-              <option>키르기스스탄</option>
-              <option>라오스</option>
-              <option>레바논</option>
-              <option>말레이시아</option>
-              <option>몰디브</option>
-              <option>몽골</option>
-              <option>미얀마</option>
-              <option>네팔</option>
-              <option>북한</option>
-              <option>오만</option>
-              <option>파키스탄</option>
-              <option>필리핀</option>
-              <option>카타르</option>
-              <option>러시아</option>
-              <option>사우디아라비아</option>
-              <option>싱가포르</option>
-              <option>대한민국</option>
-              <option>스리랑카</option>
-              <option>시리아</option>
-              <option>타이완</option>
-              <option>타지키스탄</option>
-              <option>태국</option>
-              <option>동티모르</option>
-              <option>터키</option>
-              <option>투르크메니스탄</option>
-              <option>아랍에미리트</option>
-              <option>우즈베키스탄</option>
-              <option>베트남</option>
-              <option>예멘</option>
-              <option>오스트레일리아</option>
-              <option>뉴질랜드</option>
-              <option>파푸아뉴기니</option>
-              <option>피지</option>
-              <option>솔로몬 제도</option>
-              <option>바누아투</option>
-              <option>사모아</option>
-              <option>키리바시</option>
-              <option>통가</option>
-              <option>미크로네시아 연방</option>
-              <option>팔라우</option>
-              <option>나우루</option>
-              <option>투발루</option>
-              <option>마셜 제도</option>
-              <option>알제리</option>
-              <option>앙골라</option>
-              <option>베냉</option>
-              <option>보츠와나</option>
-              <option>부르키나파소</option>
-              <option>부룬디</option>
-              <option>카보베르데</option>
-              <option>카메룬</option>
-              <option>중앙아프리카 공화국</option>
-              <option>차드</option>
-              <option>코모로</option>
-              <option>콩고 공화국</option>
-              <option>콩고 민주 공화국</option>
-              <option>지부티</option>
-              <option>이집트</option>
-              <option>적도 기니</option>
-              <option>에리트레아</option>
-              <option>에스와티니</option>
-              <option>에티오피아</option>
-              <option>가봉</option>
-              <option>감비아</option>
-              <option>가나</option>
-              <option>기니</option>
-              <option>기니비사우</option>
-              <option>케냐</option>
-              <option>레소토</option>
-              <option>라이베리아</option>
-              <option>리비아</option>
-              <option>마다가스카르</option>
-              <option>말라위</option>
-              <option>말리</option>
-              <option>모리타니</option>
-              <option>모리셔스</option>
-              <option>모로코</option>
-              <option>모잠비크</option>
-              <option>나미비아</option>
-              <option>니제르</option>
-              <option>나이지리아</option>
-              <option>르완다</option>
-              <option>상투메 프린시페</option>
-              <option>세네갈</option>
-              <option>세이셸</option>
-              <option>시에라리온</option>
-              <option>소말리아</option>
-              <option>남아프리카 공화국</option>
-              <option>남수단</option>
-              <option>수단</option>
-              <option>탄자니아</option>
-              <option>토고</option>
-              <option>튀니지</option>
-              <option>우간다</option>
-              <option>잠비아</option>
-              <option>짐바브웨</option>
-              <option>알바니아</option>
-              <option>안도라</option>
-              <option>오스트리아</option>
-              <option>벨라루스</option>
-              <option>벨기에</option>
-              <option>보스니아 헤르체고비나</option>
-              <option>불가리아</option>
-              <option>크로아티아</option>
-              <option>체코</option>
-              <option>덴마크</option>
-              <option>에스토니아</option>
-              <option>핀란드</option>
-              <option>프랑스</option>
-              <option>독일</option>
-              <option>그리스</option>
-              <option>헝가리</option>
-              <option>아이슬란드</option>
-              <option>아일랜드</option>
-              <option>이탈리아</option>
-              <option>라트비아</option>
-              <option>리히텐슈타인</option>
-              <option>리투아니아</option>
-              <option>룩셈부르크</option>
-              <option>몰타</option>
-              <option>몰도바</option>
-              <option>모나코</option>
-              <option>몬테네그로</option>
-              <option>네덜란드</option>
-              <option>북마케도니아</option>
-              <option>노르웨이</option>
-              <option>폴란드</option>
-              <option>포르투갈</option>
-              <option>루마니아</option>
-              <option>산마리노</option>
-              <option>세르비아</option>
-              <option>슬로바키아</option>
-              <option>슬로베니아</option>
-              <option>스페인</option>
-              <option>스웨덴</option>
-              <option>스위스</option>
-              <option>우크라이나</option>
-              <option>영국</option>
-              <option>바티칸 시국</option>
-              <option>앤티가 바부다</option>
-              <option>바하마</option>
-              <option>바베이도스</option>
-              <option>벨리즈</option>
-              <option>캐나다</option>
-              <option>코스타리카</option>
-              <option>쿠바</option>
-              <option>도미니카</option>
-              <option>도미니카 공화국</option>
-              <option>엘살바도르</option>
-              <option>그레나다</option>
-              <option>과테말라</option>
-              <option>아이티</option>
-              <option>온두라스</option>
-              <option>자메이카</option>
-              <option>멕시코</option>
-              <option>니카라과</option>
-              <option>파나마</option>
-              <option>세인트키츠 네비스</option>
-              <option>세인트루시아</option>
-              <option>세인트빈센트 그레나딘</option>
-              <option>트리니다드 토바고</option>
-              <option>아르헨티나</option>
-              <option>볼리비아</option>
-              <option>브라질</option>
-              <option>칠레</option>
-              <option>콜롬비아</option>
-              <option>에콰도르</option>
-              <option>가이아나</option>
-              <option>파라과이</option>
-              <option>페루</option>
-              <option>수리남</option>
-              <option>우루과이</option>
-              <option>베네수엘라</option>
-            </select>
+              <input 
+              type="radio" 
+              name="privacy"
+              checked ={scope === "PERSONAL"}
+              onchange={()=> setScope("PERSONAL")} /> 비공개
+            </label> */}
+            {expenseInputs.map((input,index) => (
+              <div key={input.id}>
+                <label>
+                  <input 
+        type="radio" 
+        name={`privacy-${input.id}`} 
+        checked={input.scope === "PUBLIC"} 
+        onChange={() => handleScopeChange(input.id, "PUBLIC")}
+      /> 공개
+    </label>
+    <label>
+      <input 
+        type="radio" 
+        name={`privacy-${input.id}`} 
+        checked={input.scope === "PERSONAL"} 
+        onChange={() => handleScopeChange(input.id, "PERSONAL")}
+      /> 비공개
+    </label>
+              </div>
+            ))}
+            {/* <select>
+            <option>나라 선택</option>
+            {Object.entries(travelCountries).map(([code, name]) => (
+        <option key={code} value={code}>{name}</option>
+      ))}
+            </select> */}
             <button onClick={() => setModalIsOpen(false)}>완료</button>
           </Modal>
         </div>

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import ImageText from "./ImageText";
-import filterImage from "./../image/filterImage.png";
 import { getTop5RecentPosts, getTopLikePostsFirst } from "../api/post-api";
 import { Link } from "react-router-dom";
 
