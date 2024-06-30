@@ -13,10 +13,12 @@ import { deleteDiary, saveDiary, updateDiary } from "../config/diaryApi";
 import { useParams } from "react-router-dom";
 import { saveExpense } from "../config/traveldiaryApi";
 
+import { savePhotos } from "../config/photoApi";
 Modal.setAppElement("#root");
 
 
 const TravelDiary = () => {
+
   const [title, setTitle] = useState("");
 
   const [publish, setPublish] = useState(false);
@@ -27,6 +29,7 @@ const TravelDiary = () => {
     diaryTitle: "",
     date: null,
     description: "",
+    scope: "PUBLIC",
     image: {},
   });
   const [diary, setDiary] = useState([]);
@@ -47,17 +50,18 @@ const TravelDiary = () => {
   const [initExpense, setInitExpense] = useState(true);
   const params = useParams();
   const postId = params.id;
-
   const [expenseInputs, setExpenseInputs] = useState([
     { id: Math.random(), amount: "", location: "" },
   ]);
 
+
   const [diaryInputs, setDiaryInputs] = useState([
     {
-      id: Math.random(),
+      id: "",
       diarytTitle: "",
       date: null,
       description: "",
+      scope: "PUBLIC",
       image: {},
     },
   ]);
@@ -70,7 +74,6 @@ const TravelDiary = () => {
 
   const fileInputRef = useRef(null);
 
-  
 
   // 새로운 여행 항목 추가
   const addEntry = () => {
@@ -227,6 +230,7 @@ const TravelDiary = () => {
         diaryTitle: input.diarytTitle,
         date: input.date,
         description: input.description,
+        scope: input.scope,
         image: input.image,
       })),
     ]);
@@ -237,8 +241,9 @@ const TravelDiary = () => {
       {
         id: res,
         diarytTitle: "",
-        date: "",
+        date: null,
         description: "",
+        scope: "PUBLIC",
         image: "",
       },
     ]);
@@ -331,7 +336,7 @@ const TravelDiary = () => {
   const handleDiaryTitleChange = (title, id) => {
     setDiaryInputs(
       diaryInputs.map((input) =>
-        input.id === id ? { ...input, title } : input
+        input.id === id ? { ...input, diarytTitle: title } : input
       )
     );
     //newEntry의 제목 변경
@@ -344,7 +349,7 @@ const TravelDiary = () => {
 
   const handleDiaryDateChange = (date, id) => {
     setDiaryInputs(
-      diaryInputs.map((input) => (input.id === id ? { ...input, date } : input))
+      diaryInputs.map((input) => (input.id === id ? { ...input, date: date } : input))
     );
     // 선택된 날짜를 상태에 추가
     setSelectedDiaryDates((prevDates) => {
@@ -448,60 +453,12 @@ const TravelDiary = () => {
         diarytTitle: "",
         date: null,
         description: "",
+        scope: "PUBLIC",
         image: {},
       },
     ]);
   }
   console.log(diaryInputs);
-
-  //  const createExpenseId = async (date) => {
-  //   const response = await saveExpense(date);
-  //   setExpenseInputs([
-  //     { 
-  //       // id:response ,
-  //      id: Math.random(),
-  //        amount: "", 
-  //        date : response,
-  //        location: "",
-
-  //     },
-  //   ]);
-  //  }
-  const createExpenseId = async (date) => {
-    try {
-        const response = await saveExpense(date); 
-        if (response && response.id) { 
-            setExpenseInputs([
-                ...expenseInputs,
-                { 
-                    id: response.id,  
-                    amount: "", 
-                    date: date.toISOString().split('T')[0], 
-                    location: "",
-                },
-            ]);
-        }
-    } catch (error) {
-        console.error("Error creating expense:", error);
-    }
-}
-
-   console.log(expenseInputs);
-// createExpense 함수가 saveExpense를 트리거한다고 가정
-// const createExpenseId = async () => {
-//   const response = await saveExpense();
-//   try {
-//     const expenseData = {
-//       date: new Date(), // 현재 날짜나 관련 데이터를 넘기려고 한다고 가정
-//       postId: postId, // postId 상태나 prop이 사용 가능하다고 가정
-//     };
-//     // const response = await api(`api/v1/expense`,"post",expenseData);
-//     console.log('경비 저장 성공:', response);
-//     // 경비 저장 후 추가적인 로직 처리, 상태나 UI 업데이트 등
-//   } catch (error) {
-//     console.error('경비 생성 중 오류:', error);
-//   }
-// }
 
   const createDiary = () => {
     setShowPostTitle(true);
@@ -517,22 +474,43 @@ const TravelDiary = () => {
     createExpenseId();
   }
 
-  const saveDiaryAndPhoto = () => {
-    // {title: title, content: content, date: date, scope: scope, country: country};
-
-    // diaryTitle: "",
-    // date: null,
-    // description: "",
-    // image: {},
+  const saveDiaryAndPhoto = async () => {
     const diaryRequestDto = [];
-    travelContent.forEach(tripInput => {
-      diary.push({title: tripInput.diarytTitle, content: tripInput.description, date: tripInput.date, scope: tripInput.scope});
-    })
-    
+    diaryInputs.forEach((el) => diaryRequestDto.push({id: el.id, title: el.diarytTitle, content: el.description, date: el.date, scope: el.scope}));
+    await updateDiary(diaryRequestDto);
+
+    const photoPaths = [];
+    const photoRequestDto = [];
+    // const formData = new FormData();
+    diaryInputs.forEach((el) => {
+      const photoIndex = Object.keys(el.image);
+      photoIndex.forEach(index => {
+        console.log(URL.createObjectURL(el.image[index]).substring(5));
+        // formData.append('file', el.image[index]);}
+        photoPaths.push(URL.createObjectURL(el.image[index]).substring(5));}
+      ); // file 형태로 보내면 에러 뜸
+      photoRequestDto.push({diaryId: el.id, paths: photoPaths});
+    });
+    console.log(photoRequestDto);
+    await savePhotos(photoRequestDto);
   }
+
+  const handleDiaryScope = (isChecked, id) => {
+    setDiaryInputs(
+      diaryInputs.map((input) => 
+        {
+          if (input.id === id) {
+            if (isChecked) return {...input, scope : "PERSONAL"}
+            else return {...input, scope : "PUBLIC"}
+          } 
+        }
+      )
+    );
+  };
 
 
   console.log(diaryInputs);
+
   return (
       <div className="travel">
         {initDiary && 
@@ -541,8 +519,6 @@ const TravelDiary = () => {
           <button className="create-diary-button" onClick={createDiary}>+</button>
         </div>
         }
-        
-        
         {showPostTitle && 
         <>
           <div className="title-publish">
@@ -564,28 +540,6 @@ const TravelDiary = () => {
         {showDiary && 
 
         <div className="travel-diary">
-          {travelContent.map((entry, index) => (
-            <div key={index} className="preview-entry-layout">
-              {/* {console.log(entry.image)} */}
-              {entry.image && (
-                <img
-                  src={URL.createObjectURL(entry.image[index])}
-                  alt="Uploaded"
-                  className="preview-image"
-                  onClick={() => handleImageClick(index, "travel")}
-                />
-              )}
-              <div className="preview-description" style={{ textAlign: "left" }}>
-                <textarea
-                  className="fixed-size-textarea"
-                  value={entry.description}
-                  onChange={(e) =>
-                    handleDescriptionChange(e.target.value, index, "travel")
-                  }
-                />
-              </div>
-            </div>
-          ))}
           {diaryInputs.map((input) => (
             <div key={input.id} className="entry-layout">
               <div className="select-diary-date">
@@ -603,10 +557,10 @@ const TravelDiary = () => {
                   <input
                     placeholder="여행기 제목 입력"
                     // value={input.diarytTitle}
-                    onChange={(e) => handleDiaryTitleChange(e, input.id)}
+                    onChange={(e) => handleDiaryTitleChange(e.target.value, input.id)}
                     className="diary-title-input"
                   />
-                  <input type="checkbox" name="PERSONAL" value="PERSONAL" onChange={e => console.log(e)}/>
+                  <input id="diary-scope" type="checkbox" name="PERSONAL" onChange={(e) => handleDiaryScope(e.target.checked, input.id)}/>
                   <label htmlFor="PERSONAL">비공개</label>
                 </div>
                 <button
@@ -635,6 +589,7 @@ const TravelDiary = () => {
                       key={i}
                       type="file"
                       onChange={(e) =>{
+                        console.log(e);
                         handleImageChange(i, e.target.files[0], input.id)}
                       }
                       placeholder="사진"
@@ -685,13 +640,8 @@ v
           </button>
         </div>
         <div style={{ textAlign: "right" }}>
-
-          <button onClick={handleSaveTravelDiary} className="save-button">
-            저장
-
-         {/* <button onClick={handleSaveDiary} className="save-button">
-           임시 저장 */}
-
+          <button onClick={handleSaveDiary} className="save-button">
+            임시 저장
           </button>
         </div>
         <Modal
