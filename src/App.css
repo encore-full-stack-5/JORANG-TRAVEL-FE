@@ -112,6 +112,13 @@ input[type="password"] {
   color: #606060;
 }
 
+.sign-up {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 1%;
+}
+
 .nav-font-background {
   margin-top: 5px;
   display: flex;
@@ -363,7 +370,7 @@ input[type="password"] {
   position: relative;
 }
 
-.overlay {
+.country-image-overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -371,56 +378,18 @@ input[type="password"] {
   height: 100%;
   background-color: rgba(255, 255, 255, 0.7);
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
 }
 
-.overlay p {
+.country-image-overlay p {
   text-align: start;
   color: #606060;
-  padding: 15px;
+  padding: 10px;
 }
 
 .country-image-container:hover .overlay {
   opacity: 1;
-}
-
-.chat-signature-color-oval {
-  background-color: #c2d6e9;
-  border-radius: 30px;
-  font-size: 15px;
-  color: #606060;
-  display: inline-flex; /* inline-flex로 변경하여 정렬을 쉽게 합니다 */
-  align-items: center; /* 세로 중앙 정렬 */
-  justify-content: center; /* 가로 중앙 정렬 */
-  min-width: 100px; /* 최소 너비를 설정하여 텍스트 양이 적을 때도 적절한 크기 유지 */
-  max-width: 60%; /* 최대 너비를 설정 */
-  padding: 10px 20px; /* 여백을 추가하여 텍스트가 테두리와 붙지 않게 합니다 */
-  word-wrap: break-word; /* 긴 단어를 자동으로 줄바꿈 */
-  text-align: start; /* 텍스트를 가로 중앙에 위치시킴 */
-  box-sizing: border-box; /* 패딩과 테두리를 요소의 전체 크기에 포함시킴 */
-  overflow: hidden; /* 스크롤 비활성화 */
-  height: auto; /* 텍스트 양이 늘어나면 자동으로 세로 길이가 늘어남 */
-}
-
-.chat-signature-oval {
-  background-color: white;
-  height: 30px;
-  border-radius: 30px;
-  font-size: 15px;
-  border: 3px solid #9cc7ee;
-  color: #606060;
-  display: inline-flex; /* inline-flex로 변경하여 정렬을 쉽게 합니다 */
-  align-items: center; /* 세로 중앙 정렬 */
-  justify-content: center; /* 가로 중앙 정렬 */
-  min-width: 100px; /* 최소 너비를 설정하여 텍스트 양이 적을 때도 적절한 크기 유지 */
-  max-width: 60%; /* 최대 너비를 설정 */
-  padding: 10px 20px; /* 여백을 추가하여 텍스트가 테두리와 붙지 않게 합니다 */
-  word-wrap: break-word; /* 긴 단어를 자동으로 줄바꿈 */
-  text-align: start; /* 텍스트를 가로 중앙에 위치시킴 */
-  box-sizing: border-box; /* 패딩과 테두리를 요소의 전체 크기에 포함시킴 */
-  overflow: hidden; /* 스크롤 비활성화 */
-  height: auto; /* 텍스트 양이 늘어나면 자동으로 세로 길이가 늘어남 */
 }
 
 .trip-font-color {
@@ -434,7 +403,7 @@ input[type="password"] {
   flex-direction: column;
   align-items: flex-start;
   margin-top: "15px";
-  /* margin-left: 15%; */
+  margin-left: 15%;
   justify-content: flex-start;
   flex-wrap: wrap;
 }
@@ -711,7 +680,8 @@ input[type="password"] {
   border-radius: 5px;
 }
 
-.create-diary-button, .create-expense-button {
+.create-diary-button,
+.create-expense-button {
   width: 300px;
   height: 150px;
   background-color: white;
@@ -869,16 +839,17 @@ input[type="password"] {
   justify-content: space-between;
   align-items: baseline;
   margin-right: 150px;
-  margin-left: 150px;
+  margin-left: 15%;
   flex-wrap: wrap;
 }
 
 .mytrip-map-display {
   display: flex;
   flex-wrap: wrap;
-  margin-left: 10%;
+  margin-left: 15%;
   margin-right: 10%;
   justify-content: flex-start;
+  margin-top: 2%;
 }
 
 .row-more {
@@ -919,7 +890,7 @@ input[type="password"] {
   margin-left: 30px;
 }
 .signature-color-oval {
-  background-color: #c2d6e9;
+  background-color: #d7e9fa;
   height: 30px;
   width: 350px;
   border-radius: 30px;
@@ -1054,4 +1025,18 @@ input[type="password"] {
   left: 15%;
   right: 15%;
   bottom: 2%;
+}
+
+.mypage-chatbot {
+  font-size: 17px;
+  color: #606060;
+  margin-top: 17px;
+  padding: 10px;
+  display: flex;
+  justify-content: flex-start;
+  text-align: start;
+  background-color: #d7e9fa;
+  width: fit-content;
+  border-radius: 10px;
+  max-width: 80%;
 }

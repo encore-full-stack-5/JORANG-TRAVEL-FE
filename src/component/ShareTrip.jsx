@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import ImageText from "./ImageText";
-import filterImage from "./../image/filterImage.png";
 import { getTop5RecentPosts, getTopLikePostsFirst } from "../api/post-api";
 import { Link } from "react-router-dom";
 
@@ -28,14 +27,24 @@ const Mytrip = () => {
           <p className="trip-font-color">최근 올라온 여행일지</p>
           <Link
             className="trip-font-color"
-            style={{ paddingLeft: "15px", fontSize: "14px" }}
+            style={{
+              paddingLeft: "15px",
+              fontSize: "14px",
+              textDecoration: "none",
+            }}
             to="/posts"
           >
             더보기
           </Link>
         </div>
       </div>
-      <div style={{ display: "flex", justifyContent: "center", margin: "10px 13% 0 13%" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          margin: "10px 13% 0 13%",
+        }}
+      >
         {recentPosts?.map((post, i) => (
           <Link
             to={`/detail-post/${post.id}`}
@@ -45,11 +54,7 @@ const Mytrip = () => {
             {console.log(post.id)}
             <ImageText
               src={post.diaries
-                .filter(
-                  (diary) =>
-                    diary.photos &&
-                    diary.photos.length > 0
-                )
+                .filter((diary) => diary.photos && diary.photos.length > 0)
                 .map((diary) => diary.photos[0].photoURL)}
               content={post.title}
             ></ImageText>
@@ -62,14 +67,24 @@ const Mytrip = () => {
           <p className="trip-font-color">이번주 Hot한 여행일지 Top5</p>
           <Link
             className="trip-font-color"
-            style={{ paddingLeft: "15px", fontSize: "14px" }}
+            style={{
+              paddingLeft: "15px",
+              fontSize: "14px",
+              textDecoration: "none",
+            }}
             to="/posts"
           >
             더보기
           </Link>
         </div>
       </div>
-      <div style={{ display: "flex", justifyContent: "center", margin: "10px 13% 0 13%" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          margin: "10px 13% 0 13%",
+        }}
+      >
         {topPosts?.map((post, i) => (
           <Link
             to={`/detail-post/${post.id}`}
