@@ -294,7 +294,7 @@ const TravelDiary = () => {
         date: null,
         description: "",
         scope: "PUBLIC",
-        image: "",
+        image: {},
       },
     ]);
   };
@@ -389,17 +389,17 @@ const TravelDiary = () => {
       if (file) {
         if (type === "diary") {
           setDiaryInputs(diaryInputs.map(input =>
-            input.id === id ? { ...input, image: { ...(input.image || {}), [index]: file } } : input
+            input.id === id ? { ...input, image: { ...(input.image), [index]: file } } : input
           ));
         } else {
           setTravelContent(travelContent.map(entry =>
-            entry.id === id ? { ...entry, image: { ...(entry.image || {}), [index]: file } } : entry
+            entry.id === id ? { ...entry, image: { ...(entry.image), [index]: file } } : entry
           ));
         }
       }
   
       // newEntry 상태 업데이트 예시
-      const updatedEntry = { ...newEntry, image: { ...(newEntry.image || {}), [index]: file } };
+      const updatedEntry = { ...newEntry, image: { ...(newEntry.image), [index]: file } };
       setNewEntry(updatedEntry);
     };
   // };
@@ -659,109 +659,6 @@ const createExpenseId = async (date) => {
 
   return (
       <div className="travel">
-
-        <div className="title-publish">
-          <input
-            type="text"
-            placeholder=" 여행일지 제목 입력"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="title-input"
-          />
-        </div>
-        <div style={{ textAlign: "right" }}>
-          <button onClick={handleSaveTravelDiaryPublic} className="save-button">
-            발행
-          </button>
-        </div>
-      
-        <div className="public">
-          {/* <button onClick={handleSaveTravelDiaryPublic} className="save-travel-diary">
-            발행 */}
-            <Modal
-          isOpen={modalIsOpenSaveTravelDiary}
-          onRequestClose={() => setModalIsOpenSaveTravelDiary(false)}
-          className="modaldiary"
-          overlayClassName="overlaydiary"
-        >
-          <select>
-            <option>나라 선택</option>
-            {Object.entries(travelCountries).map(([code, name]) => (
-        <option key={code} value={code}>{name}</option>
-      ))}
-          </select>
-
-          <button onClick={() => {
-          // alert("발행되었습니다.");
-            setModalIsOpenSaveTravelDiary(false);
-            if (window.confirm("여행기를 발행 하시겠습니까?")) {
-              // 다이어리 입력 항목 중 하나라도 비어있는지 확인
-              const isDiaryInputsEmpty = diaryInputs.some((input) => {
-                const isEmpty =
-                  // !input.diarytTitle ||
-                  !input.date || !input.description || !input.image;
-                // if (!input.diarytTitle) {
-                //   console.log("Empty diary title:", input);
-                // }
-                if (!input.date) {
-                  console.log("Empty diary date:", input);
-                }
-                if (!input.description) {
-                  console.log("Empty diary description:", input);
-                }
-                if (!input.image) {
-                  console.log("Empty diary image:", input);
-                }
-                return isEmpty;
-              });
-        
-              const isNewEntryEmpty =
-                !newEntry.diaryTitle ||
-                !newEntry.date ||
-                !newEntry.description ||
-                !newEntry.image;
-              if (!newEntry.diaryTitle) {
-                console.log("Empty new entry title:", newEntry);
-              }
-              if (!newEntry.date) {
-                console.log("Empty new entry date:", newEntry);
-              }
-              if (!newEntry.description) {
-                console.log("Empty new entry description:", newEntry);
-              }
-              if (!newEntry.image) {
-                console.log("Empty new entry image:", newEntry);
-              }
-        
-              if (isDiaryInputsEmpty || isNewEntryEmpty) {
-                alert("아직 내용이 입력되지 않았습니다. 계속해서 내용을 작성해주세요");
-              } else {
-                if(window.confirm("여행기를 발행 하시겠습니까?")){
-                  setModalIsOpenSaveTravelDiary(false);
-                }
-                // alert("발행되었습니다.");
-              
-             else {
-              alert("발행이 취소되었습니다");
-              setModalIsOpenSaveTravelDiary(false);
-            }
-          }
-        }
-          }}>완료</button>
-        
-        </Modal>
-        {/* </button> */}
-    
-          
-
-
-
-
-
-
-
-        </div>
-
         {initDiary && 
         <div>
           <p style={{fontSize: "1.6rem"}}>여행기 작성</p>
@@ -787,7 +684,6 @@ const createExpenseId = async (date) => {
         </>
         }
         {showDiary && 
-
         <div className="travel-diary">
           {diaryInputs.map((input) => (
             <div key={input.id} className="entry-layout">
@@ -858,28 +754,28 @@ v
                   ))}
                 </div> */}
                 <div className="image-upload-container">
-      {[0, 1, 2, 3, 4].map((el, i) => (
-        <div className="image-upload-section image-box" key={i}>
-          <input
-            type="file"
-            onChange={(e) => handleImageChange(i, e.target.files[0], input.id)}
-          />
-          {/* 이미지 미리보기 로직 수정 */}
-          {diaryInputs.some(input => input.image && input.image[i]) && (
-            diaryInputs.map((input, idx) => (
-              input.image && input.image[i] && (
-                <img
-                  key={idx}
-                  src={URL.createObjectURL(input.image[i])}
-                  alt="Uploaded"
-                  className="preview-image"
-                />
-              )
-            ))
-          )}
-        </div>
-      ))}
-    </div>
+                {[0, 1, 2, 3, 4].map((el, i) => (
+                  <div className="image-upload-section image-box" key={i}>
+                    <input
+                      type="file"
+                      onChange={(e) => handleImageChange(i, e.target.files[0], input.id)}
+                    />
+                    {/* 이미지 미리보기 로직 수정 */}
+                    {diaryInputs.some(input => input.image && input.image[i]) && (
+                      diaryInputs.map((input, idx) => (
+                        input.image && input.image[i] && (
+                          <img
+                            key={idx}
+                            src={URL.createObjectURL(input.image[i])}
+                            alt="Uploaded"
+                            className="preview-image"
+                          />
+                        )
+                      ))
+                    )}
+                  </div>
+                ))}
+                </div>
               </div>
             </div>
           ))}
