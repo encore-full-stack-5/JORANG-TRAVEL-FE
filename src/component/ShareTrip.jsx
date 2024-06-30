@@ -42,7 +42,6 @@ const Mytrip = () => {
             key={i}
             style={{ textDecoration: "none" }}
           >
-            {console.log(post.id)}
             <ImageText
               src={post.diaries
                 .filter(

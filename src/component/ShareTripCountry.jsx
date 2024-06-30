@@ -83,13 +83,19 @@ const ShareTripCountry = () => {
       </div>
       <div style={{ display: "flex", margin: "10px 15% 0 15%" }}>
         {posts?.map((post, i) => (
-          <ImageText
-            key={i}
-            src={post.diaries
-              .filter((diary) => diary.photos && diary.photos.length > 0)
-              .map((diary) => diary.photos[0].photoURL)}
-            content={post.title}
-          ></ImageText>
+          <Link
+          to={`/detail-post/${post.id}`}
+          key={i}
+          style={{ textDecoration: "none" }}
+        >
+            <ImageText
+              key={i}
+              src={post.diaries
+                .filter((diary) => diary.photos && diary.photos.length > 0)
+                .map((diary) => diary.photos[0].photoURL)}
+              content={post.title}
+            ></ImageText>
+          </Link>
         ))}
       </div>
     </div>

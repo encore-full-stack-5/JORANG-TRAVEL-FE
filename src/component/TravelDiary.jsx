@@ -625,20 +625,24 @@ const createExpenseId = async (date) => {
     diaryInputs.forEach((el) => diaryRequestDto.push({id: el.id, title: el.diarytTitle, content: el.description, date: el.date, scope: el.scope}));
     await updateDiary(diaryRequestDto);
 
-    const photoPaths = [];
-    const photoRequestDto = [];
-    // const formData = new FormData();
     diaryInputs.forEach((el) => {
+      console.log(el);
       const photoIndex = Object.keys(el.image);
+      const formData = new FormData();
+      formData.append("diaryId", el.id);
       photoIndex.forEach(index => {
-        console.log(URL.createObjectURL(el.image[index]).substring(5));
-        // formData.append('file', el.image[index]);}
-        photoPaths.push(URL.createObjectURL(el.image[index]).substring(5));}
-      ); // file 형태로 보내면 에러 뜸
-      photoRequestDto.push({diaryId: el.id, paths: photoPaths});
+        // console.log(formData);
+        formData.append('file', el.image[index]);
+        // console.log(formData);
+      });
+      savePhotos(formData);
+        // photoPaths.push(URL.createObjectURL(el.image[index]).substring(5));}
+       // file 형태로 보내면 에러 뜸
+      // console.log(formData);
+      // photoRequestDto.push({diaryId: el.id, files: formData});
     });
-    console.log(photoRequestDto);
-    await savePhotos(photoRequestDto);
+    // console.log(photoRequestDto);
+    // await savePhotos(photoRequestDto);
   }
 
   const handleDiaryScope = (isChecked, id) => {
@@ -726,33 +730,6 @@ const createExpenseId = async (date) => {
                     }
                   />
                 </div>
-                {/* <div className="image-upload-container">
-                  {[0,1,2,3,4].map((el,i) => (
-                  <div className="image-upload-section image-box" key={i}>
-                
-                    <input
-                      key={i}
-                      type="file"
-                      onChange={(e) =>{
-                        console.log(e);
-                        handleImageChange(i, e.target.files[0], input.id)}
-                      }
-                      placeholder="사진"
-                    />  
-
-
-                    {input.image && input.image[i] && (
-
-                      <img
-                        src={URL.createObjectURL(input.image[i])}
-                        alt="Uploaded"
-                        className="preview-image"
-                      />
-                    )}
-v
-                  </div>
-                  ))}
-                </div> */}
                 <div className="image-upload-container">
                   {[0,1,2,3,4].map((el,i) => (
                   <div className="image-upload-section image-box" key={i}>
@@ -784,7 +761,7 @@ v
           </button>
         </div>
         <div style={{ textAlign: "right" }}>
-          <button onClick={handleSaveDiary} className="save-button">
+          <button onClick={saveDiaryAndPhoto} className="save-button">
             임시 저장
           </button>
         </div>

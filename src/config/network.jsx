@@ -1,13 +1,16 @@
 import axios from "axios";
 
-export const api = async (url, method, body, params, baseURL) => {
+export const api = async (url, method, body, params) => {
   const getToken = () => {
     if (
-      url === " /api/v1/auths/signUp" ||
+      url === "/api/v1/auths/signUp" ||
       url === "/api/v1/auths/signIn" ||
       url === "/api/v1/posts/top5/recent" ||
       url === "/api/v1/posts/top5/like" ||
       url === "/api/v1/posts/top5/diaries" ||
+      url.startsWith("/api/v1/auths/loginId") ||
+      url.startsWith("/api/v1/auths/email") ||
+
 
       // url === "/api/v1/posts/recent" 
       // url === "/api/v1/expense-details"
@@ -15,8 +18,7 @@ export const api = async (url, method, body, params, baseURL) => {
       url === "/api/v1/posts/recent" ||
       url === "/api/v1/posts/recent/diaries"
 
-    )
-      return "";
+    ) return "";
     return "Bearer " + localStorage.getItem("token");
   };
 

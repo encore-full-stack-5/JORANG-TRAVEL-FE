@@ -4,7 +4,7 @@ import filterImage from "./../image/filterImage.png";
 import { getRecentPostsFirst } from "../api/post-api";
 import "./Posts.css";
 import DatePicker, { DateObject } from "react-multi-date-picker";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { savePost } from "../config/postApi";
 
 const Posts = () => {
@@ -156,13 +156,18 @@ const Posts = () => {
               )
             ).slice((currentPage-1)*10, currentPage*10)
             .map((post, i) => (
-              <ImageText
+              <Link
+                to={`/detail-post/${post.id}`}
                 key={i}
-                src={post.diaries
-                  .filter((diary) => diary.photos && diary.photos.length > 0)
-                  .map((diary) => diary.photos[0].photoURL)}
-                content={post.title}
-              ></ImageText>
+                style={{ textDecoration: "none" }}>
+                <ImageText
+                  key={i}
+                  src={post.diaries
+                    .filter((diary) => diary.photos && diary.photos.length > 0)
+                    .map((diary) => diary.photos[0].photoURL)}
+                  content={post.title}
+                ></ImageText>
+              </Link>
             ))}
         </div>
       </div>
