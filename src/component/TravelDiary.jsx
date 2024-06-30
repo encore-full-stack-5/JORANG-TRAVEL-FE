@@ -754,27 +754,26 @@ v
                   ))}
                 </div> */}
                 <div className="image-upload-container">
-                {[0, 1, 2, 3, 4].map((el, i) => (
+                  {[0,1,2,3,4].map((el,i) => (
                   <div className="image-upload-section image-box" key={i}>
                     <input
+                      key={i}
                       type="file"
-                      onChange={(e) => handleImageChange(i, e.target.files[0], input.id)}
-                    />
-                    {/* 이미지 미리보기 로직 수정 */}
-                    {diaryInputs.some(input => input.image && input.image[i]) && (
-                      diaryInputs.map((input, idx) => (
-                        input.image && input.image[i] && (
-                          <img
-                            key={idx}
-                            src={URL.createObjectURL(input.image[i])}
-                            alt="Uploaded"
-                            className="preview-image"
-                          />
-                        )
-                      ))
+                      onChange={(e) =>{
+                        console.log(e);
+                        handleImageChange(i, e.target.files[0], input.id)}
+                      }
+                      placeholder="사진"
+                    />  
+                    {input.image && input.image[i] && (
+                      <img
+                        src={URL.createObjectURL(input.image[i])}
+                        alt="Uploaded"
+                        className="preview-image"
+                      />
                     )}
                   </div>
-                ))}
+                  ))}
                 </div>
               </div>
             </div>
