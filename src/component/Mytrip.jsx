@@ -67,7 +67,7 @@ const Mytrip = () => {
       <div className="mytrip-map-display">
         {/* {console.log(myPosts)} */}
         {myPosts && myPosts.length > 0 ? (
-          myPosts.map((post, index) => (
+          displayPosts(myPosts).map((post, index) => (
             <div key={index}>
               <Link
                 to={`/detail-post/${post.id}`}
@@ -79,8 +79,12 @@ const Mytrip = () => {
             </div>
           ))
         ) : (
-          <p className="trip-font-col
-          or">작성한 여행일지가 없습니다.</p>
+          <p
+            className="trip-font-col
+          or"
+          >
+            작성한 여행일지가 없습니다.
+          </p>
         )}
       </div>
 

@@ -6,8 +6,6 @@ const Place = () => {
   const [continent, setContinent] = useState("");
   const [tripStyle, setTripStyle] = useState("");
 
-  const [showPlace2Message, setShowPlace2Message] = useState(false);
-
   const [result, setResult] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -39,7 +37,7 @@ const Place = () => {
       console.log("showPlace2 들어옴");
       setContinent(message);
       console.log("continent", message);
-      setShowPlace2Message(true);
+      // setShowPlace2Message(true);
     } else {
       console.log("showPlace2-continent 들어옴");
       setTripStyle(message);
@@ -74,6 +72,7 @@ const Place = () => {
               <p className="chatbot-font">여행 스타일을 입력하세요</p>
             </div>
           )}
+
           {tripStyle !== "" ? (
             <div className="chatbot-user-font">
               <div>{tripStyle}</div>

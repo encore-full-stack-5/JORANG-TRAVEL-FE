@@ -113,20 +113,28 @@ export const getMyDiary = async () => {
 
 export const savePost = async () => {
   try {
-  const res = await api("/api/v1/posts", "post");
-  console.log(res.data);
-  return res.data;
+    const res = await api("/api/v1/posts", "post");
+    console.log(res.data);
+    return res.data;
   } catch (error) {
     console.error("Error in savePost", error);
   }
-}
+};
 
 export const updatePost = async (id, title) => {
   try {
-  const res = await api(`/api/v1/posts/$${id}`, "put", {title: title});
-  return res.data;
+    const res = await api(`/api/v1/posts/${id}`, "put", { title: title });
+    return res.data;
   } catch (error) {
     console.error("Error in savePost", error);
   }
-}
+};
 
+export const getCountryInfo = async (countryName) => {
+  try {
+    const res = await api(`/api/v1/country/info/${countryName}`, "get");
+    return res.data;
+  } catch (error) {
+    console.error("Error in getCountryInfo", error);
+  }
+};
