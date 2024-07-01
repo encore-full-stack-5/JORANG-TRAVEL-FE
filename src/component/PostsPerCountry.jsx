@@ -31,6 +31,7 @@ const PostsPerCountry = () => {
 
 
   useEffect(() => {
+    localStorage.removeItem("currentPage");
     getPostsAndSetPage();
   }, []);
 

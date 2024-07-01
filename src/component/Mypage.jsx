@@ -9,6 +9,9 @@ import {
   updateUser,
 } from "../config/authApi";
 import { useNavigate } from "react-router-dom";
+import Loading from "./Loading";
+import { getChatbotMypage } from "../config/chatbotApi";
+import { getMyDiary } from "../config/postApi";
 
 const Mypage = () => {
   const [nickname, setNickname] = useState("");
@@ -19,8 +22,13 @@ const Mypage = () => {
   const navigate = useNavigate();
   const [expenses, setExpenses] = useState([]);
   const [diaries, setDiaries] = useState([]);
+  const [chatbotDiaries, setChatbotDiaries] = useState([]);
+  const [chatbotResult, setChatbotResult] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [aiCheck, setAiCheck] = useState(false);
 
   useEffect(() => {
+    localStorage.removeItem("currentPage");
     const checkLoginStatus = async () => {
       const loginId = localStorage.getItem("id");
       if (loginId) {
@@ -62,6 +70,7 @@ const Mypage = () => {
     checkLoginStatus();
     getExpensesApi();
     getDiaryApi();
+    getMyDiaryApi();
   }, [navigate, isNicknameChanged, isPasswordChanged]);
 
   const updateUserPasswordApi = async (e) => {
@@ -96,6 +105,36 @@ const Mypage = () => {
       setIsNicknameChanged(true);
     } catch {
       console.log("error in signUp");
+    }
+  };
+
+  const getMyDiaryApi = async () => {
+    try {
+      const response = await getMyDiary();
+      setChatbotDiaries(response);
+    } catch (error) {
+      console.log("Error in getMyDiaryApi", error);
+    }
+  };
+
+  const getChatbotMypageApi = async () => {
+    if (!aiCheck) {
+      setAiCheck(!aiCheck);
+      setLoading(true);
+      console.log("chatbotDiaries" + chatbotDiaries);
+      try {
+        const response = await getChatbotMypage({
+          diaries: chatbotDiaries,
+        });
+        console.log(response);
+        setChatbotResult(response.replaceAll("**", "\n"));
+        setLoading(false);
+      } catch (error) {
+        console.log("Error in getPlaceApi", error);
+        setLoading(false);
+      }
+    } else {
+      setAiCheck(!aiCheck);
     }
   };
 
@@ -157,7 +196,36 @@ const Mypage = () => {
             </button>
           </div>
         </div>
+
+        <div>
+          <br />
+          <br />
+          <br />
+          <button
+            className="signature-oval"
+            style={{ height: "40px", width: "180px" }}
+            onClick={getChatbotMypageApi}
+          >
+            AI 맞춤 여행 계획
+          </button>
+          {aiCheck ? (
+            <div>
+              {loading ? (
+                <div style={{ width: "30px", height: "30px" }}>
+                  <Loading />
+                </div>
+              ) : chatbotResult === "" ? (
+                <div />
+              ) : (
+                <div className="mypage-chatbot">{chatbotResult}</div>
+              )}
+            </div>
+          ) : (
+            <div />
+          )}
+        </div>
       </div>
+
       <div style={{ margin: "45px", width: "50%" }}>
         <div style={{ display: "flex", margin: "20px" }}>
           <img
