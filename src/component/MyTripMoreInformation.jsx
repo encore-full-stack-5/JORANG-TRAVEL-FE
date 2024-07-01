@@ -45,7 +45,9 @@ const MyTripMoreInformation = () => {
                 key={index}
                 style={{ textDecoration: "none" }}
               >
-                <ImageText src={Norway} content={data.title}></ImageText>
+                <ImageText src={data.diaries
+                  .filter((diary) => diary.photos && diary.photos.length > 0)
+                  .map((diary) => diary.photos[0].photoURL)} content={data.title}></ImageText>
               </Link>
             </div>
           ))

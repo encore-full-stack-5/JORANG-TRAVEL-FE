@@ -65,7 +65,11 @@ export const getPostByUser = async () => {
 export const getChartData = async (postId) => {
   try {
     const res = await api(
+<<<<<<< HEAD
+      `/api/v1/expense-details/postId/${postId}/chart`,
+=======
       `/api/v1/expenseDetail/chart/postId/${postId}`,
+>>>>>>> 496284b05d81570404daef4942c33d47e4084e25
       "get"
     );
     return res.data;
@@ -146,5 +150,14 @@ export const getCountryInfo = async (countryName) => {
     return res.data;
   } catch (error) {
     console.error("Error in getCountryInfo", error);
+  }
+};
+
+export const getUnpublishedPosts = async () => {
+  try {
+    const res = await api(`/api/v1/posts/unpublished`, "get");
+    return res.data;
+  } catch (error) {
+    console.error("Error in getUnpublishedPosts", error);
   }
 };

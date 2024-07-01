@@ -42,7 +42,7 @@ const Mytrip = () => {
       <div
         style={{
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "flex-start",
           margin: "10px 13% 0 13%",
         }}
       >
@@ -81,7 +81,7 @@ const Mytrip = () => {
       <div
         style={{
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "flex-start",
           margin: "10px 13% 0 13%",
         }}
       >

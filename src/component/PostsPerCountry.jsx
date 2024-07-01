@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getRecentPostsByCountry } from "../api/post-api";
 import DatePicker, { DateObject } from "react-multi-date-picker";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import ImageText from "./ImageText";
 import filterImage from "./../image/filterImage.png";
 import countries from "../countries.js";
@@ -17,7 +17,6 @@ const PostsPerCountry = () => {
   const [showFilter, setShowFilter] = useState(false);
   const [pages, setPages] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postLength, setPostLength] = useState();
   // const [filteredPosts, setFilteredPosts] = useState([]);
   const countryInEnglish = useParams().country;
   
@@ -31,15 +30,15 @@ const PostsPerCountry = () => {
 
 
   useEffect(() => {
-    localStorage.removeItem("currentPage");
     getPostsAndSetPage();
   }, []);
-
   const getPostsAndSetPage = async () => {
-    const res = await getRecentPostsByCountry(countryInEnglish);
+    const countryInKorean = getCountryInKorean();
+    const res = await getRecentPostsByCountry(countryInKorean);
     setPosts(res);
     updatePageNumbers(res);
-    setCurrentPage(localStorage.getItem("currentPage"));
+    if (!localStorage.getItem("currentPage")) setCurrentPage(1);
+    else setCurrentPage(localStorage.getItem("currentPage"));
     console.log(localStorage.getItem("currentPage"));
   };
 
@@ -174,6 +173,10 @@ const PostsPerCountry = () => {
                   new Date(diary.date).getTime() <= date[1]))
                 .slice((currentPage-1)*10, currentPage*10)
                 .map((post, i) => (
+                  <Link
+                  to={`/detail-post/${post.id}`}
+                  key={i}
+                  style={{ textDecoration: "none" }}>
                     <ImageText
                       key={i}
                       src={post.diaries
@@ -181,6 +184,7 @@ const PostsPerCountry = () => {
                         .map((diary) => diary.photos[0].photoURL)}
                       content={post.title}
                     ></ImageText>
+                    </Link>
                   ))}
             </div>
           </div>
