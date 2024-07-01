@@ -8,6 +8,7 @@ const Mytrip = () => {
   const [topPosts, setTopPosts] = useState([]);
 
   useEffect(() => {
+    localStorage.removeItem("currentPage");
     getPosts();
   }, []);
 

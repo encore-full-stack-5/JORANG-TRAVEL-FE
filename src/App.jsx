@@ -33,6 +33,7 @@ import Landmark from "./component/Landmark";
 import Plan from "./component/Plan";
 
 function App() {
+  
   return (
     <div className="App">
       <BrowserRouter>
@@ -58,7 +59,7 @@ function App() {
             element={<ShareTripCountry />}
           ></Route>
           <Route path="/posts" element={<Posts />}></Route>
-          <Route path="/slider" element={<ImageSlider />}></Route>
+          {/* <Route path="/slider" element={<ImageSlider />}></Route> */}
           <Route
             path="/posts/country/:country"
             element={<PostsPerCountry />}

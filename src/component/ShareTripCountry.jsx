@@ -19,19 +19,22 @@ const ShareTripCountry = () => {
   // console.log(location);
 
   useEffect(() => {
+    localStorage.removeItem("currentPage");
     getPosts();
     getCountryInfoApi();
   }, []);
 
   const getPosts = async () => {
-    const res = await getRecent5PostsByCountry(countryInEnglish);
+    const countryInKorean = getCountryInKorean();
+    const res = await getRecent5PostsByCountry(countryInKorean);
     setPosts(res);
   };
 
   const getCountryInfoApi = async () => {
     console.log("getCountryInfoApi 들어옴");
     try {
-      const response = await getCountryInfo(countryInEnglish);
+      const countryInKorean = getCountryInKorean();
+      const response = await getCountryInfo(countryInKorean);
       console.log(response);
       setCountryInfo(response.info);
     } catch (error) {

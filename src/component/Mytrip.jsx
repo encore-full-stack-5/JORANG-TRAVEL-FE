@@ -32,6 +32,7 @@ const Mytrip = () => {
   };
 
   useEffect(() => {
+    localStorage.removeItem("currentPage");
     getPostByUserApi();
     getUserLikePostsApi();
     localStorage.removeItem("currentPage");

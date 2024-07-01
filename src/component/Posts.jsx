@@ -19,6 +19,7 @@ const Posts = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    localStorage.removeItem("currentPage");
     getPostsAndSetPage();
   }, []);
 
