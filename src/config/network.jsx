@@ -18,7 +18,8 @@ export const api = async (url, method, body, params, baseURL) => {
       url.startsWith("/api/v1/auths/loginId/") ||
       url.startsWith("/api/v1/auths/email/") ||
       url.startsWith("/api/v1/posts/public/") ||
-      url.startsWith("/api/v1/diaries/posts")
+      url.startsWith("/api/v1/diaries/posts") ||
+      url.startsWith("/api/v1/expenseDetail/chart/postId/")
     )
       return "";
     return "Bearer " + localStorage.getItem("token");

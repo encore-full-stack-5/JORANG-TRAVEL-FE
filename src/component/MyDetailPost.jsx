@@ -41,6 +41,7 @@ const MyDetailPost = () => {
       console.log(response);
       setPost(response);
       setLike(response.love);
+      setExpenses(response);
     } catch {
       console.log("error in getPostByIdApi");
     }
@@ -80,21 +81,21 @@ const MyDetailPost = () => {
     }
   };
 
-  const getByIdApi = async () => {
-    try {
-      const response = await getById(id);
-      console.log(response);
-      setExpenses(response);
-    } catch {
-      console.log("error in getByIdApi");
-    }
-  };
+  //   const getByIdApi = async () => {
+  //     try {
+  //       const response = await getById(id);
+  //       console.log(response);
+
+  //     } catch {
+  //       console.log("error in getByIdApi");
+  //     }
+  //   };
 
   useEffect(() => {
     getPostByIdApi();
     getAllByPostIdApi();
     checkLikeApi();
-    getByIdApi();
+    // getByIdApi();
   }, []);
 
   return (
