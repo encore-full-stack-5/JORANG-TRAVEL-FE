@@ -1040,3 +1040,9 @@ input[type="password"] {
   border-radius: 10px;
   max-width: 80%;
 }
+
+.search-style {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
