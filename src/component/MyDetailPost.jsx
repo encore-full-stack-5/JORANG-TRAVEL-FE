@@ -7,11 +7,12 @@ import {
   likeComment,
   getById,
   getExpenseDetailsByPostId,
+  getMyPostById,
 } from "../config/postApi";
 import DonutChart from "./DonutChart";
 import ImageSlider from "./ImageSlider";
 
-const DetailPost = () => {
+const MyDetailPost = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [post, setPost] = useState({});
@@ -36,7 +37,7 @@ const DetailPost = () => {
   const getPostByIdApi = async () => {
     try {
       console.log("-------" + id);
-      const response = await getPostById(id);
+      const response = await getMyPostById(id);
       console.log(response);
       setPost(response);
       setLike(response.love);
@@ -80,18 +81,17 @@ const DetailPost = () => {
     }
   };
 
-  // const getByIdApi = async () => {
-  //   try {
-  //     const response = await getById(id);
-  //     console.log(response);
-  //     setExpenses(response);
-  //   } catch {
-  //     console.log("error in getByIdApi");
-  //   }
-  // };
+  //   const getByIdApi = async () => {
+  //     try {
+  //       const response = await getById(id);
+  //       console.log(response);
+
+  //     } catch {
+  //       console.log("error in getByIdApi");
+  //     }
+  //   };
 
   useEffect(() => {
-    localStorage.removeItem("currentPage");
     getPostByIdApi();
     getAllByPostIdApi();
     checkLikeApi();
@@ -105,15 +105,15 @@ const DetailPost = () => {
       ) : (
         <div>
           {post ? (
-  <>
-    <h2 className="post-signature-color-oval-post" style={{ marginTop: "30px"}}>{post.title}</h2>
-    <p style={{ color: "#606060", fontSize: "15px", textAlign: "right", marginRight: "220px" }}>
-      작성일 : {formatDate(post.createdAt)}
-    </p>
-  </>
-) : (
-  <p>No post data available.</p>
-)}
+            <>
+              <div className="post-signature-color-oval-post">{post.title}</div>
+              <p style={{ color: "#606060", fontSize: "15px" }}>
+                생성일 : {formatDate(post.createdAt)}
+              </p>
+            </>
+          ) : (
+            <p>No post data available.</p>
+          )}
 
           <div className="post-signature-color-oval-post">
             <h3 style={{ marginLeft: "250px", textAlign: "left" }}>여행기</h3>
@@ -216,25 +216,21 @@ const DetailPost = () => {
           <DonutChart style={{ width: "200px", height: "200px" }} postId={id} />
 
           {likeCheck ? (
-          <div style={{display: "flex", justifyContent: "flex-end", marginBottom: "30px", marginRight: "230px" }}>
             <button
               className="signature-oval"
-              style={{ backgroundColor: "#d7e9fa", textAlign: "center" }}
+              style={{ backgroundColor: "#d7e9fa" }}
               onClick={likeCommentApi}
             >
               <p style={{ color: "#606060", fontSize: "15px" }}>
                 {post.love}개
               </p>
             </button>
-          </div>
           ) : (
-            <div style={{display: "flex", justifyContent: "flex-end", marginBottom: "30px", marginRight: "230px"}}>
-              <button className="signature-oval" onClick={likeCommentApi}>
-                <p style={{ color: "#606060", fontSize: "15px" }}>
-                  {post.love}개
-                </p>
-              </button>
-            </div>
+            <button className="signature-oval" onClick={likeCommentApi}>
+              <p style={{ color: "#606060", fontSize: "15px" }}>
+                {post.love}개
+              </p>
+            </button>
           )}
         </div>
       )}
@@ -242,4 +238,4 @@ const DetailPost = () => {
   );
 };
 
-export default DetailPost;
+export default MyDetailPost;

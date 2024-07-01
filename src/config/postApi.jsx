@@ -10,10 +10,19 @@ export const getDiaryAllByPostId = async (id) => {
 
 export const getPostById = async (id) => {
   try {
-    const res = await api(`/api/v1/posts/${id}`, "get");
+    const res = await api(`/api/v1/posts/public/${id}`, "get");
     return res.data;
   } catch (error) {
     console.error("Error in getPostById", error);
+  }
+};
+
+export const getMyPostById = async (id) => {
+  try {
+    const res = await api(`/api/v1/posts/my/${id}`, "get");
+    return res.data;
+  } catch (error) {
+    console.error("Error in getMyPostById", error);
   }
 };
 
@@ -56,7 +65,11 @@ export const getPostByUser = async () => {
 export const getChartData = async (postId) => {
   try {
     const res = await api(
+<<<<<<< HEAD
       `/api/v1/expense-details/postId/${postId}/chart`,
+=======
+      `/api/v1/expenseDetail/chart/postId/${postId}`,
+>>>>>>> 496284b05d81570404daef4942c33d47e4084e25
       "get"
     );
     return res.data;
@@ -76,14 +89,14 @@ export const getExpenseDetailsByPostId = async (postId) => {
     console.error("게시물 ID로 경비 세부 정보 가져오기 오류", error);
   }
 };
-export const getById = async (id) => {
-  try {
-    const response = await api(`/api/v1/posts/${id}`, "get");
-    return response.data;
-  } catch (error) {
-    console.error("포스트id로 포스트 다 가져오기 오류", error);
-  }
-};
+// export const getById = async (id) => {
+//   try {
+//     const response = await api(`/api/v1/posts/${id}`, "get");
+//     return response.data;
+//   } catch (error) {
+//     console.error("포스트id로 포스트 다 가져오기 오류", error);
+//   }
+// };
 
 export const postListByUser = async (pageNumber) => {
   try {

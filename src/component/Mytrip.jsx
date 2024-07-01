@@ -9,6 +9,7 @@ const Mytrip = () => {
   const [myPosts, setMyPosts] = useState([]);
   const [onGoingPosts, setOngoingPosts] = useState([]);
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const getUserLikePostsApi = async () => {
     try {
@@ -44,6 +45,22 @@ const Mytrip = () => {
   };
 
   useEffect(() => {
+<<<<<<< HEAD
+=======
+    const checkLoginStatus = async () => {
+      const loginId = localStorage.getItem("id");
+      if (loginId) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+        alert("로그인이 되어 있지 않습니다. 로그인 페이지로 이동합니다.");
+        navigate("/signin");
+      }
+    };
+
+    checkLoginStatus();
+    localStorage.removeItem("currentPage");
+>>>>>>> 496284b05d81570404daef4942c33d47e4084e25
     getPostByUserApi();
     getUserLikePostsApi();
     getOngoingPosts();
@@ -58,7 +75,7 @@ const Mytrip = () => {
     const res = await savePost();
     console.log(res);
     navigate(`/posts/${res}/write`);
-  }
+  };
 
   return (
     <div>
@@ -91,7 +108,7 @@ const Mytrip = () => {
           displayPosts(myPosts).map((post, index) => (
             <div key={index}>
               <Link
-                to={`/detail-post/${post.id}`}
+                to={`/my/detail-post/${post.id}`}
                 key={index}
                 style={{ textDecoration: "none" }}
               >
@@ -130,7 +147,7 @@ const Mytrip = () => {
           displayPosts(likePosts).map((post, index) => (
             <div key={index}>
               <Link
-                to={`/detail-post/${post.post.id}`}
+                to={`/my/detail-post/${post.post.id}`}
                 key={index}
                 style={{ textDecoration: "none" }}
               >
@@ -141,7 +158,12 @@ const Mytrip = () => {
             </div>
           ))
         ) : (
-          <p className="trip-font-color">찜한 여행일지가 없습니다.</p>
+          <p
+            className="trip-font-col
+        or"
+          >
+            찜한 여행일지가 없습니다.
+          </p>
         )}
       </div>
       <div className="mytrip-row">
