@@ -619,6 +619,7 @@ const createExpenseId = async (date) => {
     const photoPaths = [];
     const photoRequestDto = [];
     // const formData = new FormData();
+    if (window.confirm("임시저장되었습니다")) {
     diaryInputs.forEach((el) => {
       console.log(el);
       const photoIndex = Object.keys(el.image);
@@ -630,11 +631,13 @@ const createExpenseId = async (date) => {
         // console.log(formData);
       });
       savePhotos(formData);
+    
         // photoPaths.push(URL.createObjectURL(el.image[index]).substring(5));}
        // file 형태로 보내면 에러 뜸
       // console.log(formData);
       // photoRequestDto.push({diaryId: el.id, files: formData});
     });
+  }
     // console.log(photoRequestDto);
     // await savePhotos(photoRequestDto);
   }
