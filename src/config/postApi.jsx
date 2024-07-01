@@ -10,10 +10,19 @@ export const getDiaryAllByPostId = async (id) => {
 
 export const getPostById = async (id) => {
   try {
-    const res = await api(`/api/v1/posts/${id}`, "get");
+    const res = await api(`/api/v1/posts/public/${id}`, "get");
     return res.data;
   } catch (error) {
     console.error("Error in getPostById", error);
+  }
+};
+
+export const getMyPostById = async (id) => {
+  try {
+    const res = await api(`/api/v1/posts/my/${id}`, "get");
+    return res.data;
+  } catch (error) {
+    console.error("Error in getMyPostById", error);
   }
 };
 

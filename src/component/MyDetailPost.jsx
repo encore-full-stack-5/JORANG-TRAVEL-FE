@@ -7,11 +7,12 @@ import {
   likeComment,
   getById,
   getExpenseDetailsByPostId,
+  getMyPostById,
 } from "../config/postApi";
 import DonutChart from "./DonutChart";
 import ImageSlider from "./ImageSlider";
 
-const DetailPost = () => {
+const MyDetailPost = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [post, setPost] = useState({});
@@ -36,7 +37,7 @@ const DetailPost = () => {
   const getPostByIdApi = async () => {
     try {
       console.log("-------" + id);
-      const response = await getPostById(id);
+      const response = await getMyPostById(id);
       console.log(response);
       setPost(response);
       setLike(response.love);
@@ -236,4 +237,4 @@ const DetailPost = () => {
   );
 };
 
-export default DetailPost;
+export default MyDetailPost;
