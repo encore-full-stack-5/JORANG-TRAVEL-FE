@@ -55,6 +55,7 @@ const Plan = () => {
   };
 
   useEffect(() => {
+    localStorage.removeItem("currentPage");
     if (planStyle !== "") {
       getPlanApi();
     }

@@ -48,6 +48,7 @@ const Place = () => {
   };
 
   useEffect(() => {
+    localStorage.removeItem("currentPage");
     if (tripStyle !== "") {
       getPlaceApi();
     }

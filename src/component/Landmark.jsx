@@ -32,6 +32,7 @@ const Landmark = () => {
   };
 
   useEffect(() => {
+    localStorage.removeItem("currentPage");
     if (landmark !== "") {
       getLandmarkApi();
     }
