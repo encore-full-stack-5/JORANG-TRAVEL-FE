@@ -55,6 +55,7 @@ const TravelDiary = () => {
   const [initExpense, setInitExpense] = useState(true);
   const params = useParams();
   const postId = params.id;
+  const [expenseId,setExpenseId] = useState();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -63,7 +64,7 @@ const TravelDiary = () => {
   // const [scope, setScope] = useState();
 
   const [expenseInputs, setExpenseInputs] = useState([
-    { id: Math.random(), amount: "", location: "" ,category:""},
+    { id: "", amount: "", location: "" ,category:""},
   ]);
 
   const [diaryInputs, setDiaryInputs] = useState([
@@ -132,31 +133,34 @@ const TravelDiary = () => {
   // handleSave
   // handleSaveTravelDiary
   const handleSave = async () => {
- 
     const newExpenses = expenseEntries.map(entry => ({
       cost: entry.amount, 
       place: entry.location, 
       category: entry.category,
-      scope:"public",
-      country:"일본"
+      // scope:"public",
+      // country:"일본"
       
     }));
-    // const newExpenses = expenseInputs.map(input => ({
-    //   cost: input.amount,
-    //   place: input.location,
-    //   category: input.category,
-      
-    
-  
+      console.log(expenseInputs[expenseInputs.length-1].id)
     // 새로운 경비를 저장하기 위해 API 호출
-    const response = await api(`api/v1/expense-details`, "post", newExpenses);
+    const response = await api(`api/v1/expense-details/expenses/${expenseId}`, "post", newExpenses);
     // setModalIsOpen(true);
+    const expenseDetail =expenseEntries.map(entry => ({
+      id:response.data.id,
+      cost: entry.amount, 
+      place: entry.location, 
+      category: entry.category,
+      // scope:"public",
+      // country:"일본"
+      
+    }));
     if (window.confirm("임시저장되었습니다")) {
     // API 호출이 성공한 후에만 상태 업데이트
     if (response.ok) { // API가 성공 시 'ok' 속성을 반환한다고 가정
       setExpenses([
         ...expenses,
-        ...newExpenses
+        ...newExpenses,
+        ...expenseDetail
       ]);
   
       // 경비 업데이트 후 모달 오픈
@@ -217,7 +221,7 @@ setModalIsOpenSaveTravelDiary(true);
 
     // const response = await saveExpense();
     // // 입력 필드 초기화
-    setExpenseInputs([{ id: Math.random(), amount: "", location: "",category: "" }]);
+    setExpenseInputs([{ id: "", amount: "", location: "",category: "" }]);
     setIsExpenseModalOpen(false);
   };
 
@@ -276,13 +280,14 @@ const handleDateClick = async (date) => {
   try {
     // 날짜를 기대하는 형식으로 보내야 합니다. API 요구 사항에 맞게 조정하세요
     const response = await api(`/api/v1/expenses/posts/${postId}`, "post", { date: formattedDate });
-    
+    console.log({response})
     // if (response && response.data && response.data.id) {
-     if (response.data && response.data.id) {
+     if (response.data && response.data) {
+      setExpenseId(response.data)
       setExpenseInputs((prevInputs) => [
         ...prevInputs,
         {
-          id: response.data.id,
+          id: response.data,
           amount: "",
           date: formattedDate,
           location: "",
@@ -611,6 +616,9 @@ const createExpenseId = async (date) => {
     diaryInputs.forEach((el) => diaryRequestDto.push({id: el.id, title: el.diarytTitle, content: el.description, date: el.date, scope: el.scope}));
     await updateDiary(diaryRequestDto);
 
+    const photoPaths = [];
+    const photoRequestDto = [];
+    // const formData = new FormData();
     diaryInputs.forEach((el) => {
       console.log(el);
       const photoIndex = Object.keys(el.image);
@@ -761,9 +769,11 @@ const createExpenseId = async (date) => {
                   alert("발행되었습니다.");
                   navigate("/mytrip");
                 }
-                else {
-                  alert("발행이 취소되었습니다");
-                  setModalIsOpenSaveTravelDiary(false);
+                // alert("발행되었습니다.");
+              
+             else {
+              alert("발행이 취소되었습니다");
+              setModalIsOpenSaveTravelDiary(false);
 
             }
           }
@@ -771,7 +781,7 @@ const createExpenseId = async (date) => {
           }}>완료</button>
         
         </Modal>
-
+          
         </>
         }
         {showDiary && 
@@ -796,6 +806,8 @@ const createExpenseId = async (date) => {
                     onChange={(e) => handleDiaryTitleChange(e.target.value, input.id)}
                     className="diary-title-input"
                   />
+                  <input id="diary-scope" type="checkbox" name="PERSONAL" onChange={(e) => handleDiaryScope(e.target.checked, input.id)}/>
+                  <label htmlFor="PERSONAL">비공개</label>
                 </div>
                 <button
                   onClick={() => deleteDiaryInput(input.id)}
@@ -815,6 +827,33 @@ const createExpenseId = async (date) => {
                     }
                   />
                 </div>
+                {/* <div className="image-upload-container">
+                  {[0,1,2,3,4].map((el,i) => (
+                  <div className="image-upload-section image-box" key={i}>
+                
+                    <input
+                      key={i}
+                      type="file"
+                      onChange={(e) =>{
+                        console.log(e);
+                        handleImageChange(i, e.target.files[0], input.id)}
+                      }
+                      placeholder="사진"
+                    />  
+
+
+                    {input.image && input.image[i] && (
+
+                      <img
+                        src={URL.createObjectURL(input.image[i])}
+                        alt="Uploaded"
+                        className="preview-image"
+                      />
+                    )}
+v
+                  </div>
+                  ))}
+                </div> */}
                 <div className="image-upload-container">
                   {[0,1,2,3,4].map((el,i) => (
                   <div className="image-upload-section image-box" key={i}>
@@ -945,7 +984,7 @@ const createExpenseId = async (date) => {
           </div>
           </Modal>
           <div style={{ textAlign: "right" }}>
-            <button onClick={handleSave} className="save-button">
+            <button onClick={()=>handleSave()} className="save-button">
               임시저장
             </button>
           </div>
