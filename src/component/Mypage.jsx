@@ -28,6 +28,7 @@ const Mypage = () => {
   const [aiCheck, setAiCheck] = useState(false);
 
   useEffect(() => {
+    localStorage.removeItem("currentPage");
     const checkLoginStatus = async () => {
       const loginId = localStorage.getItem("id");
       if (loginId) {

@@ -27,6 +27,7 @@ const MyTripMoreInformation = () => {
   };
 
   useEffect(() => {
+    localStorage.removeItem("currentPage");
     const query = new URLSearchParams(location.search);
     const page = parseInt(query.get("page")) || 0;
     setCurrentPage(page);

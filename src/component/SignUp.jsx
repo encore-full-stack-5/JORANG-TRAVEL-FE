@@ -14,6 +14,7 @@ const SignUp = () => {
   const [loginId, setLoginId] = useState("");
   const [email, setEmail] = useState("");
   useEffect(() => {
+    localStorage.removeItem("currentPage");
     if (localStorage.getItem("id")) {
       setIsLoggedIn(true);
     }

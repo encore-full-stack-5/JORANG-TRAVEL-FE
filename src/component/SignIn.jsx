@@ -64,6 +64,9 @@ const SignIn = () => {
     }
   };
 
+  useEffect(()=> {localStorage.removeItem("currentPage");
+  },[])
+
   return !localStorage.getItem("id") ? (
     <div className="center-right">
       <form onSubmit={signInFunc}>

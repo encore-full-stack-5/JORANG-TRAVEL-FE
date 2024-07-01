@@ -69,7 +69,7 @@ function App() {
               element={<ShareTripCountry />}
             ></Route>
             <Route path="/posts" element={<Posts />}></Route>
-            <Route path="/slider" element={<ImageSlider />}></Route>
+            {/* <Route path="/slider" element={<ImageSlider />}></Route> */}
             <Route
               path="/posts/country/:country"
               element={<PostsPerCountry />}

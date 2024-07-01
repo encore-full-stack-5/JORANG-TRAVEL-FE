@@ -45,6 +45,7 @@ const Mytrip = () => {
     };
 
     checkLoginStatus();
+    localStorage.removeItem("currentPage");
     getPostByUserApi();
     getUserLikePostsApi();
     localStorage.removeItem("currentPage");

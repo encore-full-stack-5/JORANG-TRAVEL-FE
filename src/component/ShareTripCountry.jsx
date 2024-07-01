@@ -19,19 +19,22 @@ const ShareTripCountry = () => {
   // console.log(location);
 
   useEffect(() => {
+    localStorage.removeItem("currentPage");
     getPosts();
     getCountryInfoApi();
   }, []);
 
   const getPosts = async () => {
-    const res = await getRecent5PostsByCountry(countryInEnglish);
+    const countryInKorean = getCountryInKorean();
+    const res = await getRecent5PostsByCountry(countryInKorean);
     setPosts(res);
   };
 
   const getCountryInfoApi = async () => {
     console.log("getCountryInfoApi 들어옴");
     try {
-      const response = await getCountryInfo(countryInEnglish);
+      const countryInKorean = getCountryInKorean();
+      const response = await getCountryInfo(countryInKorean);
       console.log(response);
       setCountryInfo(response.info);
     } catch (error) {
@@ -97,13 +100,19 @@ const ShareTripCountry = () => {
       <div style={{ display: "flex", margin: "10px 15% 0 15%" }}>
 
         {posts?.map((post, i) => (
-          <ImageText
-            key={i}
-            src={post.diaries
-              .filter((diary) => diary.photos && diary.photos.length > 0)
-              .map((diary) => diary.photos[0].photoURL)}
-            content={post.title}
-          ></ImageText>
+          <Link
+          to={`/detail-post/${post.id}`}
+          key={i}
+          style={{ textDecoration: "none" }}
+        >
+            <ImageText
+              key={i}
+              src={post.diaries
+                .filter((diary) => diary.photos && diary.photos.length > 0)
+                .map((diary) => diary.photos[0].photoURL)}
+              content={post.title}
+            ></ImageText>
+          </Link>
         ))}
       </div>
     </div>

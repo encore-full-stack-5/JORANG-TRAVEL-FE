@@ -91,6 +91,7 @@ const DetailPost = () => {
   // };
 
   useEffect(() => {
+    localStorage.removeItem("currentPage");
     getPostByIdApi();
     getAllByPostIdApi();
     checkLikeApi();

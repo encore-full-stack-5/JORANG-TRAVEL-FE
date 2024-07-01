@@ -3,6 +3,10 @@ import jorangImage from "./../image/jorangImage.png";
 import { Link, Outlet } from "react-router-dom";
 
 const Chatbot = () => {
+  useEffect(() => {
+    localStorage.removeItem("currentPage");
+  }, []);
+
   return (
     <div>
       <div className="row-left-center-space">

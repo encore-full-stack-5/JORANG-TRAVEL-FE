@@ -131,9 +131,9 @@ export const savePost = async () => {
   }
 };
 
-export const updatePost = async (id, title) => {
+export const updatePost = async (id, updatePostDto) => {
   try {
-    const res = await api(`/api/v1/posts/${id}`, "put", { title: title });
+    const res = await api(`/api/v1/posts/${id}`, "put", updatePostDto);
     return res.data;
   } catch (error) {
     console.error("Error in savePost", error);

@@ -8,6 +8,7 @@ const Mytrip = () => {
   const [topPosts, setTopPosts] = useState([]);
 
   useEffect(() => {
+    localStorage.removeItem("currentPage");
     getPosts();
   }, []);
 
@@ -51,7 +52,6 @@ const Mytrip = () => {
             key={i}
             style={{ textDecoration: "none" }}
           >
-            {console.log(post.id)}
             <ImageText
               src={post.diaries
                 .filter((diary) => diary.photos && diary.photos.length > 0)
