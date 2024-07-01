@@ -57,7 +57,7 @@ const TravelDiary = () => {
   // const [scope, setScope] = useState();
 
   const [expenseInputs, setExpenseInputs] = useState([
-    { id: Math.random(), amount: "", location: "" ,scope:"",category:"",country:""},
+    { id: Math.random(), amount: "", location: "" ,category:""},
   ]);
 
   const [diaryInputs, setDiaryInputs] = useState([
@@ -126,37 +126,26 @@ const TravelDiary = () => {
   // handleSave
   // handleSaveTravelDiary
   const handleSave = async () => {
-    // setExpenseEntries([
-      
-    //   ...expenseInputs.map((input) => ({
-    //     date: selectedExpenseDate,
-    //     amount: input.amount,
-    //     location: input.location,
-    //     scope:input.scope,
-    //     category:input.category,
-        
-    //   })),
-    // ]);
+ 
     const newExpenses = expenseEntries.map(entry => ({
       cost: entry.amount, 
       place: entry.location, 
-      category: "입장료",
-      // scope:entry.scope,
+      category: entry.category,
       scope:"public",
-      country: "일본"
+      country:"일본"
+      
     }));
     // const newExpenses = expenseInputs.map(input => ({
-    //   cost: input.amount, 
-    //   place: input.location, 
-    //   category: "입장료",
-    //   // scope:input.scope,
-    //   scope:"public",
-    //   country: "일본"
-    // }));
+    //   cost: input.amount,
+    //   place: input.location,
+    //   category: input.category,
+      
+    
   
     // 새로운 경비를 저장하기 위해 API 호출
     const response = await api(`api/v1/expense-details`, "post", newExpenses);
-    setModalIsOpen(true);
+    // setModalIsOpen(true);
+    if (window.confirm("임시저장되었습니다")) {
     // API 호출이 성공한 후에만 상태 업데이트
     if (response.ok) { // API가 성공 시 'ok' 속성을 반환한다고 가정
       setExpenses([
@@ -169,62 +158,12 @@ const TravelDiary = () => {
     } else {
       console.error('경비 저장 실패', response);
     }
+  }
   };
   
  
   const handleSaveTravelDiaryPublic = () => {
-    if (window.confirm("여행기를 발행 하시겠습니까?")) {
-      // 다이어리 입력 항목 중 하나라도 비어있는지 확인
-      const isDiaryInputsEmpty = diaryInputs.some((input) => {
-        const isEmpty =
-          // !input.diarytTitle ||
-          !input.date || !input.description || !input.image;
-        // if (!input.diarytTitle) {
-        //   console.log("Empty diary title:", input);
-        // }
-        if (!input.date) {
-          console.log("Empty diary date:", input);
-        }
-        if (!input.description) {
-          console.log("Empty diary description:", input);
-        }
-        if (!input.image) {
-          console.log("Empty diary image:", input);
-        }
-        return isEmpty;
-      });
-
-      const isNewEntryEmpty =
-        !newEntry.diaryTitle ||
-        !newEntry.date ||
-        !newEntry.description ||
-        !newEntry.image;
-      if (!newEntry.diaryTitle) {
-        console.log("Empty new entry title:", newEntry);
-      }
-      if (!newEntry.date) {
-        console.log("Empty new entry date:", newEntry);
-      }
-      if (!newEntry.description) {
-        console.log("Empty new entry description:", newEntry);
-      }
-      if (!newEntry.image) {
-        console.log("Empty new entry image:", newEntry);
-      }
-
-      if (isDiaryInputsEmpty || isNewEntryEmpty) {
-        alert("아직 내용이 입력되지 않았습니다. 계속해서 내용을 작성해주세요");
-      } else {
-        if(window.confirm("여행기를 발행 하시겠습니까?")){
-          setModalIsOpenSaveTravelDiary(true);
-        }
-        // alert("발행되었습니다.");
-      
-     else {
-      alert("발행이 취소되었습니다");
-    }
-  }
-}
+setModalIsOpenSaveTravelDiary(true);
   };
   const finalizePublication = () => {
     alert("발행되었습니다");
@@ -239,7 +178,7 @@ const TravelDiary = () => {
         date: selectedExpenseDate,
         amount: input.amount,
         location: input.location,
-        scope:input.scope,
+        
         category:input.category,
         
       })),
@@ -250,7 +189,8 @@ const TravelDiary = () => {
         date: selectedExpenseDate,
         amount: input.amount,
         location: input.location,
-        scope:input.scope,
+        category:input.category,
+
       })),
     ]);
       setExpenseEntries([
@@ -259,7 +199,7 @@ const TravelDiary = () => {
         date: selectedExpenseDate,
         amount: input.amount,
         location: input.location,
-        scope:input.scope,
+        
         category:input.category,
         
       })),
@@ -268,7 +208,7 @@ const TravelDiary = () => {
 
     // const response = await saveExpense();
     // // 입력 필드 초기화
-    setExpenseInputs([{ id: Math.random(), amount: "", location: "" }]);
+    setExpenseInputs([{ id: Math.random(), amount: "", location: "",category: "" }]);
     setIsExpenseModalOpen(false);
   };
 
@@ -317,25 +257,60 @@ const TravelDiary = () => {
   //   setIsExpenseModalOpen(true);
   //   createExpenseId();
   // };
-  const handleDateClick = async (date) => {
+
+const handleDateClick = async (date) => {
+  console.log("Selected Date: ", date);
   setselectedExpenseDate(date);
-  const expensesForDate = expenses.filter((exp) => {
-    const expenseDate = new Date(exp.date).toISOString().split("T")[0];
-    return expenseDate === date.toISOString().split("T")[0];
-  });
-  
-  // 날짜에 해당하는 경비 항목이 있으면 그 항목들을, 없으면 빈 입력 필드를 설정
-  setExpenseInputs(
-    expensesForDate.length > 0
-      ? expensesForDate
-      : [{ id: Math.random(), amount: "", location: "", date: date.toISOString().split("T")[0]  }]
-  );
-  
+  // const response = await saveExpense(date);
+  const utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const formattedDate = utcDate.toISOString().split('T')[0];
+  try {
+    // 날짜를 기대하는 형식으로 보내야 합니다. API 요구 사항에 맞게 조정하세요
+    const response = await api(`/api/v1/expenses/posts/${postId}`, "post", { date: formattedDate });
+    
+    // if (response && response.data && response.data.id) {
+     if (response.data && response.data.id) {
+      setExpenseInputs((prevInputs) => [
+        ...prevInputs,
+        {
+          id: response.data.id,
+          amount: "",
+          date: formattedDate,
+          location: "",
+          category: "",
+        },
+      ]);
+      setIsExpenseModalOpen(true);
+    } else {
+      console.error('API에서 ID를 반환하지 않거나 응답이 잘못되었습니다:', response);
+    }
+  } catch (error) {
+    console.error("선택된 날짜에 경비 저장 실패:", error);
+  }
+  // const response = await api(`/api/v1/expenses/posts/${postId}`, "post", date);
+  // if (response && response.id) {
+  //   setExpenseInputs((prevInputs) => [
+  //     ...prevInputs,
+  //     {
+  //       id: response.id,
+  //       amount: "",
+  //       // date: date.toISOString().split('T')[0],
+  //       date: new Date(date.getFullYear(), date.getMonth(), date.getDate()).toISOString().split('T')[0],
+  //       location: "",
+  //       category:"",
+  //     },
+  //   ]);
+  // }
+  // setExpenseInputs(
+  //   expensesForDate.length > 0
+  //     ? expensesForDate
+  //     : [{ id: Math.random(), amount: "", location: "", date: date.toISOString().split("T")[0]  }]
+  // );
   setIsExpenseModalOpen(true);
-  
-  // 새로운 경비 ID 생성
-  await createExpenseId(date);
+  // await createExpenseId(date);
 };
+
+
 
   // 일일 경비 합계 계산
   const getDailyExpensesTotal = (date) => {
@@ -468,6 +443,7 @@ const TravelDiary = () => {
 
   // 경비 입력 변경 처리
   const handleExpenseChange = (id, field, value) => {
+    console.log(`Updating ${field} for expense with id ${id} to ${value}`);
     setExpenseInputs(
       expenseInputs.map((input) =>
         input.id === id ? { ...input, [field]: value } : input
@@ -583,6 +559,7 @@ const createExpenseId = async (date) => {
           amount: "",
           date: date.toISOString().split('T')[0],
           location: "",
+          category:"",
         },
       ]);
     }
@@ -681,6 +658,87 @@ const createExpenseId = async (date) => {
               발행
             </button>
           </div>
+          <Modal
+          isOpen={modalIsOpenSaveTravelDiary}
+          onRequestClose={() => setModalIsOpenSaveTravelDiary(false)}
+          className="modaldiary"
+          overlayClassName="overlaydiary"
+        >
+          {/* <input type="checkbox">공개</input>
+          <input type="checkbox">비공개</input> */}
+          <label>
+            <input type="radio" name="privacy" /> 공개
+            </label>
+            <label>
+              <input type="radio" name="privacy" /> 비공개
+            </label>
+          <select>
+            <option>나라 선택</option>
+            {Object.entries(travelCountries).map(([code, name]) => (
+        <option key={code} value={code}>{name}</option>
+      ))}
+          </select>
+
+          <button onClick={() => {
+          // alert("발행되었습니다.");
+            setModalIsOpenSaveTravelDiary(false);
+            if (window.confirm("여행기를 발행 하시겠습니까?")) {
+              // 다이어리 입력 항목 중 하나라도 비어있는지 확인
+              const isDiaryInputsEmpty = diaryInputs.some((input) => {
+                const isEmpty =
+                  // !input.diarytTitle ||
+                  !input.date || !input.description || !input.image;
+                // if (!input.diarytTitle) {
+                //   console.log("Empty diary title:", input);
+                // }
+                if (!input.date) {
+                  console.log("Empty diary date:", input);
+                }
+                if (!input.description) {
+                  console.log("Empty diary description:", input);
+                }
+                if (!input.image) {
+                  console.log("Empty diary image:", input);
+                }
+                return isEmpty;
+              });
+        
+              const isNewEntryEmpty =
+                !newEntry.diaryTitle ||
+                !newEntry.date ||
+                !newEntry.description ||
+                !newEntry.image;
+              if (!newEntry.diaryTitle) {
+                console.log("Empty new entry title:", newEntry);
+              }
+              if (!newEntry.date) {
+                console.log("Empty new entry date:", newEntry);
+              }
+              if (!newEntry.description) {
+                console.log("Empty new entry description:", newEntry);
+              }
+              if (!newEntry.image) {
+                console.log("Empty new entry image:", newEntry);
+              }
+        
+              if (isDiaryInputsEmpty || isNewEntryEmpty) {
+                alert("아직 내용이 입력되지 않았습니다. 계속해서 내용을 작성해주세요");
+              } else {
+                if(window.confirm("여행기를 발행 하시겠습니까?")){
+                  setModalIsOpenSaveTravelDiary(false);
+                }
+                // alert("발행되었습니다.");
+              
+             else {
+              alert("발행이 취소되었습니다");
+              setModalIsOpenSaveTravelDiary(false);
+            }
+          }
+        }
+          }}>완료</button>
+        
+        </Modal>
+          
         </>
         }
         {showDiary && 
@@ -846,15 +904,17 @@ v
                     handleExpenseChange(input.id, "location", e.target.value)
                   }
                 />
-                <select>
-                  <option>카테고리 선택</option>
-                  <option>교통비</option>
-                  <option>숙박비</option>
-                  <option>식비</option>
-                  <option>관광 및 활동비</option>
-                  <option>쇼핑</option>
-                  <option>통신비</option>
-                  <option>기타</option>
+                <select
+                value={input.category}
+                onChange={(e) => handleExpenseChange(input.id,"category",e.target.value)}>
+                  <option >카테고리 선택</option>
+                  <option value="교통비">교통비</option>
+                  <option value="숙박비">숙박비</option>
+                  <option value="식비">식비</option>
+                  <option value="관광 및 활동비">관광 및 활동비</option>
+                  <option value="쇼핑">쇼핑</option>
+                  <option value="통신비">통신비</option>
+                  <option value="기타">기타</option>
                 </select>
                 <input
                   type="text"
@@ -882,29 +942,16 @@ v
           </Modal>
           <div style={{ textAlign: "right" }}>
             <button onClick={handleSave} className="save-button">
-              저장
+              임시저장
             </button>
           </div>
-          <Modal
+          {/* <Modal
             isOpen={modalIsOpen}
             onRequestClose={() => setModalIsOpen(false)}
             className="modaldiary"
             overlayClassName="overlaydiary"
           >
-            {/* <label>
-              <input 
-              type="radio"
-               name="privacy"
-               checked={scope === "PUBLIC"}
-               onChange={() => setScope("PUBLIC")} /> 공개
-            </label>
-            <label>
-              <input 
-              type="radio" 
-              name="privacy"
-              checked ={scope === "PERSONAL"}
-              onchange={()=> setScope("PERSONAL")} /> 비공개
-            </label> */}
+          
             {expenseInputs.map((input,index) => (
               <div key={input.id}>
                 <label>
@@ -925,14 +972,9 @@ v
     </label>
               </div>
             ))}
-            {/* <select>
-            <option>나라 선택</option>
-            {Object.entries(travelCountries).map(([code, name]) => (
-        <option key={code} value={code}>{name}</option>
-      ))}
-            </select> */}
+      
             <button onClick={() => setModalIsOpen(false)}>완료</button>
-          </Modal>
+          </Modal> */}
         </div>
       </div>
       }
