@@ -115,9 +115,9 @@ const DetailPost = () => {
         <div>
           {post ? (
   <>
-    <div className="post-signature-color-oval-post">{post.title}</div>
-    <p style={{ color: "#606060", fontSize: "15px" }}>
-      생성일 : {formatDate(post.createdAt)}
+    <h2 className="post-signature-color-oval-post" style={{ marginTop: "30px"}}>{post.title}</h2>
+    <p style={{ color: "#606060", fontSize: "15px", textAlign: "right", marginRight: "220px" }}>
+      작성일 : {formatDate(post.createdAt)}
     </p>
   </>
 ) : (
@@ -132,12 +132,9 @@ const DetailPost = () => {
           </div>
           <div>
             {diaries?.map((diary, index) =>
-              diary.scope === "PUBLIC" ? (
+               (
                 <div
-                  className="signature-oval-post"
-                  
-                  key={index}
-                >
+                  className="signature-oval-post" key={index}>
                   <div className="diary-date-title">
                   <div className="diary-date">
                     <p style={{ color: "#606060", fontSize: "18px" }}>
@@ -156,16 +153,14 @@ const DetailPost = () => {
                     {/* <p style={{ color: "#606060", fontSize: "15px" }}>
                       {diary.country}
                     </p> */}
-                    <div className="diary-content">
-                    <p style={{ color: "#606060", fontSize: "15px",textAlign:"left" }}>
-                      {diary.content}
-                    </p>
+                      <div className="diary-content">
+                        <p style={{ color: "#606060", fontSize: "15px",textAlign:"left" }}>
+                          {diary.content}
+                        </p>
                     </div>
                   </div>
                   </div>
                
-              ) : (
-                <div></div>
               )
             )}
           </div>
@@ -210,21 +205,25 @@ const DetailPost = () => {
           <DonutChart style={{ width: "200px", height: "200px" }} postId={id} />
 
           {likeCheck ? (
+          <div style={{display: "flex", justifyContent: "flex-end", marginBottom: "30px", marginRight: "230px" }}>
             <button
               className="signature-oval"
-              style={{ backgroundColor: "#d7e9fa" }}
+              style={{ backgroundColor: "#d7e9fa", textAlign: "center" }}
               onClick={likeCommentApi}
             >
               <p style={{ color: "#606060", fontSize: "15px" }}>
                 {post.love}개
               </p>
             </button>
+          </div>
           ) : (
-            <button className="signature-oval" onClick={likeCommentApi}>
-              <p style={{ color: "#606060", fontSize: "15px" }}>
-                {post.love}개
-              </p>
-            </button>
+            <div style={{display: "flex", justifyContent: "flex-end", marginBottom: "30px", marginRight: "230px"}}>
+              <button className="signature-oval" onClick={likeCommentApi}>
+                <p style={{ color: "#606060", fontSize: "15px" }}>
+                  {post.love}개
+                </p>
+              </button>
+            </div>
           )}
         </div>
       )}

@@ -27,7 +27,8 @@ const Posts = () => {
     const res = await getRecentPostsFirst();
     setPosts(res);
     updatePageNumbers(res);
-    setCurrentPage(localStorage.getItem("currentPage"));
+    if (!localStorage.getItem("currentPage")) setCurrentPage(1);
+    else setCurrentPage(localStorage.getItem("currentPage"));
     console.log(currentPage);
     // console.log(localStorage.getItem("currentPage"));
   };
@@ -100,6 +101,15 @@ const Posts = () => {
     <div style={{ paddingTop: "20px", width: "100%" }}>
       {/* <Search placeholder="가고 싶은 나라나 도시를 선택해주세요" /> */}
       <div className="filter-container">
+        <Link to="/traveldiary" style={{ textDecoration: "none" }}>
+          <button
+            className="post-signature-color-oval"
+            style={{ width: "150px" }}
+            onClick={writePost}
+          >
+            여행일지 추가하기
+          </button>
+        </Link>
         <div className="filter-button">
           <div className="signature-oval" style={{ width: "80px" }}>
             <button
@@ -139,9 +149,10 @@ const Posts = () => {
             />
           </div>
         )}
-        <div style={{marginRight: "100px"}}>
-          <button onClick={writePost}>글쓰기</button>
-        </div>
+        
+        {/* <div className="write-post" style={{marginRight: "100px", dispaly: "flex", justifyContent: "center", alignItems: "center"}}>
+            <button onClick={writePost} style={{backgroundColor: "white", border: "none"}}>글쓰기</button>
+        </div> */}
       </div>
       <div
             className="country-posts"

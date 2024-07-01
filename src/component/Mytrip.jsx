@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import Norway from "./../image/Norway.png";
 import ImageText from "./ImageText";
 import { Link, useNavigate } from "react-router-dom";
-import { getPostByUser, getUserLikePosts, savePost } from "../config/postApi";
+import { getPostByUser, getUnpublishedPosts, getUserLikePosts, savePost } from "../config/postApi";
 
 const Mytrip = () => {
   const [likePosts, setLikePosts] = useState([]);
   const [myPosts, setMyPosts] = useState([]);
+  const [onGoingPosts, setOngoingPosts] = useState([]);
   const navigate = useNavigate();
 
   const getUserLikePostsApi = async () => {
@@ -31,10 +32,21 @@ const Mytrip = () => {
     }
   };
 
+  const getOngoingPosts = async () => {
+    try {
+      const res = await getUnpublishedPosts();
+      console.log(res);
+      setOngoingPosts(res);
+    } catch (error) {
+      console.log("Error in getUnpublishedPosts", error);
+      setOngoingPosts([]);
+    }
+  };
+
   useEffect(() => {
-    localStorage.removeItem("currentPage");
     getPostByUserApi();
     getUserLikePostsApi();
+    getOngoingPosts();
     localStorage.removeItem("currentPage");
   }, []);
 
@@ -52,12 +64,12 @@ const Mytrip = () => {
     <div>
       <div className="mytrip-row">
         <div className="row-more">
-          <p className="trip-font-color">여행일지</p>
+          <p className="trip-font-color">내가 작성한 여행일지</p>
           <Link
             to="/mytrip/more-information"
             style={{ textDecoration: "none" }}
           >
-            <p className="trip-font-color" style={{ fontSize: "14px" }}>
+            <p className="trip-font-color" style={{ fontSize: "14px", marginLeft: "10px", textDecoration: "" }}>
               더보기
             </p>
           </Link>
@@ -83,7 +95,9 @@ const Mytrip = () => {
                 key={index}
                 style={{ textDecoration: "none" }}
               >
-                <ImageText src={Norway} content={post.title}></ImageText>
+                <ImageText src={post.diaries
+                  .filter((diary) => diary.photos && diary.photos.length > 0)
+                  .map((diary) => diary.photos[0].photoURL)} content={post.title}></ImageText>
               </Link>
             </div>
           ))
@@ -104,7 +118,7 @@ const Mytrip = () => {
             to="/mytrip/love/more-information"
             style={{ textDecoration: "none" }}
           >
-            <p className="trip-font-color" style={{ fontSize: "14px" }}>
+            <p className="trip-font-color" style={{ fontSize: "14px", marginLeft: "10px" }}>
               더보기
             </p>
           </Link>
@@ -120,12 +134,47 @@ const Mytrip = () => {
                 key={index}
                 style={{ textDecoration: "none" }}
               >
-                <ImageText src={Norway} content={post.post.title}></ImageText>
+                <ImageText src={post.diaries
+                  .filter((diary) => diary.photos && diary.photos.length > 0)
+                  .map((diary) => diary.photos[0].photoURL) || Norway} content={post.title}></ImageText>
               </Link>
             </div>
           ))
         ) : (
           <p className="trip-font-color">찜한 여행일지가 없습니다.</p>
+        )}
+      </div>
+      <div className="mytrip-row">
+        <div className="row-more">
+          <p className="trip-font-color">작성 중인 여행일지</p>
+          <Link
+            // to="/mytrip/love/more-information"
+            style={{ textDecoration: "none" }}
+          >
+            <p className="trip-font-color" style={{ fontSize: "14px", marginLeft: "10px" }}>
+              더보기
+            </p>
+          </Link>
+        </div>
+      </div>      
+
+      <div className="mytrip-map-display">
+        {onGoingPosts.length > 0 ? (
+          displayPosts(onGoingPosts).map((post, index) => (
+            <div key={index}>
+              <Link
+                // to={`/detail-post/${post.post.id}`}
+                key={index}
+                style={{ textDecoration: "none" }}
+              >
+                <ImageText src={post.diaries
+                  .filter((diary) => diary.photos && diary.photos.length > 0)
+                  .map((diary) => diary.photos[0].photoURL)} content={post.title}></ImageText>
+              </Link>
+            </div>
+          ))
+        ) : (
+          <p className="trip-font-color">작성중인 여행일지가 없습니다.</p>
         )}
       </div>
     </div>
