@@ -1,5 +1,6 @@
 # JORANG 여행에 대한 모든 것✈️
-![image](https://github.com/encore-full-stack-5/JORANG-TRAVEL-FE/assets/163789257/270d622f-4fb5-4c0f-a298-f12ac17343c9)
+![image](https://github.com/encore-full-stack-5/JORANG-TRAVEL-FE/assets/163789257/c7c52a07-8fa6-48b6-a914-e28cd6c475d8)
+
 
 
 
