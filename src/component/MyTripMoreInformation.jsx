@@ -41,7 +41,7 @@ const MyTripMoreInformation = () => {
           dataList.map((data, index) => (
             <div key={index}>
               <Link
-                to={`/detail-post/${data.id}`}
+                to={`/my/detail-post/${data.id}`}
                 key={index}
                 style={{ textDecoration: "none" }}
               >
