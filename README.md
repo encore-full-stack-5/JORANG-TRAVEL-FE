@@ -34,7 +34,7 @@
 ### 개발 환경
 * Front: React
 * Back-end: 
-* 버전 및 이슈관리
+* 버전 및 이슈관리: github
 * 협업 툴: Notion
 * 서비스 배포 환경:
 * 디자인: 피그마 (https://www.figma.com/design/hT0krRzlmcl2MDcOy9PWhk/Untitled?node-id=0-1&t=C7MyDZzGtTjG4bye-0)
