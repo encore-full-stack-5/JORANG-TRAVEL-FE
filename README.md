@@ -1,10 +1,19 @@
-# Getting Started with Create React App
+# JORANG 여행에 대한 모든 것✈️
+![image](https://github.com/encore-full-stack-5/JORANG-TRAVEL-FE/assets/163789257/270d622f-4fb5-4c0f-a298-f12ac17343c9)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
 
-In the project directory, you can run:
+## 목차 
+개요
+프로젝트 소개
+개발환경
+사용한 기술스택, 라이브러리
+프로젝트 구조
+페이지별 기능
+트러블 슈팅
+개선 목표
+프로젝트 후
+
 
 ### `npm start`
 
