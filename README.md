@@ -41,74 +41,8 @@
 
 
 ### 프로젝트 구조 
-📦src
- ┣ 📂api
- ┃ ┣ 📜auth-api.jsx
- ┃ ┗ 📜post-api.jsx
- ┣ 📂component
- ┃ ┣ 📜Chatbot.jsx
- ┃ ┣ 📜ChatSignatureColorOval copy.jsx
- ┃ ┣ 📜ChatSignatureOval copy.jsx
- ┃ ┣ 📜DetailPost.jsx
- ┃ ┣ 📜DonutChart.jsx
- ┃ ┣ 📜ExpenseDetail.jsx
- ┃ ┣ 📜FindLoginId.jsx
- ┃ ┣ 📜FindPassword.jsx
- ┃ ┣ 📜Header.jsx
- ┃ ┣ 📜Home.css
- ┃ ┣ 📜Home.jsx
- ┃ ┣ 📜ImageSlider.css
- ┃ ┣ 📜ImageSlider.jsx
- ┃ ┣ 📜ImageText.jsx
- ┃ ┣ 📜Landmark.jsx
- ┃ ┣ 📜Loading.jsx
- ┃ ┣ 📜Mypage.jsx
- ┃ ┣ 📜Mytrip.jsx
- ┃ ┣ 📜MyTripLoveMoreInformation.jsx
- ┃ ┣ 📜MyTripMoreInformation.jsx
- ┃ ┣ 📜Nav.jsx
- ┃ ┣ 📜Place.jsx
- ┃ ┣ 📜Plan.jsx
- ┃ ┣ 📜Posts.css
- ┃ ┣ 📜Posts.jsx
- ┃ ┣ 📜PostsPerCountry.css
- ┃ ┣ 📜PostsPerCountry.jsx
- ┃ ┣ 📜Search.jsx
- ┃ ┣ 📜ShareTrip.jsx
- ┃ ┣ 📜ShareTripCountry.jsx
- ┃ ┣ 📜SignatureColorOval.jsx
- ┃ ┣ 📜SignatureOval.jsx
- ┃ ┣ 📜SignIn.jsx
- ┃ ┣ 📜SignUp.jsx
- ┃ ┣ 📜Styles.jsx
- ┃ ┣ 📜Title.jsx
- ┃ ┗ 📜TravelDiary.jsx
- ┣ 📂config
- ┃ ┣ 📜authApi.jsx
- ┃ ┣ 📜chatbotApi.jsx
- ┃ ┣ 📜chatbotNetwork.jsx
- ┃ ┣ 📜country-info.jsx
- ┃ ┣ 📜diaryApi.jsx
- ┃ ┣ 📜network.jsx
- ┃ ┣ 📜photoApi.jsx
- ┃ ┣ 📜postApi.jsx
- ┃ ┗ 📜traveldiaryApi.jsx
- ┣ 📂image
- ┃ ┣ 📜filterImage.png
- ┃ ┣ 📜jorangImage.png
- ┃ ┣ 📜Norway.png
- ┃ ┣ 📜searchImage.png
- ┃ ┗ 📜spinner.gif
- ┣ 📜App.css
- ┣ 📜App.jsx
- ┣ 📜App.test.js
- ┣ 📜countries.js
- ┣ 📜index.css
- ┣ 📜index.js
- ┣ 📜logo.svg
- ┣ 📜reportWebVitals.js
- ┣ 📜setupTests.js
- ┗ 📜travelCountries.js
+![image](https://github.com/encore-full-stack-5/JORANG-TRAVEL-FE/assets/163789257/a53b1297-4f1c-46ac-901d-a783fe9563cb)
+
 
 ### 페이지별 기능
 
