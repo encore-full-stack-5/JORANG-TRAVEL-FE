@@ -32,11 +32,10 @@ const Posts = () => {
     console.log(currentPage);
     // console.log(localStorage.getItem("currentPage"));
   };
-  
 
   const updatePageNumbers = (posts) => {
     const arr = [];
-    for (let page = 1; page <= Math.ceil(posts.length/10); page++) {
+    for (let page = 1; page <= Math.ceil(posts.length / 10); page++) {
       arr.push(page);
     }
     setPages(arr);
@@ -70,12 +69,16 @@ const Posts = () => {
       const startDate = new Date(e[0].toString().replace(/-/g, "-")).getTime();
       const endDate = new Date(e[1].toString().replace(/-/g, "-")).getTime();
       setDate([startDate, endDate]);
-      // page 번호 업데이트 
-      const newPosts = posts.filter((post) => post.diaries.some((diary) =>
-      new Date(diary.date).getTime() >= startDate &&
-      new Date(diary.date).getTime() <= endDate));
+      // page 번호 업데이트
+      const newPosts = posts.filter((post) =>
+        post.diaries.some(
+          (diary) =>
+            new Date(diary.date).getTime() >= startDate &&
+            new Date(diary.date).getTime() <= endDate
+        )
+      );
       updatePageNumbers(newPosts);
-      // 기간을 변경하면 1페이지로 이동 
+      // 기간을 변경하면 1페이지로 이동
       setCurrentPage(1);
     }
   };
@@ -94,8 +97,7 @@ const Posts = () => {
     const res = await savePost();
     console.log(res);
     navigate(`/posts/${res}/write`);
-  }
- 
+  };
 
   return (
     <div style={{ paddingTop: "20px", width: "100%" }}>
@@ -107,7 +109,7 @@ const Posts = () => {
             style={{ width: "150px" }}
             onClick={writePost}
           >
-            여행일지 추가하기
+            여행일지 작성하기
           </button>
         </Link>
         <div className="filter-button">
@@ -127,7 +129,8 @@ const Posts = () => {
             <img
               src={filterImage}
               style={{ width: "25px", height: "25px" }}
-            ></img>
+              alt="filter"
+            />
           </div>
         </div>
         {showFilter && (
@@ -149,44 +152,63 @@ const Posts = () => {
             />
           </div>
         )}
-        
+
         {/* <div className="write-post" style={{marginRight: "100px", dispaly: "flex", justifyContent: "center", alignItems: "center"}}>
             <button onClick={writePost} style={{backgroundColor: "white", border: "none"}}>글쓰기</button>
         </div> */}
       </div>
       <div
-            className="country-posts"
-            style={{ width: "calc(5 * 180px + 5 * 30px + 5 * 6px)", height: "440px" }} // total width 고정 필요
-          >
+        className="country-posts"
+        style={{
+          width: "calc(5 * 200px + 5 * 30px + 5 * 6px)",
+          height: "440px",
+        }} // total width 고정 필요
+      >
         <div className="posts-container">
-          {posts
-            ?.filter((post) =>
-              post.diaries.some(
-                (diary) =>
-                  new Date(diary.date).getTime() >= date[0] &&
-                  new Date(diary.date).getTime() <= date[1]
+          {posts &&
+            posts
+              .filter((post) =>
+                post.diaries.some(
+                  (diary) =>
+                    new Date(diary.date).getTime() >= date[0] &&
+                    new Date(diary.date).getTime() <= date[1]
+                )
               )
-            ).slice((currentPage-1)*10, currentPage*10)
-            .map((post, i) => (
-              <Link
-                to={`/detail-post/${post.id}`}
-                key={i}
-                style={{ textDecoration: "none" }}>
-                <ImageText
+              .slice((currentPage - 1) * 10, currentPage * 10)
+              .map((post, i) => (
+                <Link
+                  to={`/detail-post/${post.id}`}
                   key={i}
-                  src={post.diaries
-                    .filter((diary) => diary.photos && diary.photos.length > 0)
-                    .map((diary) => diary.photos[0].photoURL)}
-                  content={post.title}
-                ></ImageText>
-              </Link>
-            ))}
+                  style={{ textDecoration: "none" }}
+                >
+                  <ImageText
+                    key={i}
+                    src={post.diaries
+                      .filter(
+                        (diary) => diary.photos && diary.photos.length > 0
+                      )
+                      .map((diary) => diary.photos[0].photoURL)}
+                    content={post.title}
+                  ></ImageText>
+                </Link>
+              ))}
         </div>
       </div>
       <div>
-        {pages.map(page => (
-            <button key={page} onClick={showCurrentPage} style={{margin: "-20px 5px 100px 5px", backgroundColor: "white", border:"none", fontSize: "1.4rem"}}>{page}</button>
-          ))}
+        {pages.map((page) => (
+          <button
+            key={page}
+            onClick={showCurrentPage}
+            style={{
+              margin: "-20px 5px 100px 5px",
+              backgroundColor: "white",
+              border: "none",
+              fontSize: "1.4rem",
+            }}
+          >
+            {page}
+          </button>
+        ))}
       </div>
     </div>
   );

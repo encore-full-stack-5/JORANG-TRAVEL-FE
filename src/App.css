@@ -1,3 +1,11 @@
+* {
+  font-family: "TTLaundryGothicB";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2403-2@1.0/TTLaundryGothicB.woff2")
+    format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+
 .App {
   text-align: center;
 }
@@ -156,13 +164,6 @@ input[type="password"] {
   margin-top: 10%;
 }
 
-.diary-date {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-left: 25px;
-}
-
 .center-right {
   display: flex;
   flex-direction: column;
@@ -190,14 +191,15 @@ input[type="password"] {
 }
 .title-publish {
   display: flex;
+  justify-content: center;
 }
 .title-input {
+  display: block;
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-bottom: 10px;
-  margin-left: 510px;
 }
 
 .publish-checkbox {
@@ -297,13 +299,14 @@ input[type="password"] {
   align-items: center;
 }
 .add-button {
-  margin-right: 10px; /* 오른쪽 마진 추가 */
+  font-size: 1.2rem;
+  margin-top: 30px; /* 오른쪽 마진 추가 */
   background-color: white;
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
+  padding: 5px 10px;
+  /* width: 30px;
+  height: 30px; */
   border: 2.5px solid #9cc7ee;
-  align-items: center;
 }
 
 .change-button {
@@ -338,7 +341,7 @@ input[type="password"] {
   color: #606060;
   padding: 20px;
   width: 80%;
-  max-width: 1050px;
+  max-width: 1215px;
   margin-top: 30px;
   height: 450px;
 
@@ -398,6 +401,12 @@ input[type="password"] {
   padding-top: 30px;
 }
 
+.empty-posts {
+  margin-left: 20px;
+  font-size: 15px;
+  color: #606060;
+}
+
 .trip-text-display {
   display: flex;
   flex-direction: column;
@@ -430,11 +439,11 @@ input[type="password"] {
   border-radius: 30px;
   border: 3px solid #9cc7ee;
   background-color: white;
-  height: 180px;
-  width: 180px;
+  height: 200px;
+  width: 200px;
   display: flex;
   flex-direction: column;
-  margin: 15px;
+  margin: 0 15px 15px 15px;
 }
 
 .image-container {
@@ -445,8 +454,8 @@ input[type="password"] {
 }
 
 .image-container img {
-  width: 180px;
-  height: 144px;
+  width: 200px;
+  height: 153px;
   object-fit: cover; /* 이미지를 컨테이너에 맞게 자르지 않고 채우기 */
   border-top-left-radius: 27px;
   border-top-right-radius: 27px;
@@ -612,6 +621,8 @@ input[type="password"] {
 }
 
 .content-section textarea {
+  font-size: 1rem;
+  font-weight: 500;
   width: 100%;
   height: 270px;
   border: none;
@@ -619,6 +630,9 @@ input[type="password"] {
 }
 
 .buttonAddEntry {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 15px;
 }
 .saveExpense {
@@ -653,7 +667,6 @@ input[type="password"] {
 
 .image-box {
   flex: 1;
-  margin-bottom: 10px;
   height: 150px;
 }
 
@@ -674,10 +687,11 @@ input[type="password"] {
 
 .save-button {
   width: fit-content;
-  height: 30px;
+  font-size: 1.1rem;
   background-color: #9cc7ee;
+  padding: 8px 20px;
   border: none;
-  border-radius: 5px;
+  border-radius: 15px;
 }
 
 .create-diary-button,
@@ -712,9 +726,7 @@ input[type="password"] {
 .select-diary-date {
   display: flex;
   justify-content: space-between;
-  border: #282c34;
   text-align: left;
-  margin-left: 20px;
 }
 
 .entry-image-content {
@@ -729,6 +741,7 @@ input[type="password"] {
   justify-content: space-between;} */
 
 .date-block input[type="text"] {
+  font-size: 1rem;
   text-align: left;
   color: #9cc7ee;
   padding: 8px 10px;
@@ -737,6 +750,7 @@ input[type="password"] {
 }
 
 .date-block input:focus {
+  font-size: 1rem;
   border-color: #0056b3;
   box-shadow: 0 0 8px rgba(0, 86, 179, 0.5);
 }
@@ -782,43 +796,57 @@ input[type="password"] {
   margin-bottom: 10px;
   height: 470px;
 }
+
 .delete-button {
-  color: red;
-  border: 2px solid lightgrey;
-  background-color: white;
+  font-size: 1rem;
+  color: white;
+  border: none;
+  background-color: #216ba5;
   padding: 5px 10px;
-  border-radius: 4px;
+  border-radius: 10px;
   cursor: pointer;
-  margin-left: 10px;
-  height: 30px;
-  width: 30px;
-  margin-top: 10px;
+  /* height: 30px; */
+  width: fit-content;
 }
+
 .entry-layout {
   margin-top: 30px;
 }
+
 .diary-title-input {
-  display: flex;
-  justify-content: flex-start;
   outline: none;
   height: 10px;
-  width: 300px;
+  width: 70%;
   border: 3px solid #9cc7ee;
   border-radius: 30px;
   padding: 8px 12px;
-  font-size: 15px;
+  font-size: 1rem;
   color: #606060;
-  margin-top: 10px;
-  margin-left: 170px;
 }
+
+.diary-title {
+  width: 100%;
+  margin-left: 70px;
+}
+
 .save-travel-diary {
-  border: 3px solid #9cc7ee;
-  border-radius: 30px;
-  background-color: white;
-  width: 60px;
-  height: 30px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 15px;
+  background-color: #9cc7ee;
+  padding: 8px 20px;
+  width: fit-content;
   margin-left: 850px;
   margin-bottom: 15px;
+}
+
+.delete-travel-diary {
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 15px;
+  background-color: #9cc7ee;
+  padding: 8px 20px;
+  width: fit-content;
 }
 
 .post-signature-color-oval {
@@ -846,10 +874,9 @@ input[type="password"] {
 .mytrip-map-display {
   display: flex;
   flex-wrap: wrap;
-  margin-left: 15%;
-  margin-right: 10%;
-  justify-content: flex-start;
-  margin-top: 2%;
+  margin-left: calc((100% - (5 * 200px + 5 * 30px + 5 * 6px)) / 2);
+  margin-right: calc((100% - (5 * 200px + 5 * 30px + 5 * 6px)) / 2);
+  margin-top: 20px;
 }
 
 .row-more {
@@ -872,22 +899,22 @@ input[type="password"] {
 }
 .diary-date-title {
   display: flex;
+  justify-content: space-between;
 }
-.diary-title {
-  margin-left: 30px;
-}
+
 .diary-image {
   width: 300px;
   height: 300px;
 }
-.diary-image-contnet {
+/* .diary-image-content {
   display: flex;
-}
+} */
 .diary-content {
-  margin-right: 10px;
-  width: 500px;
-  height: 300px;
-  margin-left: 30px;
+  /* margin-right: 10px; */
+  width: 100%;
+  /* height: 300px; */
+  /* margin-left: 30px;
+  padding: 0 20px 0 40px; */
 }
 .signature-color-oval {
   background-color: #d7e9fa;

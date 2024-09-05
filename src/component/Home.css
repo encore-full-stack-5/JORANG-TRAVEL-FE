@@ -1,7 +1,7 @@
 .world-map-container svg {
-  margin-top: 40px;
-  width: 100%;
-  height: 480px;
+  margin-top: 78px;
+  width: 69%;
+  height: 100%;
 }
 
 .map-selected {
@@ -107,6 +107,7 @@
   padding: 5px;
   width: fit-content;
   text-decoration: none;
+  color: rgb(96, 96, 96);
 }
 
 .modal-item:visited {

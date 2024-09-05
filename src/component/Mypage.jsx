@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import Loading from "./Loading";
 import { getChatbotMypage } from "../config/chatbotApi";
 import { getMyDiary } from "../config/postApi";
+import { getNumberOfCountriesVisited } from "../api/post-api";
 
 const Mypage = () => {
   const [nickname, setNickname] = useState("");
@@ -21,7 +22,7 @@ const Mypage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
   const [expenses, setExpenses] = useState([]);
-  const [diaries, setDiaries] = useState([]);
+  const [countries, setCountries] = useState([]);
   const [chatbotDiaries, setChatbotDiaries] = useState([]);
   const [chatbotResult, setChatbotResult] = useState("");
   const [loading, setLoading] = useState(false);
@@ -55,23 +56,15 @@ const Mypage = () => {
         console.log("error in getExpensesApi");
       }
     };
-
-    const getDiaryApi = async () => {
-      try {
-        const response = await getDiaryByUserAndCountry();
-        console.log("=======" + response);
-        console.log(response.length);
-        setDiaries(response);
-      } catch {
-        console.log("error in getDiaryApi");
-      }
-    };
-
     checkLoginStatus();
+    getCountriesVisited();
     getExpensesApi();
-    getDiaryApi();
-    getMyDiaryApi();
   }, [navigate, isNicknameChanged, isPasswordChanged]);
+
+  const getCountriesVisited = async () => {
+    const res = await getNumberOfCountriesVisited();
+    setCountries(res);
+  };
 
   const updateUserPasswordApi = async (e) => {
     e.preventDefault();
@@ -105,15 +98,6 @@ const Mypage = () => {
       setIsNicknameChanged(true);
     } catch {
       console.log("error in signUp");
-    }
-  };
-
-  const getMyDiaryApi = async () => {
-    try {
-      const response = await getMyDiary();
-      setChatbotDiaries(response);
-    } catch (error) {
-      console.log("Error in getMyDiaryApi", error);
     }
   };
 
@@ -241,7 +225,7 @@ const Mypage = () => {
         </div>
         <div className="vertical-center" style={{ margin: "20px" }}>
           <SignatureColorOval
-            content={`지금까지 총 ${diaries.length}개의 나라를 여행했습니다`}
+            content={`지금까지 총 ${countries.length}개의 나라를 여행했습니다`}
           ></SignatureColorOval>
 
           <div
@@ -253,7 +237,7 @@ const Mypage = () => {
               justifyContent: "flex-start",
             }}
           >
-            {diaries.map((diary, index) => (
+            {countries.map((country, index) => (
               <div
                 key={index}
                 style={{
@@ -261,7 +245,7 @@ const Mypage = () => {
                   marginBottom: "20px",
                 }}
               >
-                <SignatureOval content={diary}></SignatureOval>
+                <SignatureOval content={country}></SignatureOval>
               </div>
             ))}
           </div>

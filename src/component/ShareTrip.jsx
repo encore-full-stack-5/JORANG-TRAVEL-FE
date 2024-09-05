@@ -39,13 +39,7 @@ const Mytrip = () => {
           </Link>
         </div>
       </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-start",
-          margin: "10px 13% 0 13%",
-        }}
-      >
+      <div className="mytrip-map-display">
         {recentPosts?.map((post, i) => (
           <Link
             to={`/detail-post/${post.id}`}
@@ -78,13 +72,7 @@ const Mytrip = () => {
           </Link>
         </div>
       </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-start",
-          margin: "10px 13% 0 13%",
-        }}
-      >
+      <div className="mytrip-map-display">
         {topPosts?.map((post, i) => (
           <Link
             to={`/detail-post/${post.id}`}

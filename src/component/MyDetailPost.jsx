@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   getDiaryAllByPostId,
   getLikeCheck,
@@ -11,6 +11,7 @@ import {
 } from "../config/postApi";
 import DonutChart from "./DonutChart";
 import ImageSlider from "./ImageSlider";
+import { deleteById } from "../api/post-api";
 
 const MyDetailPost = () => {
   const { id } = useParams();
@@ -21,7 +22,7 @@ const MyDetailPost = () => {
   const [likeCheck, setLikeCheck] = useState();
   const [postExpenses, setPostExpenses] = useState([]);
   const [expenseDetails, setExpenseDetails] = useState([]);
-
+  const navigate = useNavigate();
   const [expenses, setExpenses] = useState(null);
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -81,15 +82,13 @@ const MyDetailPost = () => {
     }
   };
 
-  //   const getByIdApi = async () => {
-  //     try {
-  //       const response = await getById(id);
-  //       console.log(response);
-
-  //     } catch {
-  //       console.log("error in getByIdApi");
-  //     }
-  //   };
+  const deletePost = async () => {
+    if (window.confirm("여행 일지를 정말 삭제하시겠습니까?")) {
+      await deleteById(id);
+      alert("여행 일지가 삭제되었습니다");
+      navigate("/mytrip");
+    }
+  };
 
   useEffect(() => {
     getPostByIdApi();
@@ -97,6 +96,14 @@ const MyDetailPost = () => {
     checkLikeApi();
     // getByIdApi();
   }, []);
+
+  const getDiaryWidth = () => {
+    if (document.getElementById("my-diary")) {
+      const diaryWidth = document.getElementById("my-diary").offsetWidth;
+      console.log(diaryWidth, "width");
+      return diaryWidth;
+    }
+  };
 
   return (
     <div>
@@ -106,9 +113,39 @@ const MyDetailPost = () => {
         <div>
           {post ? (
             <>
-              <div className="post-signature-color-oval-post">{post.title}</div>
-              <p style={{ color: "#606060", fontSize: "15px" }}>
-                생성일 : {formatDate(post.createdAt)}
+              <h2
+                style={{
+                  marginTop: "65px",
+                }}
+              >
+                {post.title}
+              </h2>
+              <div
+                className="public"
+                style={{
+                  textAlign: "right",
+                }}
+              >
+                <button
+                  onClick={deletePost}
+                  className="delete-travel-diary"
+                  style={{
+                    marginRight: `calc((100% - ${getDiaryWidth()}px) / 2)`,
+                    marginBottom: "20px",
+                  }}
+                >
+                  삭제
+                </button>
+              </div>
+              <p
+                style={{
+                  color: "#606060",
+                  fontSize: "15px",
+                  textAlign: "right",
+                  marginRight: `calc((100% - ${getDiaryWidth()}px) / 2)`,
+                }}
+              >
+                작성 시간: {formatDate(post.createdAt)}
               </p>
             </>
           ) : (
@@ -116,52 +153,72 @@ const MyDetailPost = () => {
           )}
 
           <div className="post-signature-color-oval-post">
-            <h3 style={{ marginLeft: "250px", textAlign: "left" }}>여행기</h3>
+            {/* <h3 style={{ marginLeft: "250px", textAlign: "left" }}>여행기</h3> */}
           </div>
           <div>
             {diaries?.map((diary, index) => (
-              <div className="signature-oval-post" key={index}>
-                <div className="diary-date-title">
-                  <div className="diary-date">
-                    <p style={{ color: "#606060", fontSize: "18px" }}>
-                      {diary.date}
-                    </p>
+              <div className="signature-oval-post" id="my-diary" key={index}>
+                <div
+                  className="diary-container"
+                  style={{
+                    display: "flex",
+                    gap: "40px",
+                  }}
+                >
+                  <div
+                    className="diary-left"
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      flex: 1,
+                      alignItems: "center",
+                    }}
+                  >
+                    <div style={{ marginBottom: "20px" }}>
+                      <p style={{ color: "#606060", fontSize: "18px" }}>
+                        {diary.date}
+                      </p>
+                    </div>
+                    <ImageSlider content={diary.photos} />
                   </div>
-                  <div classname="diary-title">
-                    <p
-                      style={{
-                        color: "#9cc7ee",
-                        fontSize: "18px",
-                        marginLeft: "419px",
-                      }}
-                    >
-                      {diary.title}
-                    </p>
-                  </div>
-                </div>
-                <div className="diary-image-contnet">
-                  <ImageSlider content={diary.photos} />
-
-                  {/* <p style={{ color: "#606060", fontSize: "15px" }}>
-                      {diary.country}
-                    </p> */}
-                  <div className="diary-content">
-                    <p
-                      style={{
-                        color: "#606060",
-                        fontSize: "15px",
-                        textAlign: "left",
-                      }}
-                    >
-                      {diary.content}
-                    </p>
+                  <div
+                    className="diary-right"
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      flex: 4,
+                      alignItems: "center",
+                    }}
+                  >
+                    <div style={{ marginBottom: "20px" }}>
+                      <p
+                        style={{
+                          color: "#9cc7ee",
+                          fontSize: "18px",
+                        }}
+                      >
+                        {diary.title}
+                      </p>
+                    </div>
+                    <div className="diary-content">
+                      <p
+                        style={{
+                          color: "#606060",
+                          fontSize: "15px",
+                          textAlign: "left",
+                          margin: "0",
+                        }}
+                      >
+                        {diary.content}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
           <div className="post-signature-color-oval-expense">
-            <h3
+            {/* <h3
               style={{
                 marginLeft: "250px",
                 textAlign: "left",
@@ -170,7 +227,7 @@ const MyDetailPost = () => {
               }}
             >
               경비
-            </h3>
+            </h3> */}
           </div>
 
           {expenses &&

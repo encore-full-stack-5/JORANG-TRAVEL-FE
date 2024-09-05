@@ -50,26 +50,24 @@ export const getUserLikePosts = async () => {
     return res.data;
   } catch (error) {
     console.error("Error in getUserLikePosts", error);
+    return [];
   }
 };
 
 export const getPostByUser = async () => {
   try {
-    const res = await api(`api/v1/posts/user`, "get");
+    const res = await api(`/api/v1/posts/user`, "get");
     return res.data;
   } catch (error) {
     console.error("Error in getPostByUser", error);
+    return [];
   }
 };
 
 export const getChartData = async (postId) => {
   try {
     const res = await api(
-<<<<<<< HEAD
       `/api/v1/expense-details/postId/${postId}/chart`,
-=======
-      `/api/v1/expenseDetail/chart/postId/${postId}`,
->>>>>>> 496284b05d81570404daef4942c33d47e4084e25
       "get"
     );
     return res.data;
@@ -159,5 +157,6 @@ export const getUnpublishedPosts = async () => {
     return res.data;
   } catch (error) {
     console.error("Error in getUnpublishedPosts", error);
+    return [];
   }
 };
