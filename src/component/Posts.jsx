@@ -5,8 +5,6 @@ import { getRecentPostsFirst } from "../api/post-api";
 import "./Posts.css";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import { Link, useNavigate } from "react-router-dom";
-import { savePost } from "../config/postApi";
-
 const Posts = () => {
   const [posts, setPosts] = useState([]);
   const [date, setDate] = useState([
@@ -32,11 +30,10 @@ const Posts = () => {
     console.log(currentPage);
     // console.log(localStorage.getItem("currentPage"));
   };
-  
 
   const updatePageNumbers = (posts) => {
     const arr = [];
-    for (let page = 1; page <= Math.ceil(posts.length/10); page++) {
+    for (let page = 1; page <= Math.ceil(posts.length / 10); page++) {
       arr.push(page);
     }
     setPages(arr);
@@ -70,12 +67,16 @@ const Posts = () => {
       const startDate = new Date(e[0].toString().replace(/-/g, "-")).getTime();
       const endDate = new Date(e[1].toString().replace(/-/g, "-")).getTime();
       setDate([startDate, endDate]);
-      // page 번호 업데이트 
-      const newPosts = posts.filter((post) => post.diaries.some((diary) =>
-      new Date(diary.date).getTime() >= startDate &&
-      new Date(diary.date).getTime() <= endDate));
+      // page 번호 업데이트
+      const newPosts = posts.filter((post) =>
+        post.diaries.some(
+          (diary) =>
+            new Date(diary.date).getTime() >= startDate &&
+            new Date(diary.date).getTime() <= endDate
+        )
+      );
       updatePageNumbers(newPosts);
-      // 기간을 변경하면 1페이지로 이동 
+      // 기간을 변경하면 1페이지로 이동
       setCurrentPage(1);
     }
   };
@@ -90,26 +91,45 @@ const Posts = () => {
     localStorage.setItem("currentPage", e.target.innerHTML);
   };
 
-  const writePost = async () => {
-    const res = await savePost();
-    console.log(res);
-    navigate(`/posts/${res}/write`);
-  }
- 
+  // const writePost = async () => {
+  //   const res = await savePost();
+  //   console.log(res);
+  //   navigate(`/posts/${res}/write`);
+  // };
+
+  const checkLoginStatus = () => {
+    const expirationTime = localStorage.getItem("expirationTime");
+    if (new Date() > new Date(expirationTime)) {
+      localStorage.removeItem("id");
+      localStorage.removeItem("token");
+      localStorage.removeItem("nickname");
+      localStorage.removeItem("expirationTime");
+      alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
+      navigate("/signin");
+    } else navigate("/post/write");
+  };
+
+  const getImageSrc = (post) => {
+    const filteredDiaries = post.diaries.filter(
+      (diary) => diary.photos && diary.photos.length > 0
+    );
+    // console.log(filteredPost, "filteredPost");
+    if (filteredDiaries && filteredDiaries.length > 0)
+      return filteredDiaries[0].photos[0].photoURL;
+    else return "/window.jpg";
+  };
 
   return (
     <div style={{ paddingTop: "20px", width: "100%" }}>
       {/* <Search placeholder="가고 싶은 나라나 도시를 선택해주세요" /> */}
       <div className="filter-container">
-        <Link to="/traveldiary" style={{ textDecoration: "none" }}>
-          <button
-            className="post-signature-color-oval"
-            style={{ width: "150px" }}
-            onClick={writePost}
-          >
-            여행일지 추가하기
-          </button>
-        </Link>
+        <button
+          onClick={checkLoginStatus}
+          className="post-signature-color-oval"
+          style={{ width: "150px" }}
+        >
+          여행일지 작성하기
+        </button>
         <div className="filter-button">
           <div className="signature-oval" style={{ width: "80px" }}>
             <button
@@ -127,7 +147,8 @@ const Posts = () => {
             <img
               src={filterImage}
               style={{ width: "25px", height: "25px" }}
-            ></img>
+              alt="filter"
+            />
           </div>
         </div>
         {showFilter && (
@@ -149,44 +170,58 @@ const Posts = () => {
             />
           </div>
         )}
-        
+
         {/* <div className="write-post" style={{marginRight: "100px", dispaly: "flex", justifyContent: "center", alignItems: "center"}}>
             <button onClick={writePost} style={{backgroundColor: "white", border: "none"}}>글쓰기</button>
         </div> */}
       </div>
       <div
-            className="country-posts"
-            style={{ width: "calc(5 * 180px + 5 * 30px + 5 * 6px)", height: "440px" }} // total width 고정 필요
-          >
+        className="country-posts"
+        style={{
+          height: "440px",
+        }} // total width 고정 필요
+      >
         <div className="posts-container">
-          {posts
-            ?.filter((post) =>
-              post.diaries.some(
-                (diary) =>
-                  new Date(diary.date).getTime() >= date[0] &&
-                  new Date(diary.date).getTime() <= date[1]
+          {posts &&
+            posts
+              .filter((post) =>
+                post.diaries.some(
+                  (diary) =>
+                    new Date(diary.date).getTime() >= date[0] &&
+                    new Date(diary.date).getTime() <= date[1]
+                )
               )
-            ).slice((currentPage-1)*10, currentPage*10)
-            .map((post, i) => (
-              <Link
-                to={`/detail-post/${post.id}`}
-                key={i}
-                style={{ textDecoration: "none" }}>
-                <ImageText
+              .slice((currentPage - 1) * 10, currentPage * 10)
+              .map((post, i) => (
+                <Link
+                  to={`/detail-post/${post.id}`}
                   key={i}
-                  src={post.diaries
-                    .filter((diary) => diary.photos && diary.photos.length > 0)
-                    .map((diary) => diary.photos[0].photoURL)}
-                  content={post.title}
-                ></ImageText>
-              </Link>
-            ))}
+                  style={{ textDecoration: "none" }}
+                >
+                  <ImageText
+                    key={i}
+                    src={getImageSrc(post)}
+                    content={post.title}
+                  ></ImageText>
+                </Link>
+              ))}
         </div>
       </div>
       <div>
-        {pages.map(page => (
-            <button key={page} onClick={showCurrentPage} style={{margin: "-20px 5px 100px 5px", backgroundColor: "white", border:"none", fontSize: "1.4rem"}}>{page}</button>
-          ))}
+        {pages.map((page) => (
+          <button
+            key={page}
+            onClick={showCurrentPage}
+            style={{
+              margin: "-20px 5px 100px 5px",
+              backgroundColor: "white",
+              border: "none",
+              fontSize: "1.4rem",
+            }}
+          >
+            {page}
+          </button>
+        ))}
       </div>
     </div>
   );

@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import Loading from "./Loading";
 import { getChatbotMypage } from "../config/chatbotApi";
 import { getMyDiary } from "../config/postApi";
+import { getNumberOfCountriesVisited } from "../api/post-api";
 
 const Mypage = () => {
   const [nickname, setNickname] = useState("");
@@ -21,7 +22,7 @@ const Mypage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
   const [expenses, setExpenses] = useState([]);
-  const [diaries, setDiaries] = useState([]);
+  const [countries, setCountries] = useState([]);
   const [chatbotDiaries, setChatbotDiaries] = useState([]);
   const [chatbotResult, setChatbotResult] = useState("");
   const [loading, setLoading] = useState(false);
@@ -29,49 +30,55 @@ const Mypage = () => {
 
   useEffect(() => {
     localStorage.removeItem("currentPage");
+    const expirationTime = localStorage.getItem("expirationTime");
+    const loginId = localStorage.getItem("id");
     const checkLoginStatus = async () => {
-      const loginId = localStorage.getItem("id");
-      if (loginId) {
-        setIsLoggedIn(true);
-        try {
-          const response = await getUserById(loginId);
-          setNickname(response.nickname);
-        } catch (error) {
-          console.log("Error fetching user data:", error);
-        }
-      } else {
-        setIsLoggedIn(false);
-        alert("로그인이 되어 있지 않습니다. 로그인 페이지로 이동합니다.");
+      if (new Date() > new Date(expirationTime)) {
+        localStorage.removeItem("id");
+        localStorage.removeItem("token");
+        localStorage.removeItem("nickname");
+        localStorage.removeItem("expirationTime");
+        alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
         navigate("/signin");
-      }
-    };
-    const getExpensesApi = async () => {
-      try {
-        const response = await getExpenseDetailByUserAndCountry();
-        console.log(response);
-        console.log(response.length);
-        setExpenses(response);
-      } catch {
-        console.log("error in getExpensesApi");
-      }
-    };
-
-    const getDiaryApi = async () => {
-      try {
-        const response = await getDiaryByUserAndCountry();
-        console.log("=======" + response);
-        console.log(response.length);
-        setDiaries(response);
-      } catch {
-        console.log("error in getDiaryApi");
+      } else {
+        if (loginId) {
+          setIsLoggedIn(true);
+          try {
+            const response = await getUserById(loginId);
+            setNickname(response.nickname);
+          } catch (error) {
+            console.log("Error fetching user data:", error);
+          }
+        } else {
+          setIsLoggedIn(false);
+          alert("로그인이 되어 있지 않습니다. 로그인 페이지로 이동합니다.");
+          navigate("/signin");
+        }
       }
     };
 
     checkLoginStatus();
-    getExpensesApi();
-    getDiaryApi();
-    getMyDiaryApi();
+    if (new Date() <= new Date(expirationTime) && loginId) {
+      getCountriesVisited();
+      getExpensesApi();
+    }
   }, [navigate, isNicknameChanged, isPasswordChanged]);
+
+  const getCountriesVisited = async () => {
+    const res = await getNumberOfCountriesVisited();
+    setCountries(res);
+  };
+
+  const getExpensesApi = async () => {
+    try {
+      const response = await getExpenseDetailByUserAndCountry();
+      console.log(response);
+      console.log(response.length);
+      setExpenses(response);
+    } catch {
+      console.log("error in getExpensesApi");
+    }
+  };
 
   const updateUserPasswordApi = async (e) => {
     e.preventDefault();
@@ -105,15 +112,6 @@ const Mypage = () => {
       setIsNicknameChanged(true);
     } catch {
       console.log("error in signUp");
-    }
-  };
-
-  const getMyDiaryApi = async () => {
-    try {
-      const response = await getMyDiary();
-      setChatbotDiaries(response);
-    } catch (error) {
-      console.log("Error in getMyDiaryApi", error);
     }
   };
 
@@ -241,7 +239,7 @@ const Mypage = () => {
         </div>
         <div className="vertical-center" style={{ margin: "20px" }}>
           <SignatureColorOval
-            content={`지금까지 총 ${diaries.length}개의 나라를 여행했습니다`}
+            content={`지금까지 총 ${countries.length}개의 나라를 여행했습니다`}
           ></SignatureColorOval>
 
           <div
@@ -253,7 +251,7 @@ const Mypage = () => {
               justifyContent: "flex-start",
             }}
           >
-            {diaries.map((diary, index) => (
+            {countries.map((country, index) => (
               <div
                 key={index}
                 style={{
@@ -261,7 +259,7 @@ const Mypage = () => {
                   marginBottom: "20px",
                 }}
               >
-                <SignatureOval content={diary}></SignatureOval>
+                <SignatureOval content={country}></SignatureOval>
               </div>
             ))}
           </div>

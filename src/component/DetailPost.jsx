@@ -105,63 +105,96 @@ const DetailPost = () => {
       ) : (
         <div>
           {post ? (
-  <>
-    <h2 className="post-signature-color-oval-post" style={{ marginTop: "30px"}}>{post.title}</h2>
-    <p style={{ color: "#606060", fontSize: "15px", textAlign: "right", marginRight: "220px" }}>
-      작성일 : {formatDate(post.createdAt)}
-    </p>
-  </>
-) : (
-  <p>No post data available.</p>
-)}
+            <>
+              {post && (
+                <h2
+                  className="post-signature-color-oval-post"
+                  style={{ marginTop: "65px" }}
+                >
+                  {post.title}
+                </h2>
+              )}
+              {post && (
+                <p
+                  style={{
+                    color: "#606060",
+                    fontSize: "15px",
+                    textAlign: "right",
+                    marginRight: "220px",
+                  }}
+                >
+                  작성 시간 : {formatDate(post.createdAt)}
+                </p>
+              )}
+            </>
+          ) : (
+            <p>No post data available.</p>
+          )}
 
-          <div className="post-signature-color-oval-post">
-            <h3 style={{ marginLeft: "250px", textAlign: "left" }}>여행기</h3>
-          </div>
           <div>
             {diaries?.map((diary, index) => (
               <div className="signature-oval-post" key={index}>
-                <div className="diary-date-title">
-                  <div className="diary-date">
-                    <p style={{ color: "#606060", fontSize: "18px" }}>
-                      {diary.date}
-                    </p>
+                <div
+                  className="diary-container"
+                  style={{
+                    display: "flex",
+                    gap: "40px",
+                  }}
+                >
+                  <div
+                    className="diary-left"
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      flex: 1,
+                      alignItems: "center",
+                    }}
+                  >
+                    <div style={{ marginBottom: "20px" }}>
+                      <p style={{ color: "#606060", fontSize: "18px" }}>
+                        {diary.date}
+                      </p>
+                    </div>
+                    <ImageSlider content={diary.photos} />
                   </div>
-                  <div classname="diary-title">
-                    <p
-                      style={{
-                        color: "#9cc7ee",
-                        fontSize: "18px",
-                        marginLeft: "419px",
-                      }}
-                    >
-                      {diary.title}
-                    </p>
-                  </div>
-                </div>
-                <div className="diary-image-contnet">
-                  <ImageSlider content={diary.photos} />
-
-                  {/* <p style={{ color: "#606060", fontSize: "15px" }}>
-                      {diary.country}
-                    </p> */}
-                  <div className="diary-content">
-                    <p
-                      style={{
-                        color: "#606060",
-                        fontSize: "15px",
-                        textAlign: "left",
-                      }}
-                    >
-                      {diary.content}
-                    </p>
+                  <div
+                    className="diary-right"
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      flex: 4,
+                      alignItems: "center",
+                    }}
+                  >
+                    <div style={{ marginBottom: "20px" }}>
+                      <p
+                        style={{
+                          color: "#9cc7ee",
+                          fontSize: "18px",
+                        }}
+                      >
+                        {diary.title}
+                      </p>
+                    </div>
+                    <div className="diary-content">
+                      <p
+                        style={{
+                          color: "#606060",
+                          fontSize: "15px",
+                          textAlign: "left",
+                          margin: "0",
+                        }}
+                      >
+                        {diary.content}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
           <div className="post-signature-color-oval-expense">
-            <h3
+            {/* <h3
               style={{
                 marginLeft: "250px",
                 textAlign: "left",
@@ -170,7 +203,7 @@ const DetailPost = () => {
               }}
             >
               경비
-            </h3>
+            </h3> */}
           </div>
 
           {expenses &&
@@ -216,23 +249,41 @@ const DetailPost = () => {
           <DonutChart style={{ width: "200px", height: "200px" }} postId={id} />
 
           {likeCheck ? (
-          <div style={{display: "flex", justifyContent: "flex-end", marginBottom: "30px", marginRight: "230px" }}>
-            <button
-              className="signature-oval"
-              style={{ backgroundColor: "#d7e9fa", textAlign: "center" }}
-              onClick={likeCommentApi}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                marginBottom: "30px",
+                marginRight: "230px",
+              }}
             >
-              <p style={{ color: "#606060", fontSize: "15px" }}>
-                {post.love}개
-              </p>
-            </button>
-          </div>
+              <button
+                className="signature-oval"
+                style={{ backgroundColor: "#d7e9fa", textAlign: "center" }}
+                onClick={likeCommentApi}
+              >
+                {post && (
+                  <p style={{ color: "#606060", fontSize: "15px" }}>
+                    {post.love}개
+                  </p>
+                )}
+              </button>
+            </div>
           ) : (
-            <div style={{display: "flex", justifyContent: "flex-end", marginBottom: "30px", marginRight: "230px"}}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                marginBottom: "30px",
+                marginRight: "230px",
+              }}
+            >
               <button className="signature-oval" onClick={likeCommentApi}>
-                <p style={{ color: "#606060", fontSize: "15px" }}>
-                  {post.love}개
-                </p>
+                {post && (
+                  <p style={{ color: "#606060", fontSize: "15px" }}>
+                    {post.love}개
+                  </p>
+                )}
               </button>
             </div>
           )}

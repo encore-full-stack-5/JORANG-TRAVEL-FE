@@ -52,6 +52,16 @@ const ShareTripCountry = () => {
     }
   };
 
+  const getImageSrc = (post) => {
+    const filteredDiaries = post.diaries.filter(
+      (diary) => diary.photos && diary.photos.length > 0
+    );
+    // console.log(filteredPost, "filteredPost");
+    if (filteredDiaries && filteredDiaries.length > 0)
+      return filteredDiaries[0].photos[0].photoURL;
+    else return "/window.jpg";
+  };
+
   return (
     <div>
       <div
@@ -98,18 +108,15 @@ const ShareTripCountry = () => {
       </div>
 
       <div style={{ display: "flex", margin: "10px 15% 0 15%" }}>
-
         {posts?.map((post, i) => (
           <Link
-          to={`/detail-post/${post.id}`}
-          key={i}
-          style={{ textDecoration: "none" }}
-        >
+            to={`/detail-post/${post.id}`}
+            key={i}
+            style={{ textDecoration: "none" }}
+          >
             <ImageText
               key={i}
-              src={post.diaries
-                .filter((diary) => diary.photos && diary.photos.length > 0)
-                .map((diary) => diary.photos[0].photoURL)}
+              src={getImageSrc(post)}
               content={post.title}
             ></ImageText>
           </Link>

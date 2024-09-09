@@ -73,9 +73,7 @@ const Home = () => {
   useEffect(() => {
     console.log(getCountryInfo(1));
     localStorage.removeItem("currentPage");
-  }, []
-  )
-
+  }, []);
 
   return (
     <>

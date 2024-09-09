@@ -20,6 +20,16 @@ const Mytrip = () => {
     console.log(res2);
   };
 
+  const getImageSrc = (post) => {
+    const filteredDiaries = post.diaries.filter(
+      (diary) => diary.photos && diary.photos.length > 0
+    );
+    // console.log(filteredPost, "filteredPost");
+    if (filteredDiaries && filteredDiaries.length > 0)
+      return filteredDiaries[0].photos[0].photoURL;
+    else return "/window.jpg";
+  };
+
   return (
     <div style={{ paddingTop: "20px" }}>
       {/* <Search placeholder="가고 싶은 나라나 도시를 선택해주세요" /> */}
@@ -39,25 +49,14 @@ const Mytrip = () => {
           </Link>
         </div>
       </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-start",
-          margin: "10px 13% 0 13%",
-        }}
-      >
+      <div className="mytrip-map-display">
         {recentPosts?.map((post, i) => (
           <Link
             to={`/detail-post/${post.id}`}
             key={i}
             style={{ textDecoration: "none" }}
           >
-            <ImageText
-              src={post.diaries
-                .filter((diary) => diary.photos && diary.photos.length > 0)
-                .map((diary) => diary.photos[0].photoURL)}
-              content={post.title}
-            ></ImageText>
+            <ImageText src={getImageSrc(post)} content={post.title}></ImageText>
           </Link>
         ))}
       </div>
@@ -78,13 +77,7 @@ const Mytrip = () => {
           </Link>
         </div>
       </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-start",
-          margin: "10px 13% 0 13%",
-        }}
-      >
+      <div className="mytrip-map-display">
         {topPosts?.map((post, i) => (
           <Link
             to={`/detail-post/${post.id}`}
@@ -93,9 +86,7 @@ const Mytrip = () => {
           >
             <ImageText
               key={i}
-              src={post.diaries
-                .filter((diary) => diary.photos && diary.photos.length > 0)
-                .map((diary) => diary.photos[0].photoURL)}
+              src={getImageSrc(post)}
               content={post.title}
             ></ImageText>
           </Link>

@@ -27,6 +27,7 @@ const SignIn = () => {
       localStorage.setItem("id", response.loginId);
       localStorage.setItem("token", response.token);
       localStorage.setItem("nickname", response.nickname);
+      localStorage.setItem("expirationTime", response.expirationTime);
       console.log("성공");
       alert("로그인 성공");
       moveToMyPage();
@@ -64,8 +65,9 @@ const SignIn = () => {
     }
   };
 
-  useEffect(()=> {localStorage.removeItem("currentPage");
-  },[])
+  useEffect(() => {
+    localStorage.removeItem("currentPage");
+  }, []);
 
   return !localStorage.getItem("id") ? (
     <div className="center-right">

@@ -40,6 +40,8 @@ import {
 } from "recoil";
 import SearchPage from "./component/SearchPage";
 import MyDetailPost from "./component/MyDetailPost";
+import TravelDiaryV2 from "./component/TravelDiaryV2";
+import MyUnpublishedPostsMore from "./component/MyUnpublishedPostsMore";
 
 function App() {
   return (
@@ -63,7 +65,7 @@ function App() {
             <Route path="/mytrip" element={<Mytrip />}></Route>
             <Route path="/findLoginId" element={<FindLoginId />}></Route>
             <Route path="/findPassword" element={<FindPassword />}></Route>
-            <Route path="/posts/:id/write" element={<TravelDiary />}></Route>
+            <Route path="/post/write" element={<TravelDiaryV2 />}></Route>
             <Route
               path="/posts/country/:country/intro"
               element={<ShareTripCountry />}
@@ -89,6 +91,10 @@ function App() {
             <Route
               path="/my/detail-post/:id"
               element={<MyDetailPost />}
+            ></Route>
+            <Route
+              path="/mytrip/unpublished/more-information"
+              element={<MyUnpublishedPostsMore />}
             ></Route>
           </Routes>
         </BrowserRouter>
