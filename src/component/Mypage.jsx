@@ -30,40 +30,54 @@ const Mypage = () => {
 
   useEffect(() => {
     localStorage.removeItem("currentPage");
+    const expirationTime = localStorage.getItem("expirationTime");
+    const loginId = localStorage.getItem("id");
     const checkLoginStatus = async () => {
-      const loginId = localStorage.getItem("id");
-      if (loginId) {
-        setIsLoggedIn(true);
-        try {
-          const response = await getUserById(loginId);
-          setNickname(response.nickname);
-        } catch (error) {
-          console.log("Error fetching user data:", error);
-        }
-      } else {
-        setIsLoggedIn(false);
-        alert("로그인이 되어 있지 않습니다. 로그인 페이지로 이동합니다.");
+      if (new Date() > new Date(expirationTime)) {
+        localStorage.removeItem("id");
+        localStorage.removeItem("token");
+        localStorage.removeItem("nickname");
+        localStorage.removeItem("expirationTime");
+        alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
         navigate("/signin");
+      } else {
+        if (loginId) {
+          setIsLoggedIn(true);
+          try {
+            const response = await getUserById(loginId);
+            setNickname(response.nickname);
+          } catch (error) {
+            console.log("Error fetching user data:", error);
+          }
+        } else {
+          setIsLoggedIn(false);
+          alert("로그인이 되어 있지 않습니다. 로그인 페이지로 이동합니다.");
+          navigate("/signin");
+        }
       }
     };
-    const getExpensesApi = async () => {
-      try {
-        const response = await getExpenseDetailByUserAndCountry();
-        console.log(response);
-        console.log(response.length);
-        setExpenses(response);
-      } catch {
-        console.log("error in getExpensesApi");
-      }
-    };
+
     checkLoginStatus();
-    getCountriesVisited();
-    getExpensesApi();
+    if (new Date() <= new Date(expirationTime) && loginId) {
+      getCountriesVisited();
+      getExpensesApi();
+    }
   }, [navigate, isNicknameChanged, isPasswordChanged]);
 
   const getCountriesVisited = async () => {
     const res = await getNumberOfCountriesVisited();
     setCountries(res);
+  };
+
+  const getExpensesApi = async () => {
+    try {
+      const response = await getExpenseDetailByUserAndCountry();
+      console.log(response);
+      console.log(response.length);
+      setExpenses(response);
+    } catch {
+      console.log("error in getExpensesApi");
+    }
   };
 
   const updateUserPasswordApi = async (e) => {

@@ -38,7 +38,6 @@ export const api = async (url, method, body, params) => {
       // Authorization: []
     },
   });
-
   return res;
 };
 

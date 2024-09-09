@@ -341,9 +341,9 @@ input[type="password"] {
   color: #606060;
   padding: 20px;
   width: 80%;
-  max-width: 1215px;
+  /* max-width: 1215px; */
   margin-top: 30px;
-  height: 450px;
+  height: fit-content;
 
   /* border: 1px solid #ccc;
     border-radius: 10px;
@@ -877,6 +877,14 @@ input[type="password"] {
   margin-left: calc((100% - (5 * 200px + 5 * 30px + 5 * 6px)) / 2);
   margin-right: calc((100% - (5 * 200px + 5 * 30px + 5 * 6px)) / 2);
   margin-top: 20px;
+}
+
+.mytrip-display {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: calc((100% - (5 * 200px + 5 * 30px + 5 * 6px)) / 2);
+  margin-right: calc((100% - (5 * 200px + 5 * 30px + 5 * 6px)) / 2);
+  margin-top: 30px;
 }
 
 .row-more {

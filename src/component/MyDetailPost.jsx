@@ -12,6 +12,8 @@ import {
 import DonutChart from "./DonutChart";
 import ImageSlider from "./ImageSlider";
 import { deleteById } from "../api/post-api";
+import { deletePhotosByDiaryId } from "../config/photoApi";
+import { deleteDiaryById } from "../config/diaryApi";
 
 const MyDetailPost = () => {
   const { id } = useParams();
@@ -84,6 +86,10 @@ const MyDetailPost = () => {
 
   const deletePost = async () => {
     if (window.confirm("여행 일지를 정말 삭제하시겠습니까?")) {
+      for (let diary of diaries) {
+        await deletePhotosByDiaryId(diary.id); // photo를 먼저 지워야 한다. (foreign key 때문에)
+        await deleteDiaryById(diary.id); // id가 발급된 diary는 DB에서 삭제
+      }
       await deleteById(id);
       alert("여행 일지가 삭제되었습니다");
       navigate("/mytrip");
@@ -110,7 +116,7 @@ const MyDetailPost = () => {
       {loading ? (
         <h2>loading...</h2>
       ) : (
-        <div>
+        <div style={{ display: "flex", flexDirection: "column" }}>
           {post ? (
             <>
               <h2
@@ -124,13 +130,15 @@ const MyDetailPost = () => {
                 className="public"
                 style={{
                   textAlign: "right",
+                  alignSelf: "center",
+                  width: "80%",
                 }}
               >
                 <button
                   onClick={deletePost}
                   className="delete-travel-diary"
                   style={{
-                    marginRight: `calc((100% - ${getDiaryWidth()}px) / 2)`,
+                    // marginRight: `calc((100% - ${getDiaryWidth()}px) / 2)`,
                     marginBottom: "20px",
                   }}
                 >
@@ -142,7 +150,9 @@ const MyDetailPost = () => {
                   color: "#606060",
                   fontSize: "15px",
                   textAlign: "right",
-                  marginRight: `calc((100% - ${getDiaryWidth()}px) / 2)`,
+                  width: "80%",
+                  alignSelf: "center",
+                  // marginRight: `calc((100% - ${getDiaryWidth()}px) / 2)`,
                 }}
               >
                 작성 시간: {formatDate(post.createdAt)}
@@ -174,12 +184,44 @@ const MyDetailPost = () => {
                       alignItems: "center",
                     }}
                   >
-                    <div style={{ marginBottom: "20px" }}>
-                      <p style={{ color: "#606060", fontSize: "18px" }}>
-                        {diary.date}
-                      </p>
-                    </div>
-                    <ImageSlider content={diary.photos} />
+                    {diary.date ? (
+                      <div style={{ marginBottom: "20px" }}>
+                        <p style={{ color: "#606060", fontSize: "18px" }}>
+                          {diary.date}
+                        </p>
+                      </div>
+                    ) : (
+                      <div
+                        style={{
+                          boxSizing: "border-box",
+                          width: "300px",
+                          border: "2px dashed #9cc7ee",
+                          borderRadius: "15px",
+                          padding: "15px",
+                          marginBottom: "18px",
+                        }}
+                      >
+                        날짜를 넣어주세요
+                      </div>
+                    )}
+                    {diary.photos && diary.photos.length > 0 ? (
+                      <ImageSlider content={diary.photos} />
+                    ) : (
+                      <div
+                        style={{
+                          boxSizing: "border-box",
+                          width: "300px",
+                          height: "300px",
+                          border: "2px dashed #9cc7ee",
+                          borderRadius: "15px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        이미지를 넣어주세요
+                      </div>
+                    )}
                   </div>
                   <div
                     className="diary-right"
@@ -190,28 +232,62 @@ const MyDetailPost = () => {
                       alignItems: "center",
                     }}
                   >
-                    <div style={{ marginBottom: "20px" }}>
-                      <p
+                    {diary.title ? (
+                      <div style={{ marginBottom: "20px" }}>
+                        <p
+                          style={{
+                            color: "#9cc7ee",
+                            fontSize: "18px",
+                          }}
+                        >
+                          {diary.title}
+                        </p>
+                      </div>
+                    ) : (
+                      <div
                         style={{
-                          color: "#9cc7ee",
-                          fontSize: "18px",
+                          boxSizing: "border-box",
+                          width: "100%",
+                          border: "2px dashed #9cc7ee",
+                          borderRadius: "15px",
+                          padding: "15px",
+                          marginBottom: "18px",
                         }}
                       >
-                        {diary.title}
-                      </p>
-                    </div>
-                    <div className="diary-content">
-                      <p
+                        제목을 넣어주세요
+                      </div>
+                    )}
+                    {diary.content ? (
+                      <div className="diary-content">
+                        <p
+                          style={{
+                            color: "#606060",
+                            fontSize: "15px",
+                            textAlign: "left",
+                            margin: "0",
+                            lineHeight: "30px",
+                          }}
+                        >
+                          {diary.content}
+                        </p>
+                      </div>
+                    ) : (
+                      <div
                         style={{
-                          color: "#606060",
-                          fontSize: "15px",
-                          textAlign: "left",
-                          margin: "0",
+                          boxSizing: "border-box",
+                          width: "100%",
+                          height: "100%",
+                          border: "2px dashed #9cc7ee",
+                          borderRadius: "15px",
+                          padding: "15px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
                         }}
                       >
-                        {diary.content}
-                      </p>
-                    </div>
+                        내용을 넣어주세요
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

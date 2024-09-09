@@ -1,24 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { getMyLikePostByPageApi, postLikeListByUser } from "../config/postApi";
+import {
+  getMyLikePostByPageApi,
+  getMyUnpublishedPostsPerPageApi,
+  postLikeListByUser,
+} from "../config/postApi";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ImageText from "./ImageText";
 import Norway from "./../image/Norway.png";
 
-const MyTripLoveMoreInformation = () => {
+const MyUnpublishedPostsMore = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
   const [dataList, setDataList] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const getMyLikePostByPage = async (pageNumber) => {
+  const getMyUnpublishedPostsPerPage = async (pageNumber) => {
     try {
-      const response = await getMyLikePostByPageApi(pageNumber);
-      console.log(response, "getMyLikePostByPageApi");
-      setTotalPage(response.totalPage);
+      const response = await getMyUnpublishedPostsPerPageApi(pageNumber);
+      console.log(response, "getMyUnpublishedPostsPerPageApi");
+      setTotalPage(response.totalPages);
       setDataList(response.content);
     } catch {
-      console.log("error in getMyLikePostByPageApi");
+      console.log("error in getMyUnpublishedPostsPerPage");
     }
   };
 
@@ -42,7 +46,7 @@ const MyTripLoveMoreInformation = () => {
     const query = new URLSearchParams(location.search);
     const page = parseInt(query.get("page")) || 0;
     setCurrentPage(page);
-    getMyLikePostByPage(page);
+    getMyUnpublishedPostsPerPage(page);
   }, [location.search]);
 
   return (
@@ -67,7 +71,7 @@ const MyTripLoveMoreInformation = () => {
               marginBottom: "10px",
             }}
           >
-            찜한 여행일지
+            작성 중인 여행일지
           </div>
           <hr style={{ width: "calc(1.8rem * 25)" }} />
         </div>
@@ -89,7 +93,7 @@ const MyTripLoveMoreInformation = () => {
             </div>
           ))
         ) : (
-          <p className="trip-font-color">찜한 여행일지가 없습니다.</p>
+          <p className="trip-font-color">작성 중인 여행일지가 없습니다.</p>
         )}
       </div>
       {totalPage > 0 && (
@@ -115,4 +119,4 @@ const MyTripLoveMoreInformation = () => {
     </div>
   );
 };
-export default MyTripLoveMoreInformation;
+export default MyUnpublishedPostsMore;

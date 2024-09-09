@@ -106,22 +106,26 @@ const DetailPost = () => {
         <div>
           {post ? (
             <>
-              <h2
-                className="post-signature-color-oval-post"
-                style={{ marginTop: "65px" }}
-              >
-                {post.title}
-              </h2>
-              <p
-                style={{
-                  color: "#606060",
-                  fontSize: "15px",
-                  textAlign: "right",
-                  marginRight: "220px",
-                }}
-              >
-                작성 시간 : {formatDate(post.createdAt)}
-              </p>
+              {post && (
+                <h2
+                  className="post-signature-color-oval-post"
+                  style={{ marginTop: "65px" }}
+                >
+                  {post.title}
+                </h2>
+              )}
+              {post && (
+                <p
+                  style={{
+                    color: "#606060",
+                    fontSize: "15px",
+                    textAlign: "right",
+                    marginRight: "220px",
+                  }}
+                >
+                  작성 시간 : {formatDate(post.createdAt)}
+                </p>
+              )}
             </>
           ) : (
             <p>No post data available.</p>
@@ -258,9 +262,11 @@ const DetailPost = () => {
                 style={{ backgroundColor: "#d7e9fa", textAlign: "center" }}
                 onClick={likeCommentApi}
               >
-                <p style={{ color: "#606060", fontSize: "15px" }}>
-                  {post.love}개
-                </p>
+                {post && (
+                  <p style={{ color: "#606060", fontSize: "15px" }}>
+                    {post.love}개
+                  </p>
+                )}
               </button>
             </div>
           ) : (
@@ -273,9 +279,11 @@ const DetailPost = () => {
               }}
             >
               <button className="signature-oval" onClick={likeCommentApi}>
-                <p style={{ color: "#606060", fontSize: "15px" }}>
-                  {post.love}개
-                </p>
+                {post && (
+                  <p style={{ color: "#606060", fontSize: "15px" }}>
+                    {post.love}개
+                  </p>
+                )}
               </button>
             </div>
           )}

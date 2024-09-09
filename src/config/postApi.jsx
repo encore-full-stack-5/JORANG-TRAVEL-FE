@@ -44,12 +44,12 @@ export const getLikeCheck = async (postId) => {
   }
 };
 
-export const getUserLikePosts = async () => {
+export const getLikedPostsByUserApi = async () => {
   try {
-    const res = await api(`/api/v1/likes/posts`, "get");
+    const res = await api(`/api/v1/likes/posts/user`, "get");
     return res.data;
   } catch (error) {
-    console.error("Error in getUserLikePosts", error);
+    console.error("Error in getLikedPostsByUserApi", error);
     return [];
   }
 };
@@ -60,6 +60,16 @@ export const getPostByUser = async () => {
     return res.data;
   } catch (error) {
     console.error("Error in getPostByUser", error);
+    return [];
+  }
+};
+
+export const getMyPublishedPostApi = async () => {
+  try {
+    const res = await api(`/api/v1/posts/my-published`, "get");
+    return res.data;
+  } catch (error) {
+    console.error("Error in getPublishedPost", error);
     return [];
   }
 };
@@ -96,21 +106,27 @@ export const getExpenseDetailsByPostId = async (postId) => {
 //   }
 // };
 
-export const postListByUser = async (pageNumber) => {
+export const getMyPublishedPostsByPageApi = async (pageNumber) => {
   try {
-    const res = await api(`/api/v1/posts/user/list?page=${pageNumber}`, "get");
+    const res = await api(
+      `/api/v1/posts/my-published/page?page=${pageNumber}`,
+      "get"
+    );
     return res.data;
   } catch (error) {
-    console.error("Error in getPostList", error);
+    console.error("Error in getMyPublishedPostsByPageApi", error);
   }
 };
 
-export const postLikeListByUser = async (pageNumber) => {
+export const getMyLikePostByPageApi = async (pageNumber) => {
   try {
-    const res = await api(`/api/v1/likes/user/list?page=${pageNumber}`, "get");
+    const res = await api(
+      `/api/v1/likes/posts/user/page?page=${pageNumber}`,
+      "get"
+    );
     return res.data;
   } catch (error) {
-    console.error("Error in postLikeListByUser", error);
+    console.error("Error in getMyLikePostByPageApi", error);
   }
 };
 
@@ -123,22 +139,42 @@ export const getMyDiary = async () => {
   }
 };
 
-export const savePost = async () => {
+export const createPost = async (body) => {
   try {
-    const res = await api("/api/v1/posts", "post");
+    const res = await api("/api/v1/posts", "post", body);
     console.log(res.data);
     return res.data;
   } catch (error) {
-    console.error("Error in savePost", error);
+    console.error("Error in createPost", error);
   }
 };
 
-export const updatePost = async (id, updatePostDto) => {
+export const createTempPost = async (body) => {
+  try {
+    const res = await api("/api/v1/posts/temp", "post", body);
+    console.log(res.data);
+    return res.data;
+  } catch (error) {
+    console.error("Error in createTempPost", error);
+  }
+};
+
+export const updateTempPost = async (id, body) => {
+  try {
+    const res = await api(`/api/v1/posts/${id}/temp`, "put", body);
+    console.log(res.data);
+    return res.data;
+  } catch (error) {
+    console.error("Error in updateTempPost", error);
+  }
+};
+
+export const updatePostById = async (id, updatePostDto) => {
   try {
     const res = await api(`/api/v1/posts/${id}`, "put", updatePostDto);
     return res.data;
   } catch (error) {
-    console.error("Error in savePost", error);
+    console.error("Error in updatePostById", error);
   }
 };
 
@@ -151,12 +187,24 @@ export const getCountryInfo = async (countryName) => {
   }
 };
 
-export const getUnpublishedPosts = async () => {
+export const getMyUnpublishedPosts = async () => {
   try {
-    const res = await api(`/api/v1/posts/unpublished`, "get");
+    const res = await api(`/api/v1/posts/my-unpublished`, "get");
     return res.data;
   } catch (error) {
-    console.error("Error in getUnpublishedPosts", error);
+    console.error("Error in getMyUnpublishedPosts", error);
+    return [];
+  }
+};
+
+export const getMyUnpublishedPostsPerPageApi = async (pageNumber) => {
+  try {
+    const res = await api("/api/v1/posts/my-unpublished/page", "get", null, {
+      page: pageNumber,
+    });
+    return res.data;
+  } catch (error) {
+    console.error("Error in getMyUnpublishedPostsPerPageApi", error);
     return [];
   }
 };
