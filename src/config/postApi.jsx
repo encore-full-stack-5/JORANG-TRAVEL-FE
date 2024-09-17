@@ -26,24 +26,6 @@ export const getMyPostById = async (id) => {
   }
 };
 
-export const likeComment = async (postId) => {
-  try {
-    const res = await api(`/api/v1/likes/posts/${postId}`, "post");
-    return res.data;
-  } catch (error) {
-    console.error("Error in likeComment", error);
-  }
-};
-
-export const getLikeCheck = async (postId) => {
-  try {
-    const res = await api(`/api/v1/likes/posts/${postId}`, "get");
-    return res.data;
-  } catch (error) {
-    console.error("Error in likeCheck", error);
-  }
-};
-
 export const getLikedPostsByUserApi = async () => {
   try {
     const res = await api(`/api/v1/likes/posts/user`, "get");
@@ -77,7 +59,7 @@ export const getMyPublishedPostApi = async () => {
 export const getChartData = async (postId) => {
   try {
     const res = await api(
-      `/api/v1/expense-details/postId/${postId}/chart`,
+      `/api/v1/expense-details/chart/postId/${postId}`,
       "get"
     );
     return res.data;
@@ -206,5 +188,14 @@ export const getMyUnpublishedPostsPerPageApi = async (pageNumber) => {
   } catch (error) {
     console.error("Error in getMyUnpublishedPostsPerPageApi", error);
     return [];
+  }
+};
+
+export const getMyTotalCostPerCountryApi = async () => {
+  try {
+    const res = await api("/api/v1/posts/my/total-cost", "get");
+    return res.data;
+  } catch (error) {
+    console.error("Error in getMyTotalCostPerCountryApi", error);
   }
 };

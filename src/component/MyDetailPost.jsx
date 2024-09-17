@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  getDiaryAllByPostId,
-  getLikeCheck,
-  getPostById,
-  likeComment,
-  getById,
-  getExpenseDetailsByPostId,
-  getMyPostById,
-} from "../config/postApi";
+import { getMyPostById } from "../config/postApi";
 import DonutChart from "./DonutChart";
 import ImageSlider from "./ImageSlider";
 import { deleteById } from "../api/post-api";
 import { deletePhotosByDiaryId } from "../config/photoApi";
 import { deleteDiaryById } from "../config/diaryApi";
+import {
+  getLikeCheckApi,
+  getLikeCountByPostIdApi,
+  likePostApi,
+} from "../config/likeApi";
 
 const MyDetailPost = () => {
-  const { id } = useParams();
+  const postId = useParams().id;
   const [loading, setLoading] = useState(true);
   const [post, setPost] = useState({});
   const [diaries, setDiaries] = useState([]);
@@ -39,48 +36,28 @@ const MyDetailPost = () => {
 
   const getPostByIdApi = async () => {
     try {
-      console.log("-------" + id);
-      const response = await getMyPostById(id);
-      console.log(response);
+      console.log("-------" + postId);
+      const response = await getMyPostById(postId);
+      console.log(response, "post");
       setPost(response);
       setLike(response.love);
-      setExpenses(response);
+      setDiaries(response.diaries);
+      setExpenses(response.expenses);
+      setLoading(false);
     } catch {
       console.log("error in getPostByIdApi");
     }
   };
 
-  const getAllByPostIdApi = async () => {
+  const likePost = async () => {
     try {
-      console.log("-------" + id);
-      const response = await getDiaryAllByPostId(id);
-      console.log("xxx", response);
-      setDiaries(response);
-      setLoading(false);
-    } catch {
-      console.log("error in getAllByPostIdApi");
-    }
-  };
-
-  const likeCommentApi = async () => {
-    try {
-      const response = await likeComment(id);
+      const response = await likePostApi(postId);
       setLikeCheck(!likeCheck);
       console.log(response);
       setLike(like + response);
       setPost({ ...post, love: like + response });
     } catch {
-      console.log("error in likeCommentApi");
-    }
-  };
-
-  const checkLikeApi = async () => {
-    try {
-      const response = await getLikeCheck(id);
-      console.log(response);
-      setLikeCheck(response);
-    } catch {
-      console.log("error in checkLikeApi");
+      console.log("error in likePostApi");
     }
   };
 
@@ -90,26 +67,26 @@ const MyDetailPost = () => {
         await deletePhotosByDiaryId(diary.id); // photo를 먼저 지워야 한다. (foreign key 때문에)
         await deleteDiaryById(diary.id); // id가 발급된 diary는 DB에서 삭제
       }
-      await deleteById(id);
+      await deleteById(postId);
       alert("여행 일지가 삭제되었습니다");
       navigate("/mytrip");
     }
   };
 
-  useEffect(() => {
-    getPostByIdApi();
-    getAllByPostIdApi();
-    checkLikeApi();
-    // getByIdApi();
-  }, []);
-
-  const getDiaryWidth = () => {
-    if (document.getElementById("my-diary")) {
-      const diaryWidth = document.getElementById("my-diary").offsetWidth;
-      console.log(diaryWidth, "width");
-      return diaryWidth;
+  const getLikeCHeck = async () => {
+    try {
+      const response = await getLikeCheckApi(postId);
+      console.log(response);
+      setLikeCheck(response);
+    } catch {
+      console.log("error in getLikeCHeck");
     }
   };
+
+  useEffect(() => {
+    getPostByIdApi();
+    getLikeCHeck();
+  }, []);
 
   return (
     <div>
@@ -127,28 +104,42 @@ const MyDetailPost = () => {
                 {post.title}
               </h2>
               <div
-                className="public"
                 style={{
-                  textAlign: "right",
-                  alignSelf: "center",
+                  display: "flex",
                   width: "80%",
+                  margin: "auto",
+                  justifyContent: "flex-end",
                 }}
               >
-                <button
-                  onClick={deletePost}
-                  className="delete-travel-diary"
+                <div
+                  style={{
+                    // marginRight: `calc((100% - ${getDiaryWidth()}px) / 2)`,
+                    marginBottom: "20px",
+                    marginRight: "30px",
+                  }}
+                >
+                  <button
+                    onClick={() => navigate(`/post/edit/${postId}`)}
+                    className="delete-travel-diary"
+                  >
+                    수정
+                  </button>
+                </div>
+                <div
                   style={{
                     // marginRight: `calc((100% - ${getDiaryWidth()}px) / 2)`,
                     marginBottom: "20px",
                   }}
                 >
-                  삭제
-                </button>
+                  <button onClick={deletePost} className="delete-travel-diary">
+                    삭제
+                  </button>
+                </div>
               </div>
               <p
                 style={{
                   color: "#606060",
-                  fontSize: "15px",
+                  fontSize: "1.1rem",
                   textAlign: "right",
                   width: "80%",
                   alignSelf: "center",
@@ -161,7 +152,6 @@ const MyDetailPost = () => {
           ) : (
             <p>No post data available.</p>
           )}
-
           <div className="post-signature-color-oval-post">
             {/* <h3 style={{ marginLeft: "250px", textAlign: "left" }}>여행기</h3> */}
           </div>
@@ -186,7 +176,7 @@ const MyDetailPost = () => {
                   >
                     {diary.date ? (
                       <div style={{ marginBottom: "20px" }}>
-                        <p style={{ color: "#606060", fontSize: "18px" }}>
+                        <p style={{ color: "#606060", fontSize: "1.2rem" }}>
                           {diary.date}
                         </p>
                       </div>
@@ -237,7 +227,7 @@ const MyDetailPost = () => {
                         <p
                           style={{
                             color: "#9cc7ee",
-                            fontSize: "18px",
+                            fontSize: "1.2rem",
                           }}
                         >
                           {diary.title}
@@ -262,7 +252,7 @@ const MyDetailPost = () => {
                         <p
                           style={{
                             color: "#606060",
-                            fontSize: "15px",
+                            fontSize: "1.1rem",
                             textAlign: "left",
                             margin: "0",
                             lineHeight: "30px",
@@ -293,21 +283,11 @@ const MyDetailPost = () => {
               </div>
             ))}
           </div>
-          <div className="post-signature-color-oval-expense">
-            {/* <h3
-              style={{
-                marginLeft: "250px",
-                textAlign: "left",
-                marginBottom: "30px",
-                marginTop: "30px",
-              }}
-            >
-              경비
-            </h3> */}
-          </div>
+          {console.log(expenses, "expenses")}
 
           {expenses &&
-            expenses.expenses.map((expense, index) => (
+            expenses.length > 0 &&
+            expenses.map((expense, index) => (
               <div key={index} className="expense-box">
                 <h3
                   style={{
@@ -325,15 +305,39 @@ const MyDetailPost = () => {
                     <div className="expense-details">
                       {expense.expenseDetails.map((detail, idx) => (
                         <div key={idx}>
+                          {idx === 0 && (
+                            <div
+                              className="all-expense"
+                              style={{
+                                backgroundColor: "#9cc7ee",
+                                borderTopRightRadius: "26px",
+                                borderTopLeftRadius: "26px",
+                              }}
+                            >
+                              <div
+                                style={{
+                                  marginLeft: "20px",
+                                }}
+                              >
+                                경비
+                              </div>
+                              <div>비용</div>
+                              <div
+                                style={{
+                                  marginRight: "20px",
+                                }}
+                              >
+                                카테고리
+                              </div>
+                            </div>
+                          )}
                           <div className="all-expense">
                             <div className="expense-cost">
-                              비용: ${detail.cost}
+                              {detail.cost.toLocaleString()}원
                             </div>
-                            <div className="expense-place">
-                              장소: {detail.place}
-                            </div>
+                            <div className="expense-place">{detail.place}</div>
                             <div className="expense-category">
-                              카테고리: {detail.category}
+                              {detail.category}
                             </div>
                           </div>
                         </div>
@@ -346,24 +350,33 @@ const MyDetailPost = () => {
               </div>
             ))}
 
-          <DonutChart style={{ width: "200px", height: "200px" }} postId={id} />
+          {expenses && expenses.length > 0 && <DonutChart postId={postId} />}
+          {console.log(likeCheck, "likeCHeck")}
 
           {likeCheck ? (
-            <button
-              className="signature-oval"
-              style={{ backgroundColor: "#d7e9fa" }}
-              onClick={likeCommentApi}
-            >
-              <p style={{ color: "#606060", fontSize: "15px" }}>
-                {post.love}개
-              </p>
-            </button>
+            <div className="like-button">
+              <button
+                className="signature-oval"
+                style={{ backgroundColor: "#d7e9fa", textAlign: "center" }}
+                onClick={likePost}
+              >
+                {post && (
+                  <p style={{ color: "#606060", fontSize: "1.1rem" }}>
+                    ❤️ {post.love}개
+                  </p>
+                )}
+              </button>
+            </div>
           ) : (
-            <button className="signature-oval" onClick={likeCommentApi}>
-              <p style={{ color: "#606060", fontSize: "15px" }}>
-                {post.love}개
-              </p>
-            </button>
+            <div className="like-button">
+              <button className="signature-oval" onClick={likePost}>
+                {post && (
+                  <p style={{ color: "#606060", fontSize: "1.1rem" }}>
+                    ❤️ {post.love}개
+                  </p>
+                )}
+              </button>
+            </div>
           )}
         </div>
       )}

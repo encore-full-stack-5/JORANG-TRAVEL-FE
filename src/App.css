@@ -77,12 +77,12 @@
 
 input[type="text"] {
   outline: none;
-  height: 10px;
+  height: 20px;
   width: 400px;
   border: 3px solid #9cc7ee;
   border-radius: 30px;
   padding: 8px 12px;
-  font-size: 15px;
+  font-size: 1.2rem;
   color: #606060;
   /* margin-top: 10px; */
 }
@@ -94,7 +94,7 @@ input[type="date"] {
   border: 3px solid #9cc7ee;
   border-radius: 30px;
   padding: 8px 12px;
-  font-size: 15px;
+  font-size: 1.2rem;
   color: #606060;
 }
 
@@ -105,7 +105,7 @@ input[type="email"] {
   border: 3px solid #9cc7ee;
   border-radius: 30px;
   padding: 8px 12px;
-  font-size: 15px;
+  font-size: 1.2rem;
   color: #606060;
 }
 
@@ -116,14 +116,24 @@ input[type="password"] {
   border: 3px solid #9cc7ee;
   border-radius: 30px;
   padding: 8px 12px;
-  font-size: 15px;
+  font-size: 1.2rem;
   color: #606060;
 }
 
 .sign-up {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  /* flex-direction: column; */
+  /* align-items: flex-start; */
+  justify-content: center;
+  margin-top: 1%;
+}
+
+.mypage-left,
+.mypage-right {
+  display: flex;
+  /* flex-direction: column; */
+  /* align-items: flex-start; */
+  justify-content: center;
   margin-top: 1%;
 }
 
@@ -174,9 +184,19 @@ input[type="password"] {
 }
 
 /*여행 일지css*/
-.travel,
+.travel {
+  margin: 25px auto 0 auto;
+  display: flex;
+  flex-direction: column;
+  width: 65%;
+  align-items: center;
+  padding: 20px 0 40px 0;
+  /* justify-content: center; */
+}
+
 .expenses {
   margin-top: 25px;
+  width: 100%;
 }
 
 .travel-diary,
@@ -185,12 +205,13 @@ input[type="password"] {
   border-radius: 10px;
   padding: 20px;
   margin: auto;
-  width: 80%;
-  max-width: 900px;
+  /* width: 80%;
+  max-width: 900px; */
   height: fit-content;
 }
 .title-publish {
   display: flex;
+  width: 100%;
   justify-content: center;
 }
 .title-input {
@@ -403,7 +424,7 @@ input[type="password"] {
 
 .empty-posts {
   margin-left: 20px;
-  font-size: 15px;
+  font-size: 1.1rem;
   color: #606060;
 }
 
@@ -621,12 +642,17 @@ input[type="password"] {
 }
 
 .content-section textarea {
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 500;
   width: 100%;
-  height: 270px;
+  height: 330px;
   border: none;
   resize: none;
+}
+
+.expenses-total {
+  /* background-color: #9cc7ee;
+  padding: 1px; */
 }
 
 .buttonAddEntry {
@@ -642,8 +668,14 @@ input[type="password"] {
 .expenseInput {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: baseline;
   margin-top: 20px;
+}
+
+.modal {
+  max-width: 575px;
+  max-height: 80%;
+  overflow-y: auto;
 }
 
 .preview-image {
@@ -667,7 +699,7 @@ input[type="password"] {
 
 .image-box {
   flex: 1;
-  height: 150px;
+  height: 185px;
 }
 
 .entry-textarea {
@@ -764,12 +796,12 @@ input[type="password"] {
 
 .react-datepicker__input-container input.date-block {
   outline: none;
-  height: 10px;
+  height: 20px;
   width: 120px;
   border: 3px solid #9cc7ee;
   border-radius: 30px;
   padding: 8px 12px;
-  font-size: 15px;
+  font-size: 1.2rem;
   color: #606060;
   margin: none;
 }
@@ -794,7 +826,7 @@ input[type="password"] {
   /* border: 1px solid #ccc; */
   margin-top: 20px;
   margin-bottom: 10px;
-  height: 470px;
+  height: fit-content;
 }
 
 .delete-button {
@@ -815,12 +847,12 @@ input[type="password"] {
 
 .diary-title-input {
   outline: none;
-  height: 10px;
-  width: 70%;
+  height: 20px;
+  width: 85%;
   border: 3px solid #9cc7ee;
   border-radius: 30px;
   padding: 8px 12px;
-  font-size: 1rem;
+  font-size: 1.2rem;
   color: #606060;
 }
 
@@ -836,7 +868,7 @@ input[type="password"] {
   background-color: #9cc7ee;
   padding: 8px 20px;
   width: fit-content;
-  margin-left: 850px;
+  /* margin-left: 850px; */
   margin-bottom: 15px;
 }
 
@@ -949,6 +981,13 @@ input[type="password"] {
   align-items: center;
 }
 
+.like-button {
+  display: flex;
+  width: 80%;
+  margin: 30px auto;
+  justify-content: flex-end;
+}
+
 .signature-oval-expense {
   background-color: white;
   margin: auto;
@@ -975,14 +1014,15 @@ input[type="password"] {
 
 .expense-details {
   margin: 20px;
-  padding: 10px;
+  /* padding: 10px; */
   border: 3px solid #9cc7ee;
   border-radius: 30px;
   margin: auto;
   margin-top: 10px;
   margin-bottom: 10px;
-  margin-left: 300px;
-  margin-right: 300px;
+  width: 50%;
+  /* margin-left: 300px;
+  margin-right: 300px; */
 }
 /* .all-expense{
   display: flex;
@@ -996,8 +1036,12 @@ input[type="password"] {
 
 .all-expense {
   display: flex;
-  justify-content: space-between;
+  position: relative;
+  /* justify-content: space-between; */
   border-bottom: 3px solid #9cc7ee;
+  font-size: 1.1rem;
+  padding: 15px;
+  justify-content: space-between;
 }
 
 .expense-details > div:last-child > div {
@@ -1013,9 +1057,22 @@ input[type="password"] {
 
 .expense-cost {
   margin-left: 20px;
+  /* position: absolute;
+  top: 0%;
+  left: 0%; */
 }
+
+.expense-place {
+  position: absolute;
+  /* top: 0%; */
+  left: 46%;
+}
+
 .expense-category {
   margin-right: 20px;
+  /* position: absolute;
+  top: 0%;
+  left: 80%; */
 }
 
 .chatbot-font {

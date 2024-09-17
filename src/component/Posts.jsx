@@ -17,7 +17,7 @@ const Posts = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    localStorage.removeItem("currentPage");
+    // localStorage.removeItem("currentPage");
     getPostsAndSetPage();
   }, []);
 
@@ -86,11 +86,14 @@ const Posts = () => {
   //   if (e.target.className !== "filter-box") setShowFilter(false);
   // };
 
-  const showCurrentPage = (e) => {
-    setCurrentPage(e.target.innerHTML);
-    localStorage.setItem("currentPage", e.target.innerHTML);
+  const showCurrentPage = (page) => {
+    setCurrentPage(page);
+    localStorage.setItem("currentPage", page);
   };
 
+  const disablePageButton = (page) => {
+    return page === currentPage;
+  };
   // const writePost = async () => {
   //   const res = await savePost();
   //   console.log(res);
@@ -175,21 +178,18 @@ const Posts = () => {
             <button onClick={writePost} style={{backgroundColor: "white", border: "none"}}>글쓰기</button>
         </div> */}
       </div>
-      <div
-        className="country-posts"
-        style={{
-          height: "440px",
-        }} // total width 고정 필요
-      >
+      <div className="country-posts">
         <div className="posts-container">
           {posts &&
             posts
-              .filter((post) =>
-                post.diaries.some(
-                  (diary) =>
-                    new Date(diary.date).getTime() >= date[0] &&
-                    new Date(diary.date).getTime() <= date[1]
-                )
+              .filter(
+                (post) =>
+                  post.diaries.some(
+                    (diary) =>
+                      new Date(diary.date).getTime() >= date[0] &&
+                      new Date(diary.date).getTime() <= date[1]
+                  ) ||
+                  (post.expenses && post.expenses.length > 0)
               )
               .slice((currentPage - 1) * 10, currentPage * 10)
               .map((post, i) => (
@@ -207,11 +207,12 @@ const Posts = () => {
               ))}
         </div>
       </div>
-      <div>
+      <div style={{ position: "fixed", bottom: "0", width: "100%" }}>
         {pages.map((page) => (
           <button
             key={page}
-            onClick={showCurrentPage}
+            onClick={() => showCurrentPage(page)}
+            disabled={page === currentPage}
             style={{
               margin: "-20px 5px 100px 5px",
               backgroundColor: "white",

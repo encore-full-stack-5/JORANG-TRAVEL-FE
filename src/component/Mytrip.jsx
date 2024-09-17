@@ -33,7 +33,6 @@ const Mytrip = () => {
   };
   const getOngoingPosts = async () => {
     const response = await getMyUnpublishedPosts();
-    console.log(response);
     if (response && response.length > 0) setOngoingPosts(response);
     else setOngoingPostClickable(false);
   };

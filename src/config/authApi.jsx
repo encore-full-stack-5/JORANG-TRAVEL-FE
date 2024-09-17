@@ -87,7 +87,7 @@ export const findPassword = async (data) => {
 
 export const getExpenseDetailByUserAndCountry = async () => {
   try {
-    const res = await api(`/api/v1/expenseDetail/mypage`, "get");
+    const res = await api(`/api/v1/expense-details/my-countries`, "get");
     return res.data;
   } catch (error) {
     console.error("Error in getExpenseDetailByUserAndCountry", error);

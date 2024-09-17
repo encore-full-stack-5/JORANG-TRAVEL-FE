@@ -17,7 +17,7 @@ const Mytrip = () => {
     setRecentPosts(res1);
     const res2 = await getTopLikePostsFirst();
     setTopPosts(res2);
-    console.log(res2);
+    console.log(res2, "getTopLikePostsFirst");
   };
 
   const getImageSrc = (post) => {
