@@ -112,9 +112,9 @@ const PostsPerCountry = () => {
     }
   };
 
-  const showCurrentPage = (e) => {
-    setCurrentPage(e.target.innerHTML);
-    localStorage.setItem("currentPage", e.target.innerHTML);
+  const showCurrentPage = (page) => {
+    setCurrentPage(page);
+    localStorage.setItem("currentPage", page);
   };
 
   // const closeFilterBox = (e) => {
@@ -196,6 +196,7 @@ const PostsPerCountry = () => {
 
       <div>
         <div className="posts-container">
+          {console.log(posts, "posts")}
           {posts
             .filter((post) =>
               post.diaries.some(
@@ -224,7 +225,8 @@ const PostsPerCountry = () => {
         {pages.map((page) => (
           <button
             key={page}
-            onClick={showCurrentPage}
+            onClick={() => showCurrentPage(page)}
+            disabled={page === currentPage}
             style={{
               margin: "-20px 5px 100px 5px",
               backgroundColor: "white",

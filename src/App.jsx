@@ -42,6 +42,7 @@ import SearchPage from "./component/SearchPage";
 import MyDetailPost from "./component/MyDetailPost";
 import TravelDiaryV2 from "./component/TravelDiaryV2";
 import MyUnpublishedPostsMore from "./component/MyUnpublishedPostsMore";
+import TravelDiaryEditor from "./component/TravelDiaryEditor";
 
 function App() {
   return (
@@ -77,9 +78,7 @@ function App() {
               element={<PostsPerCountry />}
             ></Route>
             <Route path="/detail-post/:id" element={<DetailPost />}></Route>
-
             {/* <Route path="/expensedetail" element={<ExpenseDetail/>}></Route> */}
-
             <Route
               path="/mytrip/more-information"
               element={<MyTripMoreInformation />}
@@ -95,6 +94,10 @@ function App() {
             <Route
               path="/mytrip/unpublished/more-information"
               element={<MyUnpublishedPostsMore />}
+            ></Route>
+            <Route
+              path="/post/edit/:id"
+              element={<TravelDiaryEditor />}
             ></Route>
           </Routes>
         </BrowserRouter>

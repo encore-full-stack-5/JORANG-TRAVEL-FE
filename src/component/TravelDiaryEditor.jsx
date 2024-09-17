@@ -8,29 +8,21 @@ import "react-calendar/dist/Calendar.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { createDiary, deleteDiaryById, updateDiary } from "../config/diaryApi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./TravelDiary.css";
 import months from "../months";
 
-import {
-  deletePhotosByDiaryId,
-  savePhotos,
-  updatePhotos,
-} from "../config/photoApi";
+import { deletePhotosByDiaryId, savePhotos } from "../config/photoApi";
 import travelCountries from "../travelCountries";
 import { api } from "../config/network";
-import {
-  createPost,
-  createTempPost,
-  updatePostById,
-  updateTempPost,
-} from "../config/postApi";
+import { getMyPostById, updatePostById } from "../config/postApi";
 import { el } from "date-fns/locale";
 import { saveExpensesApi } from "../config/expenseApi";
 import { saveExpenseDetailsApi } from "../config/expenseDetailApi";
 // Modal.setAppElement("#root");
 
-const TravelDiaryV2 = () => {
+const TravelDiaryEditor = () => {
+  const postId = useParams().id;
   const [savedPostId, setSavedPostId] = useState(null);
   const [savedDiaryId, setSavedDiaryId] = useState([]);
   // const [expenseEntries, setExpenseEntries] = useState([]);
@@ -38,16 +30,13 @@ const TravelDiaryV2 = () => {
   const [selectedExpenseDate, setSelectedExpenseDate] = useState(null);
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
   const [showPublishModal, setShowPublishModal] = useState(false);
-  const [expenseId, setExpenseId] = useState();
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    localStorage.removeItem("currentPage");
-  }, []);
+  const navigate = useNavigate();
 
   const [savedExpenses, setSavedExpenses] = useState({});
   const [expenses, setExpenses] = useState({});
-
+  const [postTitle, setPostTitle] = useState("");
+  const [totalExpense, setTotalExpense] = useState(0);
   const [diaries, setDiaries] = useState([
     {
       id: "",
@@ -59,49 +48,8 @@ const TravelDiaryV2 = () => {
   ]);
 
   const openPublishModal = () => {
-    // 여행일지가 빈 케이스를 걸러냄
-    if (isPostEmpty()) {
-      alert("여행일지의 제목을 작성해주세요");
-      setShowPublishModal(false);
-      return;
-    }
-    console.log(isDiaryEmpty(), "isDiaryEmpty");
-    if (isDiaryEmpty().result && isDiaryEmpty().status === "nothing") {
-      alert("최소 하나의 여행기를 작성해주세요");
-      return;
-    }
-    // 여행기를 중간에 쓰다 만 케이스를 걸러냄
-    else if (isDiaryEmpty().result && isDiaryEmpty().status === "partial") {
-      console.log(1);
-      alert("여행기의 빈 칸을 채워주세요");
-      setShowPublishModal(false);
-      return;
-      // 여행기와 경비가 모두 텅 빈 케이스를 걸러냄
-    } else if (isDiaryEmpty().result && isExpenseEmpty()) {
-      console.log(1);
-      alert("여행기와 경비 중 최소 한 가지를 작성해 주세요");
-      setShowPublishModal(false);
-      return;
-    } else setShowPublishModal(true);
+    setShowPublishModal(true);
   };
-
-  const saveNewDiaries = async (postId) => {
-    const diarySaveRequest = [];
-    for (const [i, diary] of diaries.entries()) {
-      const diaryInput = {
-        postId: postId,
-        title: document.getElementById("diary-title" + i).value,
-        content: document.getElementById("diary-content" + i).value,
-        date: diary.date,
-      };
-      diarySaveRequest.push(diaryInput);
-    }
-    const diaryIds = await createDiary(diarySaveRequest);
-    return diaryIds;
-  };
-  // diary를 생성하는 함수 (diaryId가 있다면 diary를 새로 만들고 없다면 업데이트
-  // -> diaryId와 status 를 return
-  // -> return 값을 이용해서 새로 만든 diaryId를 배정해줄 수 있다.)
 
   const saveOrUpdateDiaries = async (postId) => {
     const diaryUpdateRequest = [];
@@ -133,25 +81,6 @@ const TravelDiaryV2 = () => {
     return diaryIds;
   };
 
-  // const updateDiaries = async (diaryIds) => {
-  //   const diarySaveRequest = [];
-  //   diaries.forEach((el, i) => {
-  //     const diaryTitle = document.getElementById("diary-title" + i).value;
-  //     const diaryContent = document.getElementById("diary-content" + i).value;
-  //     const diaryInput = {
-  //       id: diaryIds[i],
-  //       title: diaryTitle,
-  //       content: diaryContent,
-  //       date: el.date,
-  //     };
-  //     console.log(diaryTitle, "diaryTitle");
-  //     console.log(diaryContent, "diaryContent");
-  //     diarySaveRequest.push(diaryInput);
-  //   });
-  //   console.log(diarySaveRequest, "diarySaveRequest");
-  //   await updateDiary(diarySaveRequest);
-  // };
-
   const savePhotosForDiary = async (postId, diaryIds) => {
     diaries.forEach((el, i) => {
       const photoIndex = Object.keys(el.image);
@@ -163,50 +92,6 @@ const TravelDiaryV2 = () => {
       });
       savePhotos(formData);
     });
-  };
-  // const saveOrUpdatePhotos = async (postId, diaryIds) => {
-  //   diaries.forEach((el, i) => {
-  //     const photoIndex = Object.keys(el.image);
-  //     const formData = new FormData();
-  //     formData.append("postId", postId);
-  //     formData.append("diaryId", diaryIds[i]);
-  //     photoIndex.forEach((index) => {
-  //       if (el.image[index]) formData.append("files", el.image[index]); // 사진이 존재하는 것만 files에 추가함
-  //     });
-  //     console.log(formData, "formData");
-  //     updatePhotos(formData);
-  //   });
-  // };
-
-  const savePost = async () => {
-    const postTitle = document.getElementById("post-title").value;
-    const scope = document.getElementById("public-post").checked
-      ? "PUBLIC"
-      : "PERSONAL";
-    const country = document.getElementById("post-country").value;
-    const postId = await createPost({
-      scope: scope,
-      country: country,
-      title: postTitle,
-    });
-    return postId;
-  };
-
-  const scopeAndCountryEmpty = () => {
-    const selectedRadio = document.querySelector(
-      'input[name="privacy"]:checked'
-    );
-    const country = document.getElementById("post-country").value;
-    console.log(country, "country");
-    if (!selectedRadio || !country || country === "나라 선택") return true;
-  };
-
-  const saveTempPost = async () => {
-    const postTitle = document.getElementById("post-title").value;
-    const postId = await createTempPost({
-      title: postTitle,
-    });
-    return postId;
   };
 
   const updatePost = async () => {
@@ -265,20 +150,16 @@ const TravelDiaryV2 = () => {
     if (file) {
       const updatedDiary = [...diaries];
       updatedDiary[diaryIndex].image[photoIndex] = file;
+      console.log(updatedDiary, "updatedDiary");
       setDiaries(updatedDiary);
     }
   };
 
   const deleteImage = (photoIndex, diaryIndex) => {
     const updatedDiary = [...diaries];
-    delete updatedDiary[diaryIndex].image[photoIndex];
-    // updatedDiary[diaryIndex].image[photoIndex] = null;
+    updatedDiary[diaryIndex].image[photoIndex] = null;
     setDiaries(updatedDiary);
   };
-
-  // 새로 만든 diaryId 를 현재 화면에 있는 diary에 배정해줌
-  // -> 나중에 새로 임시저장 또는 발행할 때 save, update여부를 판단할 때 사용
-  // -> 또한 이 함수를 거치고 나면 모든 diary가 id를 배정 받은 상태
 
   const assignNewDiaryId = (diaryIds) => {
     const updatedDiaries = [...diaries];
@@ -299,12 +180,7 @@ const TravelDiaryV2 = () => {
       alert("여행일지의 제목을 작성해주세요");
       return true;
     } else {
-      if (diaries.length === 0) {
-        alert("최소 여행기 하나를 작성해주세요");
-        return true;
-      }
       for (const [i, diary] of diaries.entries()) {
-        console.log(diary, "diary now");
         const diaryTitle = document.getElementById("diary-title" + i)
           ? document.getElementById("diary-title" + i).value
           : null;
@@ -332,8 +208,6 @@ const TravelDiaryV2 = () => {
   };
 
   const isDiaryEmpty = () => {
-    if (diaries.length === 0) return { result: true, status: "nothing" };
-
     for (const [i, diary] of diaries.entries()) {
       const diaryTitle = document.getElementById("diary-title" + i)
         ? document.getElementById("diary-title" + i).value
@@ -341,7 +215,7 @@ const TravelDiaryV2 = () => {
       const description = document.getElementById("diary-content" + i)
         ? document.getElementById("diary-content" + i).value
         : null;
-      console.log(Object.keys(diary.image).length, "image");
+
       const isDiaryTotallyEmpty =
         !diaryTitle &&
         !diary.date &&
@@ -361,32 +235,31 @@ const TravelDiaryV2 = () => {
   };
 
   const publishPost = async () => {
-    if (scopeAndCountryEmpty()) {
-      alert("여행일지의 공개 범위와 나라를 선택해주세요");
-      return;
-    }
-
     if (window.confirm("여행기를 발행 하시겠습니까?")) {
-      if (!savedPostId) {
-        const postId = await savePost();
-        if (!postId) return;
-        if (!isDiaryEmpty().result || !isDiaryEmpty().status === "total") {
-          const diaryIds = await saveNewDiaries(postId);
-          if (!diaryIds) return;
-          await savePhotosForDiary(postId, diaryIds);
-        }
-        const res = await saveExpensesToDB(postId);
-        if (res === "error") return;
-      } else {
-        await updatePost();
-        if (!isDiaryEmpty().result || !isDiaryEmpty().status === "total") {
-          const diaryIds = await saveOrUpdateDiaries(savedPostId);
-          if (!diaryIds) return;
-          await savePhotosForDiary(savedPostId, diaryIds);
-        }
-        const res = await saveExpensesToDB(savedPostId);
-        if (res === "error") return;
+      // 여행일지가 빈 케이스를 걸러냄
+      if (isPostEmpty()) {
+        alert("여행일지의 제목을 작성해주세요");
+        setShowPublishModal(false);
+        return;
       }
+      // 여행기를 중간에 쓰다 만 케이스를 걸러냄
+      if (isDiaryEmpty().result && isDiaryEmpty().status === "partial") {
+        alert("여행기의 빈 칸을 채워주세요");
+        setShowPublishModal(false);
+        return;
+        // 여행기와 경비가 모두 텅 빈 케이스를 걸러냄
+      } else if (isDiaryEmpty().result && isExpenseEmpty()) {
+        alert("여행기와 경비 중 최소 한 가지를 작성해 주세요");
+        setShowPublishModal(false);
+        return;
+      }
+      await updatePost();
+      const diaryIds = await saveOrUpdateDiaries(savedPostId);
+      if (!diaryIds) return;
+      await savePhotosForDiary(savedPostId, diaryIds);
+      const res = await saveExpensesToDB(savedPostId);
+      if (res === "error") return;
+
       alert("발행이 완료되었습니다.");
       navigate("/mytrip");
     }
@@ -395,23 +268,14 @@ const TravelDiaryV2 = () => {
   const saveTemporaryDiary = async () => {
     const isEmpty = isTempPostAndDiaryEmpty();
     if (isEmpty) return;
-    if (!savedPostId) {
-      const postId = await saveTempPost();
-      if (!postId) return;
-      setSavedPostId(postId);
-      const diaryIds = await saveNewDiaries(postId);
-      if (!diaryIds) return;
-      setSavedDiaryId(diaryIds);
-      assignNewDiaryId(diaryIds);
-      await savePhotosForDiary(postId, diaryIds);
-    } else {
-      await updateTempPost();
-      const diaryIds = await saveOrUpdateDiaries(savedPostId);
-      if (!diaryIds) return;
-      setSavedDiaryId(diaryIds);
-      assignNewDiaryId(diaryIds);
-      await savePhotosForDiary(savedPostId, diaryIds);
-    }
+
+    await updateTempPost();
+    const diaryIds = await saveOrUpdateDiaries(savedPostId);
+    if (!diaryIds) return;
+    setSavedDiaryId(diaryIds);
+    assignNewDiaryId(diaryIds);
+    await savePhotosForDiary(savedPostId, diaryIds);
+
     alert(
       '여행기 임시 저장이 완료되었습니다.\n저장된 내용은 "나의 여행"에서 확인하실 수 있습니다.'
     );
@@ -429,38 +293,12 @@ const TravelDiaryV2 = () => {
     console.log(savedExpenses);
     const formattedDate = getFormattedDate(date);
     setSelectedExpenseDate(formattedDate);
-
-    // const filteredExpenses = expenses
-    //   .filter((expense) => {
-    //     const isSameDate =
-    //       expense.date.getFullYear() === date.getFullYear() &&
-    //       expense.date.getMonth() === date.getMonth() &&
-    //       expense.date.getDate() === date.getDate();
-    //     const exists = expense.id;
-    //     return isSameDate;
-    //   })
-    //   .map((expense) => {
-    //     const newExpense = {
-    //       id: Math.random(),
-    //       amount: expense.amount,
-    //       location: expense.location,
-    //       category: expense.category,
-    //     };
-    //     return newExpense;
-    //   });
-
-    // const newExpensesInput = [...filteredExpenses, expenses];
-    // setExpenses(newExpensesInput);
     setIsExpenseModalOpen(true);
     // if (!expenses[formattedDate]) {
     const newExpenses = structuredClone(savedExpenses);
     if (!newExpenses[formattedDate])
       newExpenses[formattedDate] = [{ cost: 0, place: "", category: "" }];
     setExpenses(newExpenses);
-
-    //   console.log(newExpenses, "no expenses when click");
-    // }
-    // console.log(expenses, "expenses when click");
   };
 
   // 경비 입력 필드 추가
@@ -474,36 +312,8 @@ const TravelDiaryV2 = () => {
   };
 
   const handleCloseRequest = () => {
-    // const newExpenses = { ...expenses };
-    // const newArray = [];
-    // for (let expense of expenses[date]) {
-    //   const place = expense.place;
-    //   const category = expense.category;
-    //   const cost = expense.cost;
-    //   const allEmpty = !place && !category && !cost;
-    //   if (!allEmpty)
-    //     newArray.push({ place: place, category: category, cost: cost });
-    // }
-    // if (newArray.length) newExpenses[date] = newArray;
-    // else delete newExpenses[date];
-    // console.log(newExpenses, "after closing");
-    // setExpenses(newExpenses);
     setIsExpenseModalOpen(false);
     setExpenses({});
-  };
-
-  // 경비 입력 변경 처리
-  const handleExpenseChange = (id, field, value) => {
-    // if (typeof value === "number") {
-    // console.log(`Updating ${field} for expense with id ${id} to ${value}`);
-    setExpenses(
-      expenses.map((input) =>
-        input.id === id ? { ...input, [field]: value } : input
-      )
-    );
-    // } else {
-    // alert("금액은 숫자로 입력해주세요");
-    // }
   };
 
   const isExpenseEmpty = () => {
@@ -513,9 +323,7 @@ const TravelDiaryV2 = () => {
   const saveExpensesToDB = async (postId) => {
     const expenseKeys = Object.keys(savedExpenses);
     const dateList = expenseKeys.map((el) => {
-      // const timeString = "T00:00:00";
       const date = new Date(el);
-      // const localDateStr = dateObj.toISOString().split("T")[0];
       return { date: date };
     });
     console.log(dateList);
@@ -547,18 +355,10 @@ const TravelDiaryV2 = () => {
       alert("여행일지의 제목을 작성해주세요");
       return;
     }
-    if (isExpenseEmpty()) {
-      alert("여행 경비를 최소 하나 채워주세요");
-      return;
-    }
+    if (isExpenseEmpty()) return;
 
-    let res;
-    if (savedPostId) res = await saveExpensesToDB(savedPostId);
-    else {
-      const postId = await saveTempPost();
-      setSavedPostId(postId);
-      res = await saveExpensesToDB(postId);
-    }
+    const res = await saveExpensesToDB(savedPostId);
+
     if (res !== "error")
       alert(
         '경비 임시 저장이 완료되었습니다.\n저장된 내용은 "나의 여행"에서 확인하실 수 있습니다.'
@@ -622,19 +422,12 @@ const TravelDiaryV2 = () => {
       setIsExpenseModalOpen(false);
     }
   };
-  //다이어리 추가
-
   // 일일 경비 합계 계산
   const getDailyExpensesTotal = (date) => {
     const formattedDate = getFormattedDate(date);
-    // const dateString = date.toISOString().split("T")[0];
     const totalExpensesPerDate = savedExpenses[formattedDate]?.reduce(
       (sum, expense) => {
-        // const expenseDate = new Date(expense.date).toISOString().split("T")[0];
-        // return expenseDate === dateString
-        // ? sum + parseFloat(expense.amount || 0)
         return sum + Number(expense.cost);
-        // : sum;
       },
       0
     );
@@ -645,13 +438,16 @@ const TravelDiaryV2 = () => {
   const tileContent = ({ date, view }) => {
     if (view === "month") {
       const total = getDailyExpensesTotal(date);
-      // const newExpenses = [...expenseSums, total];
-      // setExpenseSums(newExpenses);
-      // newExpenses.map((el) => (
+      if (total && total > 0) {
+        // document.querySelector(
+        //   ".expenses-total"
+        // ).parentNode.style.backgroundColor = "#9cc7ee";
+      }
       return (
-        <div className="expenses-total">{total > 0 && <p>\{total}</p>}</div>
+        <div className="expenses-total">
+          {total > 0 && <p>\{total.toLocaleString()}</p>}
+        </div>
       );
-      // ));
     }
   };
 
@@ -660,13 +456,117 @@ const TravelDiaryV2 = () => {
     newExpenses[selectedExpenseDate].splice(index, 1);
     setExpenses(newExpenses);
   };
-  // 무한 루프돔
-  // console.log(expenseEntries, "expenseEntries");
-  // console.log(expenses, "expenses");
 
-  // const getDiaryInputs = () => {
-  //   expenses.date)
-  // }
+  const getFileFromUrl = async (photoURL, filename) => {
+    try {
+      // Fetch the file from the GCS URL
+      const response = await fetch(photoURL);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // Convert the response to a Blob
+      const blob = await response.blob();
+
+      // Create a File object from the Blob
+      const file = new File([blob], filename, {
+        type: blob.type,
+        lastModified: Date.now(),
+      });
+      console.log(file, "file");
+      return file;
+    } catch (error) {
+      console.error("Error fetching file from GCS:", error);
+      return null;
+    }
+  };
+
+  const getMyPost = async () => {
+    try {
+      const response = await getMyPostById(postId);
+      console.log(response, "post");
+      setPostTitle(response.title);
+      const diariesFromResponse = [];
+      for (let diary of response.diaries) {
+        const image = {};
+        for (let [i, photo] of diary.photos.entries()) {
+          const file = await getFileFromUrl(
+            photo.photoURL,
+            `${Math.random()}.jpg`
+          );
+          image[i] = file;
+        }
+        const eachDiary = {
+          id: diary.id,
+          diaryTitle: diary.title,
+          date: diary.date,
+          description: diary.content,
+          image: image,
+        };
+        diariesFromResponse.push(eachDiary);
+      }
+
+      console.log(diariesFromResponse, "diariesFromResponse");
+      setDiaries(diariesFromResponse);
+      const expensesFromResponse = {};
+      response.expenses?.forEach((el) => {
+        const date = el.date;
+        expensesFromResponse[date] = [];
+        for (let [i, detail] of el.expenseDetails.entries()) {
+          expensesFromResponse[date][i] = {
+            cost: detail.cost,
+            category: detail.category,
+            place: detail.place,
+          };
+        }
+      });
+      setSavedExpenses(expensesFromResponse);
+      // setLoading(false);
+    } catch {
+      console.log("error in getMyPost");
+    }
+  };
+
+  const sumTotalExpense = () => {
+    const expenseKeys = Object.keys(savedExpenses);
+    let totalSum = 0;
+    expenseKeys.forEach((key) => {
+      const eachSum = savedExpenses[key].reduce((sum, detail) => {
+        console.log(typeof detail.cost, "type of");
+        return sum + Number(detail.cost);
+      }, 0);
+      totalSum += eachSum;
+    });
+    console.log(totalSum, "totalSum");
+    setTotalExpense(totalSum);
+  };
+
+  const changeTileStyle = () => {
+    const expenseKeys = Object.keys(savedExpenses);
+    if (expenseKeys.length > 0) {
+      for (let key of expenseKeys) {
+        const formattedKey = `abbr[aria-label="${key.slice(0, 4)}년 ${key.slice(
+          6,
+          7
+        )}월 ${key.slice(8)}일"]`;
+        console.log(formattedKey);
+        const abbrElement = document.querySelector(formattedKey);
+        if (abbrElement)
+          abbrElement.parentNode.style.backgroundColor = "#9cc7ee";
+      }
+    }
+  };
+
+  useEffect(() => {
+    sumTotalExpense();
+    changeTileStyle();
+  }, [savedExpenses]);
+
+  useEffect(() => {
+    setSavedPostId(postId);
+    getMyPost();
+    localStorage.removeItem("currentPage");
+  }, []);
 
   return (
     <div className="travel">
@@ -676,6 +576,7 @@ const TravelDiaryV2 = () => {
           type="text"
           placeholder=" 여행일지 제목 입력"
           className="title-input"
+          defaultValue={postTitle}
         />
       </div>
       <div style={{ width: "100%" }}>
@@ -693,22 +594,10 @@ const TravelDiaryV2 = () => {
           style={{ overflowY: "auto" }}
         >
           <label htmlFor="privacy">
-            <input
-              id="public-post"
-              type="radio"
-              name="privacy"
-              value="public"
-            />{" "}
-            공개
+            <input id="public-post" type="radio" name="privacy" /> 공개
           </label>
           <label htmlFor="privacy">
-            <input
-              id="private-post"
-              type="radio"
-              name="privacy"
-              value="private"
-            />{" "}
-            비공개
+            <input id="private-post" type="radio" name="privacy" /> 비공개
           </label>
           <select id="post-country">
             <option>나라 선택</option>
@@ -741,6 +630,7 @@ const TravelDiaryV2 = () => {
                     placeholder="여행기 제목 입력"
                     id={"diary-title" + diaryIndex}
                     className="diary-title-input"
+                    defaultValue={diary.diaryTitle}
                   />
                 </div>
                 <div>
@@ -758,6 +648,7 @@ const TravelDiaryV2 = () => {
                     className="fixed-size-textarea"
                     placeholder="내용"
                     id={"diary-content" + diaryIndex}
+                    defaultValue={diary.description}
                   />
                 </div>
                 <div className="image-upload-container">
@@ -837,6 +728,16 @@ const TravelDiaryV2 = () => {
               tileContent={tileContent}
               style={{ width: "100%", height: "100%" }}
             />
+          </div>
+          <div
+            style={{
+              fontSize: "1.4rem",
+              textAlign: "right",
+              width: "80%",
+              margin: "20px auto 0 auto",
+            }}
+          >
+            총 지출 금액 : {totalExpense.toLocaleString()}원
           </div>
           <Modal
             isOpen={isExpenseModalOpen}
@@ -947,4 +848,4 @@ const TravelDiaryV2 = () => {
   );
 };
 
-export default TravelDiaryV2;
+export default TravelDiaryEditor;
