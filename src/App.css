@@ -1,3 +1,11 @@
+* {
+  font-family: "TTLaundryGothicB";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2403-2@1.0/TTLaundryGothicB.woff2")
+    format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+
 .App {
   text-align: center;
 }
@@ -69,12 +77,12 @@
 
 input[type="text"] {
   outline: none;
-  height: 10px;
+  height: 20px;
   width: 400px;
   border: 3px solid #9cc7ee;
   border-radius: 30px;
   padding: 8px 12px;
-  font-size: 15px;
+  font-size: 1.2rem;
   color: #606060;
   /* margin-top: 10px; */
 }
@@ -86,7 +94,7 @@ input[type="date"] {
   border: 3px solid #9cc7ee;
   border-radius: 30px;
   padding: 8px 12px;
-  font-size: 15px;
+  font-size: 1.2rem;
   color: #606060;
 }
 
@@ -97,7 +105,7 @@ input[type="email"] {
   border: 3px solid #9cc7ee;
   border-radius: 30px;
   padding: 8px 12px;
-  font-size: 15px;
+  font-size: 1.2rem;
   color: #606060;
 }
 
@@ -108,8 +116,25 @@ input[type="password"] {
   border: 3px solid #9cc7ee;
   border-radius: 30px;
   padding: 8px 12px;
-  font-size: 15px;
+  font-size: 1.2rem;
   color: #606060;
+}
+
+.sign-up {
+  display: flex;
+  /* flex-direction: column; */
+  /* align-items: flex-start; */
+  justify-content: center;
+  margin-top: 1%;
+}
+
+.mypage-left,
+.mypage-right {
+  display: flex;
+  /* flex-direction: column; */
+  /* align-items: flex-start; */
+  justify-content: center;
+  margin-top: 1%;
 }
 
 .nav-font-background {
@@ -149,13 +174,6 @@ input[type="password"] {
   margin-top: 10%;
 }
 
-.diary-date {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-left: 25px;
-}
-
 .center-right {
   display: flex;
   flex-direction: column;
@@ -166,9 +184,19 @@ input[type="password"] {
 }
 
 /*여행 일지css*/
-.travel,
+.travel {
+  margin: 25px auto 0 auto;
+  display: flex;
+  flex-direction: column;
+  width: 65%;
+  align-items: center;
+  padding: 20px 0 40px 0;
+  /* justify-content: center; */
+}
+
 .expenses {
   margin-top: 25px;
+  width: 100%;
 }
 
 .travel-diary,
@@ -177,20 +205,22 @@ input[type="password"] {
   border-radius: 10px;
   padding: 20px;
   margin: auto;
-  width: 80%;
-  max-width: 900px;
+  /* width: 80%;
+  max-width: 900px; */
   height: fit-content;
 }
 .title-publish {
   display: flex;
+  width: 100%;
+  justify-content: center;
 }
 .title-input {
+  display: block;
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-bottom: 10px;
-  margin-left: 510px;
 }
 
 .publish-checkbox {
@@ -290,13 +320,14 @@ input[type="password"] {
   align-items: center;
 }
 .add-button {
-  margin-right: 10px; /* 오른쪽 마진 추가 */
+  font-size: 1.2rem;
+  margin-top: 30px; /* 오른쪽 마진 추가 */
   background-color: white;
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
+  padding: 5px 10px;
+  /* width: 30px;
+  height: 30px; */
   border: 2.5px solid #9cc7ee;
-  align-items: center;
 }
 
 .change-button {
@@ -331,17 +362,16 @@ input[type="password"] {
   color: #606060;
   padding: 20px;
   width: 80%;
-  max-width: 1050px;
+  /* max-width: 1215px; */
   margin-top: 30px;
-  height: 450px;
-  
+  height: fit-content;
+
   /* border: 1px solid #ccc;
     border-radius: 10px;
     padding: 20px;
     margin: auto;
     width: 80%;
     max-width: 1000px; */
-
 }
 
 .row-center-space {
@@ -364,7 +394,7 @@ input[type="password"] {
   position: relative;
 }
 
-.overlay {
+.country-image-overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -372,56 +402,18 @@ input[type="password"] {
   height: 100%;
   background-color: rgba(255, 255, 255, 0.7);
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
 }
 
-.overlay p {
+.country-image-overlay p {
   text-align: start;
   color: #606060;
-  padding: 15px;
+  padding: 10px;
 }
 
 .country-image-container:hover .overlay {
   opacity: 1;
-}
-
-.chat-signature-color-oval {
-  background-color: #c2d6e9;
-  border-radius: 30px;
-  font-size: 15px;
-  color: #606060;
-  display: inline-flex; /* inline-flex로 변경하여 정렬을 쉽게 합니다 */
-  align-items: center; /* 세로 중앙 정렬 */
-  justify-content: center; /* 가로 중앙 정렬 */
-  min-width: 100px; /* 최소 너비를 설정하여 텍스트 양이 적을 때도 적절한 크기 유지 */
-  max-width: 60%; /* 최대 너비를 설정 */
-  padding: 10px 20px; /* 여백을 추가하여 텍스트가 테두리와 붙지 않게 합니다 */
-  word-wrap: break-word; /* 긴 단어를 자동으로 줄바꿈 */
-  text-align: start; /* 텍스트를 가로 중앙에 위치시킴 */
-  box-sizing: border-box; /* 패딩과 테두리를 요소의 전체 크기에 포함시킴 */
-  overflow: hidden; /* 스크롤 비활성화 */
-  height: auto; /* 텍스트 양이 늘어나면 자동으로 세로 길이가 늘어남 */
-}
-
-.chat-signature-oval {
-  background-color: white;
-  height: 30px;
-  border-radius: 30px;
-  font-size: 15px;
-  border: 3px solid #9cc7ee;
-  color: #606060;
-  display: inline-flex; /* inline-flex로 변경하여 정렬을 쉽게 합니다 */
-  align-items: center; /* 세로 중앙 정렬 */
-  justify-content: center; /* 가로 중앙 정렬 */
-  min-width: 100px; /* 최소 너비를 설정하여 텍스트 양이 적을 때도 적절한 크기 유지 */
-  max-width: 60%; /* 최대 너비를 설정 */
-  padding: 10px 20px; /* 여백을 추가하여 텍스트가 테두리와 붙지 않게 합니다 */
-  word-wrap: break-word; /* 긴 단어를 자동으로 줄바꿈 */
-  text-align: start; /* 텍스트를 가로 중앙에 위치시킴 */
-  box-sizing: border-box; /* 패딩과 테두리를 요소의 전체 크기에 포함시킴 */
-  overflow: hidden; /* 스크롤 비활성화 */
-  height: auto; /* 텍스트 양이 늘어나면 자동으로 세로 길이가 늘어남 */
 }
 
 .trip-font-color {
@@ -430,17 +422,13 @@ input[type="password"] {
   padding-top: 30px;
 }
 
-.trip-text-display {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-top: "15px";
-  /* margin-left: 15%; */
-  justify-content: flex-start;
-  flex-wrap: wrap;
+.empty-posts {
+  margin-left: 20px;
+  font-size: 1.1rem;
+  color: #606060;
 }
 
-.post-per-country{
+.trip-text-display {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -450,6 +438,15 @@ input[type="password"] {
   flex-wrap: wrap;
 }
 
+.post-per-country {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: "15px";
+  margin-left: 15%;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
 
 .trip-image-display {
   display: flex;
@@ -463,11 +460,11 @@ input[type="password"] {
   border-radius: 30px;
   border: 3px solid #9cc7ee;
   background-color: white;
-  height: 180px;
-  width: 180px;
+  height: 200px;
+  width: 200px;
   display: flex;
   flex-direction: column;
-  margin: 15px;
+  margin: 0 15px 15px 15px;
 }
 
 .image-container {
@@ -478,8 +475,8 @@ input[type="password"] {
 }
 
 .image-container img {
-  width: 180px;
-  height: 144px;
+  width: 200px;
+  height: 153px;
   object-fit: cover; /* 이미지를 컨테이너에 맞게 자르지 않고 채우기 */
   border-top-left-radius: 27px;
   border-top-right-radius: 27px;
@@ -636,7 +633,6 @@ input[type="password"] {
   gap: 20px;
 }
 
-
 .content-section {
   flex-basis: 70%;
   border: 2px solid #ccc;
@@ -646,13 +642,23 @@ input[type="password"] {
 }
 
 .content-section textarea {
+  font-size: 1.1rem;
+  font-weight: 500;
   width: 100%;
-  height: 270px;
+  height: 330px;
   border: none;
   resize: none;
 }
 
+.expenses-total {
+  /* background-color: #9cc7ee;
+  padding: 1px; */
+}
+
 .buttonAddEntry {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 15px;
 }
 .saveExpense {
@@ -662,8 +668,14 @@ input[type="password"] {
 .expenseInput {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: baseline;
   margin-top: 20px;
+}
+
+.modal {
+  max-width: 575px;
+  max-height: 80%;
+  overflow-y: auto;
 }
 
 .preview-image {
@@ -687,8 +699,7 @@ input[type="password"] {
 
 .image-box {
   flex: 1;
-  margin-bottom: 10px;
-  height: 150px;
+  height: 185px;
 }
 
 .entry-textarea {
@@ -707,11 +718,23 @@ input[type="password"] {
 }
 
 .save-button {
-  width: 50px;
-  height: 30px;
+  width: fit-content;
+  font-size: 1.1rem;
   background-color: #9cc7ee;
+  padding: 8px 20px;
   border: none;
+  border-radius: 15px;
+}
+
+.create-diary-button,
+.create-expense-button {
+  width: 300px;
+  height: 150px;
+  background-color: white;
+  border: 2px dashed #9cc7ee;
   border-radius: 5px;
+  font-size: 3rem;
+  margin-bottom: 30px;
 }
 
 .preview-description {
@@ -735,9 +758,7 @@ input[type="password"] {
 .select-diary-date {
   display: flex;
   justify-content: space-between;
-  border: #282c34;
   text-align: left;
-  margin-left: 20px;
 }
 
 .entry-image-content {
@@ -752,6 +773,7 @@ input[type="password"] {
   justify-content: space-between;} */
 
 .date-block input[type="text"] {
+  font-size: 1rem;
   text-align: left;
   color: #9cc7ee;
   padding: 8px 10px;
@@ -760,6 +782,7 @@ input[type="password"] {
 }
 
 .date-block input:focus {
+  font-size: 1rem;
   border-color: #0056b3;
   box-shadow: 0 0 8px rgba(0, 86, 179, 0.5);
 }
@@ -773,12 +796,12 @@ input[type="password"] {
 
 .react-datepicker__input-container input.date-block {
   outline: none;
-  height: 10px;
+  height: 20px;
   width: 120px;
   border: 3px solid #9cc7ee;
   border-radius: 30px;
   padding: 8px 12px;
-  font-size: 15px;
+  font-size: 1.2rem;
   color: #606060;
   margin: none;
 }
@@ -803,45 +826,59 @@ input[type="password"] {
   /* border: 1px solid #ccc; */
   margin-top: 20px;
   margin-bottom: 10px;
-  height: 470px;
+  height: fit-content;
 }
+
 .delete-button {
-  color: red;
-  border: 2px solid lightgrey;
-  background-color: white;
+  font-size: 1rem;
+  color: white;
+  border: none;
+  background-color: #216ba5;
   padding: 5px 10px;
-  border-radius: 4px;
+  border-radius: 10px;
   cursor: pointer;
-  margin-left: 10px;
-  height: 30px;
-  width: 30px;
-  margin-top: 10px;
+  /* height: 30px; */
+  width: fit-content;
 }
+
 .entry-layout {
   margin-top: 30px;
 }
+
 .diary-title-input {
-  display: flex;
-  justify-content: flex-start;
   outline: none;
-  height: 10px;
-  width: 300px;
+  height: 20px;
+  width: 85%;
   border: 3px solid #9cc7ee;
   border-radius: 30px;
   padding: 8px 12px;
-  font-size: 15px;
+  font-size: 1.2rem;
   color: #606060;
-  margin-top: 10px;
-  margin-left: 170px;
 }
+
+.diary-title {
+  width: 100%;
+  margin-left: 70px;
+}
+
 .save-travel-diary {
-  border: 3px solid #9cc7ee;
-  border-radius: 30px;
-  background-color: white;
-  width: 60px;
-  height: 30px;
-  margin-left: 850px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 15px;
+  background-color: #9cc7ee;
+  padding: 8px 20px;
+  width: fit-content;
+  /* margin-left: 850px; */
   margin-bottom: 15px;
+}
+
+.delete-travel-diary {
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 15px;
+  background-color: #9cc7ee;
+  padding: 8px 20px;
+  width: fit-content;
 }
 
 .post-signature-color-oval {
@@ -862,16 +899,24 @@ input[type="password"] {
   justify-content: space-between;
   align-items: baseline;
   margin-right: 150px;
-  margin-left: 150px;
+  margin-left: 15%;
   flex-wrap: wrap;
 }
 
 .mytrip-map-display {
   display: flex;
   flex-wrap: wrap;
-  margin-left: 10%;
-  margin-right: 10%;
-  justify-content: flex-start;
+  margin-left: calc((100% - (5 * 200px + 5 * 30px + 5 * 6px)) / 2);
+  margin-right: calc((100% - (5 * 200px + 5 * 30px + 5 * 6px)) / 2);
+  margin-top: 20px;
+}
+
+.mytrip-display {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: calc((100% - (5 * 200px + 5 * 30px + 5 * 6px)) / 2);
+  margin-right: calc((100% - (5 * 200px + 5 * 30px + 5 * 6px)) / 2);
+  margin-top: 30px;
 }
 
 .row-more {
@@ -892,28 +937,27 @@ input[type="password"] {
   bottom: 50px;
   width: 100%;
 }
-.diary-date-title{
+.diary-date-title {
   display: flex;
+  justify-content: space-between;
 }
-.diary-title{
-  margin-left: 30px;
-}
-.diary-image{
+
+.diary-image {
   width: 300px;
   height: 300px;
 }
-.diary-image-contnet{
+/* .diary-image-content {
   display: flex;
-
-}
-.diary-content{
-  margin-right: 10px;
-  width: 500px;
-  height: 300px;
-  margin-left: 30px;
+} */
+.diary-content {
+  /* margin-right: 10px; */
+  width: 100%;
+  /* height: 300px; */
+  /* margin-left: 30px;
+  padding: 0 20px 0 40px; */
 }
 .signature-color-oval {
-  background-color: #c2d6e9;
+  background-color: #d7e9fa;
   height: 30px;
   width: 350px;
   border-radius: 30px;
@@ -937,8 +981,14 @@ input[type="password"] {
   align-items: center;
 }
 
+.like-button {
+  display: flex;
+  width: 80%;
+  margin: 30px auto;
+  justify-content: flex-end;
+}
 
-.signature-oval-expense{
+.signature-oval-expense {
   background-color: white;
   margin: auto;
   border-radius: 30px;
@@ -962,16 +1012,17 @@ input[type="password"] {
   margin-bottom: 40px;
 } */
 
-.expense-details{
+.expense-details {
   margin: 20px;
-  padding:10px ;
+  /* padding: 10px; */
   border: 3px solid #9cc7ee;
   border-radius: 30px;
   margin: auto;
   margin-top: 10px;
-  margin-bottom: 10px;  
-  margin-left: 300px;
-  margin-right: 300px;
+  margin-bottom: 10px;
+  width: 50%;
+  /* margin-left: 300px;
+  margin-right: 300px; */
 }
 /* .all-expense{
   display: flex;
@@ -985,15 +1036,17 @@ input[type="password"] {
 
 .all-expense {
   display: flex;
-  justify-content: space-between;
+  position: relative;
+  /* justify-content: space-between; */
   border-bottom: 3px solid #9cc7ee;
+  font-size: 1.1rem;
+  padding: 15px;
+  justify-content: space-between;
 }
-
 
 .expense-details > div:last-child > div {
   border: 0px;
 }
-
 
 /* .all-expense:last-of-type {
   border-bottom: none;
@@ -1002,10 +1055,86 @@ input[type="password"] {
   border-bottom: none;
 } */
 
-
-.expense-cost{
+.expense-cost {
   margin-left: 20px;
+  /* position: absolute;
+  top: 0%;
+  left: 0%; */
 }
-.expense-category{
+
+.expense-place {
+  position: absolute;
+  /* top: 0%; */
+  left: 46%;
+}
+
+.expense-category {
   margin-right: 20px;
+  /* position: absolute;
+  top: 0%;
+  left: 80%; */
+}
+
+.chatbot-font {
+  font-size: 17px;
+  color: #606060;
+  margin-top: 17px;
+  padding: 10px;
+  display: flex;
+  justify-content: flex-start;
+  text-align: start;
+  background-color: #d7e9fa;
+  width: fit-content;
+  border-radius: 10px;
+  max-width: 80%;
+}
+
+.chatbot-user-font {
+  /* position: absolute;
+  left: 100%; */
+  width: 95%;
+  font-size: 17px;
+  color: #606060;
+  margin-top: 17px;
+  padding: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+.chatbot-user-font > div {
+  width: fit-content;
+  padding: 10px;
+  background-color: #fffaaf;
+  border-radius: 10px;
+  max-width: 80%;
+  text-align: start;
+}
+
+.chatbot-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  left: 15%;
+  right: 15%;
+  bottom: 2%;
+}
+
+.mypage-chatbot {
+  font-size: 17px;
+  color: #606060;
+  margin-top: 17px;
+  padding: 10px;
+  display: flex;
+  justify-content: flex-start;
+  text-align: start;
+  background-color: #d7e9fa;
+  width: fit-content;
+  border-radius: 10px;
+  max-width: 80%;
+}
+
+.search-style {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

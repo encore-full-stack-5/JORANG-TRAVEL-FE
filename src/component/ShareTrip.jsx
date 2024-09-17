@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import ImageText from "./ImageText";
-import filterImage from "./../image/filterImage.png";
 import { getTop5RecentPosts, getTopLikePostsFirst } from "../api/post-api";
 import { Link } from "react-router-dom";
 
@@ -9,6 +8,7 @@ const Mytrip = () => {
   const [topPosts, setTopPosts] = useState([]);
 
   useEffect(() => {
+    localStorage.removeItem("currentPage");
     getPosts();
   }, []);
 
@@ -17,7 +17,17 @@ const Mytrip = () => {
     setRecentPosts(res1);
     const res2 = await getTopLikePostsFirst();
     setTopPosts(res2);
-    console.log(res2);
+    console.log(res2, "getTopLikePostsFirst");
+  };
+
+  const getImageSrc = (post) => {
+    const filteredDiaries = post.diaries.filter(
+      (diary) => diary.photos && diary.photos.length > 0
+    );
+    // console.log(filteredPost, "filteredPost");
+    if (filteredDiaries && filteredDiaries.length > 0)
+      return filteredDiaries[0].photos[0].photoURL;
+    else return "/window.jpg";
   };
 
   return (
@@ -28,31 +38,25 @@ const Mytrip = () => {
           <p className="trip-font-color">최근 올라온 여행일지</p>
           <Link
             className="trip-font-color"
-            style={{ paddingLeft: "15px", fontSize: "14px" }}
+            style={{
+              paddingLeft: "15px",
+              fontSize: "14px",
+              textDecoration: "none",
+            }}
             to="/posts"
           >
             더보기
           </Link>
         </div>
       </div>
-      <div style={{ display: "flex", justifyContent: "center", margin: "10px 13% 0 13%" }}>
+      <div className="mytrip-map-display">
         {recentPosts?.map((post, i) => (
           <Link
             to={`/detail-post/${post.id}`}
             key={i}
             style={{ textDecoration: "none" }}
           >
-            {console.log(post.id)}
-            <ImageText
-              src={post.diaries
-                .filter(
-                  (diary) =>
-                    diary.photos &&
-                    diary.photos.length > 0
-                )
-                .map((diary) => diary.photos[0].photoURL)}
-              content={post.title}
-            ></ImageText>
+            <ImageText src={getImageSrc(post)} content={post.title}></ImageText>
           </Link>
         ))}
       </div>
@@ -62,14 +66,18 @@ const Mytrip = () => {
           <p className="trip-font-color">이번주 Hot한 여행일지 Top5</p>
           <Link
             className="trip-font-color"
-            style={{ paddingLeft: "15px", fontSize: "14px" }}
+            style={{
+              paddingLeft: "15px",
+              fontSize: "14px",
+              textDecoration: "none",
+            }}
             to="/posts"
           >
             더보기
           </Link>
         </div>
       </div>
-      <div style={{ display: "flex", justifyContent: "center", margin: "10px 13% 0 13%" }}>
+      <div className="mytrip-map-display">
         {topPosts?.map((post, i) => (
           <Link
             to={`/detail-post/${post.id}`}
@@ -78,9 +86,7 @@ const Mytrip = () => {
           >
             <ImageText
               key={i}
-              src={post.diaries
-                .filter((diary) => diary.photos && diary.photos.length > 0)
-                .map((diary) => diary.photos[0].photoURL)}
+              src={getImageSrc(post)}
               content={post.title}
             ></ImageText>
           </Link>

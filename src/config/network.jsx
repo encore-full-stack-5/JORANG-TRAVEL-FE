@@ -8,8 +8,20 @@ export const api = async (url, method, body, params) => {
       url === "/api/v1/posts/top5/recent" ||
       url === "/api/v1/posts/top5/like" ||
       url === "/api/v1/posts/top5/diaries" ||
+      url.startsWith("/api/v1/auths/loginId") ||
+      url.startsWith("/api/v1/auths/email") ||
       url === "/api/v1/posts/recent" ||
-      url === "/api/v1/posts/recent/diaries"
+      url === "/api/v1/auths/findLoginId" ||
+      url === "/api/v1/auths/findPassword" ||
+      // url === "/api/v1/posts/recent"
+      // url === "/api/v1/expense-details"
+      url === "/api/v1/posts/recent/diaries" ||
+      url.startsWith("/api/v1/country/info/") ||
+      url.startsWith("/api/v1/auths/loginId/") ||
+      url.startsWith("/api/v1/auths/email/") ||
+      url.startsWith("/api/v1/posts/public/") ||
+      url.startsWith("/api/v1/diaries/posts") ||
+      url.startsWith("/api/v1/expenseDetail/chart/postId/")
     )
       return "";
     return "Bearer " + localStorage.getItem("token");
@@ -26,7 +38,6 @@ export const api = async (url, method, body, params) => {
       // Authorization: []
     },
   });
-
   return res;
 };
 

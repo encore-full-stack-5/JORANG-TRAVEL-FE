@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import {
-  getDiaryAllByPostId,
-  getLikeCheck,
-  getPostById,
-  likeComment,
-  getById,
-  getExpenseDetailsByPostId,
-} from "../config/postApi";
+import { useNavigate, useParams } from "react-router-dom";
+import { getMyPostById } from "../config/postApi";
 import DonutChart from "./DonutChart";
 import ImageSlider from "./ImageSlider";
-import { getLikeCheckApi, likePostApi } from "../config/likeApi";
+import { deleteById } from "../api/post-api";
+import { deletePhotosByDiaryId } from "../config/photoApi";
+import { deleteDiaryById } from "../config/diaryApi";
+import {
+  getLikeCheckApi,
+  getLikeCountByPostIdApi,
+  likePostApi,
+} from "../config/likeApi";
 
-const DetailPost = () => {
+const MyDetailPost = () => {
   const postId = useParams().id;
   const [loading, setLoading] = useState(true);
   const [post, setPost] = useState({});
@@ -21,7 +21,7 @@ const DetailPost = () => {
   const [likeCheck, setLikeCheck] = useState();
   const [postExpenses, setPostExpenses] = useState([]);
   const [expenseDetails, setExpenseDetails] = useState([]);
-
+  const navigate = useNavigate();
   const [expenses, setExpenses] = useState(null);
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -37,8 +37,8 @@ const DetailPost = () => {
   const getPostByIdApi = async () => {
     try {
       console.log("-------" + postId);
-      const response = await getPostById(postId);
-      console.log(response);
+      const response = await getMyPostById(postId);
+      console.log(response, "post");
       setPost(response);
       setLike(response.love);
       setDiaries(response.diaries);
@@ -61,6 +61,18 @@ const DetailPost = () => {
     }
   };
 
+  const deletePost = async () => {
+    if (window.confirm("여행 일지를 정말 삭제하시겠습니까?")) {
+      for (let diary of diaries) {
+        await deletePhotosByDiaryId(diary.id); // photo를 먼저 지워야 한다. (foreign key 때문에)
+        await deleteDiaryById(diary.id); // id가 발급된 diary는 DB에서 삭제
+      }
+      await deleteById(postId);
+      alert("여행 일지가 삭제되었습니다");
+      navigate("/mytrip");
+    }
+  };
+
   const getLikeCHeck = async () => {
     try {
       const response = await getLikeCheckApi(postId);
@@ -71,22 +83,9 @@ const DetailPost = () => {
     }
   };
 
-  // const getByIdApi = async () => {
-  //   try {
-  //     const response = await getById(id);
-  //     console.log(response);
-  //     setExpenses(response);
-  //   } catch {
-  //     console.log("error in getByIdApi");
-  //   }
-  // };
-
   useEffect(() => {
-    localStorage.removeItem("currentPage");
     getPostByIdApi();
-    // getAllByPostIdApi();
     getLikeCHeck();
-    // getByIdApi();
   }, []);
 
   return (
@@ -94,72 +93,136 @@ const DetailPost = () => {
       {loading ? (
         <h2>loading...</h2>
       ) : (
-        <div>
+        <div style={{ display: "flex", flexDirection: "column" }}>
           {post ? (
             <>
-              {post && (
-                <h2
-                  className="post-signature-color-oval-post"
-                  style={{ marginTop: "65px" }}
-                >
-                  {post.title}
-                </h2>
-              )}
-              {post && (
-                <p
+              <h2
+                style={{
+                  marginTop: "65px",
+                }}
+              >
+                {post.title}
+              </h2>
+              <div
+                style={{
+                  display: "flex",
+                  width: "80%",
+                  margin: "auto",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <div
                   style={{
-                    color: "#606060",
-                    fontSize: "1.1rem",
-                    textAlign: "right",
-                    marginRight: "220px",
+                    // marginRight: `calc((100% - ${getDiaryWidth()}px) / 2)`,
+                    marginBottom: "20px",
+                    marginRight: "30px",
                   }}
                 >
-                  작성 시간 : {formatDate(post.createdAt)}
-                </p>
-              )}
+                  <button
+                    onClick={() => navigate(`/post/edit/${postId}`)}
+                    className="delete-travel-diary"
+                  >
+                    수정
+                  </button>
+                </div>
+                <div
+                  style={{
+                    // marginRight: `calc((100% - ${getDiaryWidth()}px) / 2)`,
+                    marginBottom: "20px",
+                  }}
+                >
+                  <button onClick={deletePost} className="delete-travel-diary">
+                    삭제
+                  </button>
+                </div>
+              </div>
+              <p
+                style={{
+                  color: "#606060",
+                  fontSize: "1.1rem",
+                  textAlign: "right",
+                  width: "80%",
+                  alignSelf: "center",
+                  // marginRight: `calc((100% - ${getDiaryWidth()}px) / 2)`,
+                }}
+              >
+                작성 시간: {formatDate(post.createdAt)}
+              </p>
             </>
           ) : (
             <p>No post data available.</p>
           )}
-
+          <div className="post-signature-color-oval-post">
+            {/* <h3 style={{ marginLeft: "250px", textAlign: "left" }}>여행기</h3> */}
+          </div>
           <div>
-            {console.log(diaries, "diaries")}
-            {diaries &&
-              diaries.length > 0 &&
-              diaries.map((diary, index) => (
-                <div className="signature-oval-post" key={index}>
+            {diaries?.map((diary, index) => (
+              <div className="signature-oval-post" id="my-diary" key={index}>
+                <div
+                  className="diary-container"
+                  style={{
+                    display: "flex",
+                    gap: "40px",
+                  }}
+                >
                   <div
-                    className="diary-container"
+                    className="diary-left"
                     style={{
                       display: "flex",
-                      gap: "40px",
+                      flexDirection: "column",
+                      flex: 1,
+                      alignItems: "center",
                     }}
                   >
-                    <div
-                      className="diary-left"
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        flex: 1,
-                        alignItems: "center",
-                      }}
-                    >
+                    {diary.date ? (
                       <div style={{ marginBottom: "20px" }}>
                         <p style={{ color: "#606060", fontSize: "1.2rem" }}>
                           {diary.date}
                         </p>
                       </div>
+                    ) : (
+                      <div
+                        style={{
+                          boxSizing: "border-box",
+                          width: "300px",
+                          border: "2px dashed #9cc7ee",
+                          borderRadius: "15px",
+                          padding: "15px",
+                          marginBottom: "18px",
+                        }}
+                      >
+                        날짜를 넣어주세요
+                      </div>
+                    )}
+                    {diary.photos && diary.photos.length > 0 ? (
                       <ImageSlider content={diary.photos} />
-                    </div>
-                    <div
-                      className="diary-right"
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        flex: 4,
-                        alignItems: "center",
-                      }}
-                    >
+                    ) : (
+                      <div
+                        style={{
+                          boxSizing: "border-box",
+                          width: "300px",
+                          height: "300px",
+                          border: "2px dashed #9cc7ee",
+                          borderRadius: "15px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        이미지를 넣어주세요
+                      </div>
+                    )}
+                  </div>
+                  <div
+                    className="diary-right"
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      flex: 4,
+                      alignItems: "center",
+                    }}
+                  >
+                    {diary.title ? (
                       <div style={{ marginBottom: "20px" }}>
                         <p
                           style={{
@@ -170,6 +233,21 @@ const DetailPost = () => {
                           {diary.title}
                         </p>
                       </div>
+                    ) : (
+                      <div
+                        style={{
+                          boxSizing: "border-box",
+                          width: "100%",
+                          border: "2px dashed #9cc7ee",
+                          borderRadius: "15px",
+                          padding: "15px",
+                          marginBottom: "18px",
+                        }}
+                      >
+                        제목을 넣어주세요
+                      </div>
+                    )}
+                    {diary.content ? (
                       <div className="diary-content">
                         <p
                           style={{
@@ -183,23 +261,29 @@ const DetailPost = () => {
                           {diary.content}
                         </p>
                       </div>
-                    </div>
+                    ) : (
+                      <div
+                        style={{
+                          boxSizing: "border-box",
+                          width: "100%",
+                          height: "100%",
+                          border: "2px dashed #9cc7ee",
+                          borderRadius: "15px",
+                          padding: "15px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        내용을 넣어주세요
+                      </div>
+                    )}
                   </div>
                 </div>
-              ))}
+              </div>
+            ))}
           </div>
-          <div className="post-signature-color-oval-expense">
-            {/* <h3
-              style={{
-                marginLeft: "250px",
-                textAlign: "left",
-                marginBottom: "30px",
-                marginTop: "30px",
-              }}
-            >
-              경비
-            </h3> */}
-          </div>
+          {console.log(expenses, "expenses")}
 
           {expenses &&
             expenses.length > 0 &&
@@ -266,12 +350,9 @@ const DetailPost = () => {
               </div>
             ))}
 
-          {expenses && expenses.length > 0 && (
-            <DonutChart
-              style={{ width: "200px", height: "200px" }}
-              postId={postId}
-            />
-          )}
+          {expenses && expenses.length > 0 && <DonutChart postId={postId} />}
+          {console.log(likeCheck, "likeCHeck")}
+
           {likeCheck ? (
             <div className="like-button">
               <button
@@ -280,7 +361,7 @@ const DetailPost = () => {
                 onClick={likePost}
               >
                 {post && (
-                  <p style={{ color: "#606060", fontSize: "15px" }}>
+                  <p style={{ color: "#606060", fontSize: "1.1rem" }}>
                     ❤️ {post.love}개
                   </p>
                 )}
@@ -290,7 +371,7 @@ const DetailPost = () => {
             <div className="like-button">
               <button className="signature-oval" onClick={likePost}>
                 {post && (
-                  <p style={{ color: "#606060", fontSize: "15px" }}>
+                  <p style={{ color: "#606060", fontSize: "1.1rem" }}>
                     ❤️ {post.love}개
                   </p>
                 )}
@@ -303,4 +384,4 @@ const DetailPost = () => {
   );
 };
 
-export default DetailPost;
+export default MyDetailPost;

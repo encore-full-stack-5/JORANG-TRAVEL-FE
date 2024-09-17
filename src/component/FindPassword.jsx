@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { findLoginId, findPassword, getUserByLoginId } from "../config/authApi";
 const FindPassword = () => {
   const FindPasswordFunc = async (e) => {
@@ -31,6 +31,11 @@ const FindPassword = () => {
       alert("이메일 전송 실패");
     }
   };
+
+  useEffect(() => {
+    localStorage.removeItem("currentPage");
+  }, [])
+
   return (
     <div className="login">
       <div className="sign-up">

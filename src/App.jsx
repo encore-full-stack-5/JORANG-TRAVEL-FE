@@ -24,55 +24,84 @@ import PostsPerCountry from "./component/PostsPerCountry";
 import DetailPost from "./component/DetailPost";
 import MyGallery from "./component/ImageSlider";
 
-import ExpenseDetail from "./component/ExpenseDetail"
+import ExpenseDetail from "./component/ExpenseDetail";
 
 import MyTripMoreInformation from "./component/MyTripMoreInformation";
 import MyTripLoveMoreInformation from "./component/MyTripLoveMoreInformation";
-
+import Place from "./component/Place";
+import Landmark from "./component/Landmark";
+import Plan from "./component/Plan";
+import {
+  RecoilRoot,
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+} from "recoil";
+import SearchPage from "./component/SearchPage";
+import MyDetailPost from "./component/MyDetailPost";
+import TravelDiaryV2 from "./component/TravelDiaryV2";
+import MyUnpublishedPostsMore from "./component/MyUnpublishedPostsMore";
+import TravelDiaryEditor from "./component/TravelDiaryEditor";
 
 function App() {
-
   return (
     <div className="App">
-      <BrowserRouter>
-        <Header />
-        <Nav />
-        <Routes>
-          <Route path="/" element={<Home />}></Route>
-          <Route path="/signup" element={<SignUp />}></Route>
-          <Route path="/signin" element={<SignIn />}></Route>
-          <Route path="/mypage" element={<Mypage />}></Route>
-          <Route path="/sharetrip" element={<ShareTrip />}></Route>
-          <Route path="/chatbot" element={<Chatbot />}></Route>
-          <Route path="/mytrip" element={<Mytrip />}></Route>
-          <Route path="/findLoginId" element={<FindLoginId />}></Route>
-          <Route path="/findPassword" element={<FindPassword />}></Route>
-          <Route path="/traveldiary" element={<TravelDiary />}></Route>
-          <Route
-            path="/posts/country/:country/intro"
-            element={<ShareTripCountry />}
-          ></Route>
-          <Route path="/posts" element={<Posts />}></Route>
-          <Route path="/slider" element={<ImageSlider />}></Route>
-          <Route
-            path="/posts/country/:country"
-            element={<PostsPerCountry />}
-          ></Route>
-          <Route path="/detail-post/:id" element={<DetailPost />}></Route>
-
-          {/* <Route path="/expensedetail" element={<ExpenseDetail/>}></Route> */}
-
-          <Route
-            path="/mytrip/more-information"
-            element={<MyTripMoreInformation />}
-          ></Route>
-          <Route
-            path="/mytrip/love/more-information"
-            element={<MyTripLoveMoreInformation />}
-          ></Route>
-
-        </Routes>
-      </BrowserRouter>
+      <RecoilRoot>
+        <BrowserRouter>
+          <Header />
+          <Nav />
+          <Routes>
+            <Route path="/search" element={<SearchPage />}></Route>
+            <Route path="/" element={<Home />}></Route>
+            <Route path="/signup" element={<SignUp />}></Route>
+            <Route path="/signin" element={<SignIn />}></Route>
+            <Route path="/mypage" element={<Mypage />}></Route>
+            <Route path="/sharetrip" element={<ShareTrip />}></Route>
+            <Route path="/chatbot" element={<Chatbot />}>
+              <Route path="landmark-recommend" element={<Landmark />}></Route>
+              <Route path="place-recommend" element={<Place />}></Route>
+              <Route path="plan-recommend" element={<Plan />}></Route>
+            </Route>
+            <Route path="/mytrip" element={<Mytrip />}></Route>
+            <Route path="/findLoginId" element={<FindLoginId />}></Route>
+            <Route path="/findPassword" element={<FindPassword />}></Route>
+            <Route path="/post/write" element={<TravelDiaryV2 />}></Route>
+            <Route
+              path="/posts/country/:country/intro"
+              element={<ShareTripCountry />}
+            ></Route>
+            <Route path="/posts" element={<Posts />}></Route>
+            {/* <Route path="/slider" element={<ImageSlider />}></Route> */}
+            <Route
+              path="/posts/country/:country"
+              element={<PostsPerCountry />}
+            ></Route>
+            <Route path="/detail-post/:id" element={<DetailPost />}></Route>
+            {/* <Route path="/expensedetail" element={<ExpenseDetail/>}></Route> */}
+            <Route
+              path="/mytrip/more-information"
+              element={<MyTripMoreInformation />}
+            ></Route>
+            <Route
+              path="/mytrip/love/more-information"
+              element={<MyTripLoveMoreInformation />}
+            ></Route>
+            <Route
+              path="/my/detail-post/:id"
+              element={<MyDetailPost />}
+            ></Route>
+            <Route
+              path="/mytrip/unpublished/more-information"
+              element={<MyUnpublishedPostsMore />}
+            ></Route>
+            <Route
+              path="/post/edit/:id"
+              element={<TravelDiaryEditor />}
+            ></Route>
+          </Routes>
+        </BrowserRouter>
+      </RecoilRoot>
     </div>
   );
 }

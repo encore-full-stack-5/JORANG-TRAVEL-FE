@@ -1,8 +1,18 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import React from "react";
 import Title from "./Title";
-import Search from "./Search";
+import searchImage from "./../image/searchImage.png";
+import { useRecoilState } from "recoil";
+import { searchState } from "./searchState";
+
 const Header = () => {
+  const [searchText, setSearchText] = useRecoilState(searchState);
+  const navigate = useNavigate();
+  const searchFunc = () => {
+    setSearchText(document.getElementById("searchId").value);
+    console.log(document.getElementById("searchId").value);
+    navigate("/search");
+  };
   return (
     <div>
       <nav>
@@ -27,8 +37,30 @@ const Header = () => {
             </Link>
             <p className="font-color">여행에 대한 모든 것</p>
           </div>
-
-          <Search placeholder="가고 싶은 나라나 도시를 입력해주세요" />
+          <div className="search-style">
+            <input
+              type="text"
+              id="searchId"
+              style={{ marginTop: "0px", width: "35vw" }}
+            />
+            <button
+              className="rectangle"
+              style={{
+                height: "30px",
+                width: "30px",
+                margin: "10px",
+              }}
+              onClick={searchFunc}
+            >
+              <img
+                width="18px"
+                height="20px"
+                style={{ margin: "0px" }}
+                src={searchImage}
+                alt="Search"
+              />
+            </button>
+          </div>
         </div>
       </nav>
     </div>

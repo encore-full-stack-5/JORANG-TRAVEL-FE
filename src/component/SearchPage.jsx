@@ -4,8 +4,10 @@ import filterImage from "./../image/filterImage.png";
 import { getRecentPostsFirst } from "../api/post-api";
 import "./Posts.css";
 import DatePicker, { DateObject } from "react-multi-date-picker";
-import { Link, useNavigate } from "react-router-dom";
-const Posts = () => {
+import { searchState } from "./searchState";
+import { useRecoilState } from "recoil";
+
+const SearchPage = () => {
   const [posts, setPosts] = useState([]);
   const [date, setDate] = useState([
     new DateObject().subtract(30, "years"),
@@ -14,10 +16,12 @@ const Posts = () => {
   const [showFilter, setShowFilter] = useState(false);
   const [pages, setPages] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const navigate = useNavigate();
+
+  const temp = useRecoilState(searchState);
+  const searchText = temp[0];
+  console.log(searchText);
 
   useEffect(() => {
-    // localStorage.removeItem("currentPage");
     getPostsAndSetPage();
   }, []);
 
@@ -25,10 +29,8 @@ const Posts = () => {
     const res = await getRecentPostsFirst();
     setPosts(res);
     updatePageNumbers(res);
-    if (!localStorage.getItem("currentPage")) setCurrentPage(1);
-    else setCurrentPage(localStorage.getItem("currentPage"));
-    console.log(currentPage);
-    // console.log(localStorage.getItem("currentPage"));
+    setCurrentPage(localStorage.getItem("currentPage"));
+    console.log(localStorage.getItem("currentPage"));
   };
 
   const updatePageNumbers = (posts) => {
@@ -40,6 +42,7 @@ const Posts = () => {
   };
 
   const clickOnFilter = (e) => {
+    // console.log("clickOnFilter들어옴");
     setShowFilter(!showFilter);
   };
 
@@ -86,53 +89,15 @@ const Posts = () => {
   //   if (e.target.className !== "filter-box") setShowFilter(false);
   // };
 
-  const showCurrentPage = (page) => {
-    setCurrentPage(page);
-    localStorage.setItem("currentPage", page);
-  };
-
-  const disablePageButton = (page) => {
-    return page === currentPage;
-  };
-  // const writePost = async () => {
-  //   const res = await savePost();
-  //   console.log(res);
-  //   navigate(`/posts/${res}/write`);
-  // };
-
-  const checkLoginStatus = () => {
-    const expirationTime = localStorage.getItem("expirationTime");
-    if (new Date() > new Date(expirationTime)) {
-      localStorage.removeItem("id");
-      localStorage.removeItem("token");
-      localStorage.removeItem("nickname");
-      localStorage.removeItem("expirationTime");
-      alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
-      navigate("/signin");
-    } else navigate("/post/write");
-  };
-
-  const getImageSrc = (post) => {
-    const filteredDiaries = post.diaries.filter(
-      (diary) => diary.photos && diary.photos.length > 0
-    );
-    // console.log(filteredPost, "filteredPost");
-    if (filteredDiaries && filteredDiaries.length > 0)
-      return filteredDiaries[0].photos[0].photoURL;
-    else return "/window.jpg";
+  const showCurrentPage = (e) => {
+    setCurrentPage(e.target.innerHTML);
+    localStorage.setItem("currentPage", e.target.innerHTML);
   };
 
   return (
     <div style={{ paddingTop: "20px", width: "100%" }}>
       {/* <Search placeholder="가고 싶은 나라나 도시를 선택해주세요" /> */}
       <div className="filter-container">
-        <button
-          onClick={checkLoginStatus}
-          className="post-signature-color-oval"
-          style={{ width: "150px" }}
-        >
-          여행일지 작성하기
-        </button>
         <div className="filter-button">
           <div className="signature-oval" style={{ width: "80px" }}>
             <button
@@ -150,8 +115,7 @@ const Posts = () => {
             <img
               src={filterImage}
               style={{ width: "25px", height: "25px" }}
-              alt="filter"
-            />
+            ></img>
           </div>
         </div>
         {showFilter && (
@@ -173,46 +137,55 @@ const Posts = () => {
             />
           </div>
         )}
-
-        {/* <div className="write-post" style={{marginRight: "100px", dispaly: "flex", justifyContent: "center", alignItems: "center"}}>
-            <button onClick={writePost} style={{backgroundColor: "white", border: "none"}}>글쓰기</button>
-        </div> */}
       </div>
-      <div className="country-posts">
+      <div
+        className="country-posts"
+        style={{
+          width: "calc(5 * 180px + 5 * 30px + 5 * 6px)",
+          height: "440px",
+        }} // total width 고정 필요
+      >
         <div className="posts-container">
-          {posts &&
-            posts
-              .filter(
-                (post) =>
+          {posts
+            ?.filter((post) => {
+              return post.diaries.some(
+                (diary) =>
+                  new Date(diary.date).getTime() >= date[0] &&
+                  new Date(diary.date).getTime() <= date[1]
+              );
+            })
+            .filter((post) => {
+              if (searchText === null || searchText === undefined) {
+                return post;
+              } else {
+                const result =
+                  post.title.includes(searchText) ||
                   post.diaries.some(
                     (diary) =>
-                      new Date(diary.date).getTime() >= date[0] &&
-                      new Date(diary.date).getTime() <= date[1]
-                  ) ||
-                  (post.expenses && post.expenses.length > 0)
-              )
-              .slice((currentPage - 1) * 10, currentPage * 10)
-              .map((post, i) => (
-                <Link
-                  to={`/detail-post/${post.id}`}
-                  key={i}
-                  style={{ textDecoration: "none" }}
-                >
-                  <ImageText
-                    key={i}
-                    src={getImageSrc(post)}
-                    content={post.title}
-                  ></ImageText>
-                </Link>
-              ))}
+                      diary.title.includes(searchText) ||
+                      diary.content.includes(searchText)
+                  );
+                console.log("Search Filter Result:", result, post);
+                return result;
+              }
+            })
+            .slice((currentPage - 1) * 10, currentPage * 10)
+            .map((post, i) => (
+              <ImageText
+                key={i}
+                src={post.diaries
+                  .filter((diary) => diary.photos && diary.photos.length > 0)
+                  .map((diary) => diary.photos[0].photoURL)}
+                content={post.title}
+              ></ImageText>
+            ))}
         </div>
       </div>
-      <div style={{ position: "fixed", bottom: "0", width: "100%" }}>
+      <div>
         {pages.map((page) => (
           <button
             key={page}
-            onClick={() => showCurrentPage(page)}
-            disabled={page === currentPage}
+            onClick={showCurrentPage}
             style={{
               margin: "-20px 5px 100px 5px",
               backgroundColor: "white",
@@ -228,4 +201,4 @@ const Posts = () => {
   );
 };
 
-export default Posts;
+export default SearchPage;

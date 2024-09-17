@@ -14,6 +14,7 @@ const SignUp = () => {
   const [loginId, setLoginId] = useState("");
   const [email, setEmail] = useState("");
   useEffect(() => {
+    localStorage.removeItem("currentPage");
     if (localStorage.getItem("id")) {
       setIsLoggedIn(true);
     }
@@ -162,7 +163,7 @@ const SignUp = () => {
         <button
           type="submit"
           className="rectangle"
-          style={{ width: "100px" }}
+          style={{ width: "fit-content" }}
           onClick={checkLoginId}
         >
           <p className="font-color" style={{ color: "#606060" }}>
@@ -197,7 +198,7 @@ const SignUp = () => {
         <button
           type="submit"
           className="rectangle"
-          style={{ width: "100px" }}
+          style={{ width: "fit-content" }}
           onClick={checkEmail}
         >
           <p className="font-color" style={{ color: "#606060" }}>
@@ -216,7 +217,7 @@ const SignUp = () => {
       <button
         type="submit"
         className="rectangle"
-        style={{ width: "150px" }}
+        style={{ width: "fit-content" }}
         onClick={signUpFunc}
       >
         <p className="font-color" style={{ color: "#606060" }}>

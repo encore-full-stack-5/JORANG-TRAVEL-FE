@@ -9,6 +9,10 @@ import {
   updateUser,
 } from "../config/authApi";
 import { useNavigate } from "react-router-dom";
+import Loading from "./Loading";
+import { getChatbotMypage } from "../config/chatbotApi";
+import { getMyDiary, getMyTotalCostPerCountryApi } from "../config/postApi";
+import { getNumberOfCountriesVisited } from "../api/post-api";
 
 const Mypage = () => {
   const [nickname, setNickname] = useState("");
@@ -18,51 +22,60 @@ const Mypage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
   const [expenses, setExpenses] = useState([]);
-  const [diaries, setDiaries] = useState([]);
+  const [countries, setCountries] = useState([]);
+  const [chatbotDiaries, setChatbotDiaries] = useState([]);
+  const [chatbotResult, setChatbotResult] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [aiCheck, setAiCheck] = useState(false);
+  const [totalCost, setTotalCost] = useState([]);
 
   useEffect(() => {
+    localStorage.removeItem("currentPage");
+    const expirationTime = localStorage.getItem("expirationTime");
+    const loginId = localStorage.getItem("id");
     const checkLoginStatus = async () => {
-      const loginId = localStorage.getItem("id");
-      if (loginId) {
-        setIsLoggedIn(true);
-        try {
-          const response = await getUserById(loginId);
-          setNickname(response.nickname);
-        } catch (error) {
-          console.log("Error fetching user data:", error);
-        }
-      } else {
-        setIsLoggedIn(false);
-        alert("로그인이 되어 있지 않습니다. 로그인 페이지로 이동합니다.");
+      if (new Date() > new Date(expirationTime)) {
+        localStorage.removeItem("id");
+        localStorage.removeItem("token");
+        localStorage.removeItem("nickname");
+        localStorage.removeItem("expirationTime");
+        alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
         navigate("/signin");
-      }
-    };
-    const getExpensesApi = async () => {
-      try {
-        const response = await getExpenseDetailByUserAndCountry();
-        console.log(response);
-        console.log(response.length);
-        setExpenses(response);
-      } catch {
-        console.log("error in getExpensesApi");
-      }
-    };
-
-    const getDiaryApi = async () => {
-      try {
-        const response = await getDiaryByUserAndCountry();
-        console.log("=======" + response);
-        console.log(response.length);
-        setDiaries(response);
-      } catch {
-        console.log("error in getDiaryApi");
+      } else {
+        if (loginId) {
+          setIsLoggedIn(true);
+          try {
+            const response = await getUserById(loginId);
+            setNickname(response.nickname);
+          } catch (error) {
+            console.log("Error fetching user data:", error);
+          }
+        } else {
+          setIsLoggedIn(false);
+          alert("로그인이 되어 있지 않습니다. 로그인 페이지로 이동합니다.");
+          navigate("/signin");
+        }
       }
     };
 
     checkLoginStatus();
-    getExpensesApi();
-    getDiaryApi();
+    if (new Date() <= new Date(expirationTime) && loginId) {
+      getCountriesVisited();
+      getMyTotalCostPerCountry();
+    }
   }, [navigate, isNicknameChanged, isPasswordChanged]);
+
+  const getCountriesVisited = async () => {
+    const res = await getNumberOfCountriesVisited();
+    console.log(res, "getNumberOfCountriesVisited");
+    setCountries(res);
+  };
+
+  const getMyTotalCostPerCountry = async () => {
+    const res = await getMyTotalCostPerCountryApi();
+    console.log(res, "getMyTotalCostPerCountryApi");
+    setTotalCost(res);
+  };
 
   const updateUserPasswordApi = async (e) => {
     e.preventDefault();
@@ -99,43 +112,71 @@ const Mypage = () => {
     }
   };
 
+  const getChatbotMypageApi = async () => {
+    if (!aiCheck) {
+      setAiCheck(!aiCheck);
+      setLoading(true);
+      console.log("chatbotDiaries" + chatbotDiaries);
+      try {
+        const response = await getChatbotMypage({
+          diaries: chatbotDiaries,
+        });
+        console.log(response);
+        setChatbotResult(response.replaceAll("**", "\n"));
+        setLoading(false);
+      } catch (error) {
+        console.log("Error in getPlaceApi", error);
+        setLoading(false);
+      }
+    } else {
+      setAiCheck(!aiCheck);
+    }
+  };
+
   if (!isLoggedIn) {
     return null;
   }
 
   return (
     <div style={{ display: "flex" }}>
-      <div className="sign-up" style={{ margin: "70px", width: "50%" }}>
-        <p
-          className="font-color"
-          style={{ marginBottom: "50px", fontSize: "20px" }}
+      <div className="mypage-left" style={{ margin: "70px", width: "50%" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+          }}
         >
-          프로필 정보
-        </p>
-
-        <p className="font-color">닉네임 변경</p>
-        <div className="row-center">
-          <input
-            type="text"
-            id="changeNickname"
-            // value={nickname}
-            style={{ height: "15px", width: "200px", borderRadius: "10px" }}
-          ></input>
-          <button
-            type="submit"
-            className="change-button"
-            onClick={updateUserNicknameApi}
+          <p
+            className="font-color"
+            style={{ marginBottom: "50px", fontSize: "20px" }}
           >
-            <p
-              className="font-color"
-              style={{ color: "#606060", fontSize: "15px" }}
-            >
-              변경
-            </p>
-          </button>
-        </div>
+            프로필 정보
+          </p>
 
-        <div className="sign-up">
+          <p className="font-color">닉네임 변경</p>
+          <div className="row-center">
+            <input
+              type="text"
+              id="changeNickname"
+              // value={nickname}
+              style={{ height: "15px", width: "200px", borderRadius: "10px" }}
+            ></input>
+            <button
+              type="submit"
+              className="change-button"
+              onClick={updateUserNicknameApi}
+            >
+              <p
+                className="font-color"
+                style={{ color: "#606060", fontSize: "15px" }}
+              >
+                변경
+              </p>
+            </button>
+          </div>
+
+          {/* <div className="sign-up"> */}
           <p className="font-color">비밀번호 변경</p>
           <div className="row-center">
             <input
@@ -156,68 +197,115 @@ const Mypage = () => {
               </p>
             </button>
           </div>
-        </div>
-      </div>
-      <div style={{ margin: "45px", width: "50%" }}>
-        <div style={{ display: "flex", margin: "20px" }}>
-          <img
-            style={{ width: "50px", height: "50px" }}
-            src={jorangImage}
-          ></img>
-          <p
-            className="font-color"
-            style={{ marginBottom: "30px", fontSize: "20px" }}
-          >
-            {nickname} 님의 여행들
-          </p>
-        </div>
-        <div className="vertical-center" style={{ margin: "20px" }}>
-          <SignatureColorOval
-            content={`지금까지 총 ${diaries.length}개의 나라를 여행했습니다`}
-          ></SignatureColorOval>
+          {/* </div> */}
 
-          <div
-            className="row-center-space"
-            style={{
-              width: "450px",
-              marginTop: "20px",
-              flexWrap: "wrap",
-              justifyContent: "flex-start",
-            }}
-          >
-            {diaries.map((diary, index) => (
-              <div
-                key={index}
-                style={{
-                  flex: "0 0 calc(33.333% - 20px)",
-                  marginBottom: "20px",
-                }}
-              >
-                <SignatureOval content={diary}></SignatureOval>
+          <div>
+            <br />
+            <br />
+            <br />
+            <button
+              className="signature-oval"
+              style={{ height: "40px", width: "180px" }}
+              onClick={getChatbotMypageApi}
+            >
+              AI 맞춤 여행 계획
+            </button>
+            {aiCheck ? (
+              <div>
+                {loading ? (
+                  <div style={{ width: "30px", height: "30px" }}>
+                    <Loading />
+                  </div>
+                ) : chatbotResult === "" ? (
+                  <div />
+                ) : (
+                  <div className="mypage-chatbot">{chatbotResult}</div>
+                )}
               </div>
-            ))}
+            ) : (
+              <div />
+            )}
           </div>
         </div>
-        <div className="vertical-center" style={{ margin: "20px" }}>
-          <SignatureColorOval
-            className="sign-up"
-            content="총 지출 금액"
-          ></SignatureColorOval>
-          <br />
-          {expenses.map((expense, index) => (
-            <div key={index} className="row-center-space">
-              <SignatureOval
-                style={{ marginBottom: "20px" }}
-                content={expense.country}
-              ></SignatureOval>
-              <p
-                className="font-color"
-                style={{ marginBottom: "30px", fontSize: "20px" }}
-              >
-                ₩ {expense.cost}
-              </p>
+      </div>
+      <div className="mypage-right">
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+          }}
+        >
+          <div>
+            <img
+              style={{ width: "50px", height: "50px" }}
+              src={jorangImage}
+            ></img>
+            <p
+              className="font-color"
+              style={{ marginBottom: "30px", fontSize: "20px" }}
+            >
+              {nickname} 님의 여행들
+            </p>
+          </div>
+          <div className="vertical-center" style={{ margin: "20px" }}>
+            <SignatureColorOval
+              content={`지금까지 총 ${countries.length}개의 나라를 여행했습니다`}
+            ></SignatureColorOval>
+
+            <div
+              className="row-center-space"
+              style={{
+                width: "450px",
+                marginTop: "20px",
+                gap: "15px",
+                flexWrap: "wrap",
+                justifyContent: "flex-start",
+              }}
+            >
+              {countries &&
+                countries.map((country, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      // flex: "0 0 calc(33.333% - 20px)",
+                      marginBottom: "20px",
+                    }}
+                  >
+                    <SignatureOval
+                      content={country}
+                      style={{ width: "fit-content", padding: "5px" }}
+                    ></SignatureOval>
+                  </div>
+                ))}
             </div>
-          ))}
+          </div>
+          <div className="vertical-center" style={{ margin: "20px" }}>
+            <SignatureColorOval
+              className="sign-up"
+              content="총 지출 금액"
+            ></SignatureColorOval>
+            <br />
+            {totalCost &&
+              totalCost.map((dto, index) => (
+                <div key={index} className="row-center-space">
+                  <SignatureOval
+                    style={{
+                      marginBottom: "20px",
+                      width: "fit-content",
+                      padding: "5px",
+                    }}
+                    content={dto.country}
+                  ></SignatureOval>
+                  <p
+                    className="font-color"
+                    style={{ marginBottom: "30px", fontSize: "20px" }}
+                  >
+                    ₩ {dto.totalCost.toLocaleString()}
+                  </p>
+                </div>
+              ))}
+          </div>
         </div>
       </div>
     </div>
