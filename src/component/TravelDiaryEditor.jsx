@@ -358,6 +358,7 @@ const TravelDiaryEditor = () => {
     if (isExpenseEmpty()) return;
 
     const res = await saveExpensesToDB(savedPostId);
+    console.log(res, "saveExpensesToDB");
 
     if (res !== "error")
       alert(
@@ -545,10 +546,18 @@ const TravelDiaryEditor = () => {
     const expenseKeys = Object.keys(savedExpenses);
     if (expenseKeys.length > 0) {
       for (let key of expenseKeys) {
-        const formattedKey = `abbr[aria-label="${key.slice(0, 4)}년 ${key.slice(
-          6,
-          7
-        )}월 ${key.slice(8)}일"]`;
+        let formattedKey;
+        if (Number(key.slice(8)) < 10) {
+          formattedKey = `abbr[aria-label="${key.slice(0, 4)}년 ${key.slice(
+            6,
+            7
+          )}월 ${key.slice(9)}일"]`;
+        } else {
+          formattedKey = `abbr[aria-label="${key.slice(0, 4)}년 ${key.slice(
+            6,
+            7
+          )}월 ${key.slice(8)}일"]`;
+        }
         console.log(formattedKey);
         const abbrElement = document.querySelector(formattedKey);
         if (abbrElement)

@@ -13,6 +13,7 @@ import Loading from "./Loading";
 import { getChatbotMypage } from "../config/chatbotApi";
 import { getMyDiary, getMyTotalCostPerCountryApi } from "../config/postApi";
 import { getNumberOfCountriesVisited } from "../api/post-api";
+import { getMyDiaryContentsApi } from "../config/diaryApi";
 
 const Mypage = () => {
   const [nickname, setNickname] = useState("");
@@ -62,6 +63,7 @@ const Mypage = () => {
     if (new Date() <= new Date(expirationTime) && loginId) {
       getCountriesVisited();
       getMyTotalCostPerCountry();
+      getMyDiaryContents();
     }
   }, [navigate, isNicknameChanged, isPasswordChanged]);
 
@@ -75,6 +77,12 @@ const Mypage = () => {
     const res = await getMyTotalCostPerCountryApi();
     console.log(res, "getMyTotalCostPerCountryApi");
     setTotalCost(res);
+  };
+
+  const getMyDiaryContents = async () => {
+    const res = await getMyDiaryContentsApi();
+    console.log(res, "getMyDiaryContents");
+    setChatbotDiaries(res);
   };
 
   const updateUserPasswordApi = async (e) => {
@@ -219,7 +227,10 @@ const Mypage = () => {
                 ) : chatbotResult === "" ? (
                   <div />
                 ) : (
-                  <div className="mypage-chatbot">{chatbotResult}</div>
+                  <div
+                    className="mypage-chatbot"
+                    dangerouslySetInnerHTML={{ __html: chatbotResult }}
+                  ></div>
                 )}
               </div>
             ) : (

@@ -54,7 +54,9 @@
   margin: 0 auto;
   margin-right: calc((100% - 5 * 200px - 5 * 30px - 5 * 6px) / 2);
   margin-left: calc((100% - 5 * 200px - 5 * 30px - 5 * 6px) / 2);
-  position: absolute;
+  /* position: absolute; */
+  /* justify-content: center;
+  align-items: center; */
   /* z-index: 0; */
 }
 

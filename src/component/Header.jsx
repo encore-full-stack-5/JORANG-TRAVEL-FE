@@ -6,12 +6,13 @@ import { useRecoilState } from "recoil";
 import { searchState } from "./searchState";
 
 const Header = () => {
-  const [searchText, setSearchText] = useRecoilState(searchState);
+  // const [searchText, setSearchText] = useRecoilState(searchState);
   const navigate = useNavigate();
-  const searchFunc = () => {
-    setSearchText(document.getElementById("searchId").value);
-    console.log(document.getElementById("searchId").value);
-    navigate("/search");
+  const searchFunc = (e) => {
+    e.preventDefault();
+    const keyword = document.getElementById("searchId").value;
+    console.log(keyword);
+    navigate(`/posts/search?query=${keyword}`);
   };
   return (
     <div>
@@ -38,28 +39,30 @@ const Header = () => {
             <p className="font-color">여행에 대한 모든 것</p>
           </div>
           <div className="search-style">
-            <input
-              type="text"
-              id="searchId"
-              style={{ marginTop: "0px", width: "35vw" }}
-            />
-            <button
-              className="rectangle"
-              style={{
-                height: "30px",
-                width: "30px",
-                margin: "10px",
-              }}
-              onClick={searchFunc}
-            >
-              <img
-                width="18px"
-                height="20px"
-                style={{ margin: "0px" }}
-                src={searchImage}
-                alt="Search"
+            <form onSubmit={(e) => searchFunc(e)}>
+              <input
+                type="text"
+                id="searchId"
+                style={{ marginTop: "0px", width: "35vw" }}
               />
-            </button>
+              <button
+                className="rectangle"
+                style={{
+                  height: "30px",
+                  width: "30px",
+                  margin: "10px",
+                }}
+                onClick={searchFunc}
+              >
+                <img
+                  width="18px"
+                  height="20px"
+                  style={{ margin: "0px" }}
+                  src={searchImage}
+                  alt="Search"
+                />
+              </button>
+            </form>
           </div>
         </div>
       </nav>

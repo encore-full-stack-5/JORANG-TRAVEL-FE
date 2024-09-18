@@ -38,11 +38,12 @@ import {
   useRecoilState,
   useRecoilValue,
 } from "recoil";
-import SearchPage from "./component/SearchPage";
+
 import MyDetailPost from "./component/MyDetailPost";
 import TravelDiaryV2 from "./component/TravelDiaryV2";
 import MyUnpublishedPostsMore from "./component/MyUnpublishedPostsMore";
 import TravelDiaryEditor from "./component/TravelDiaryEditor";
+import PostsSearch from "./component/PostsSearch";
 
 function App() {
   return (
@@ -52,7 +53,7 @@ function App() {
           <Header />
           <Nav />
           <Routes>
-            <Route path="/search" element={<SearchPage />}></Route>
+            {/* <Route path="/search" element={<SearchPage />}></Route> */}
             <Route path="/" element={<Home />}></Route>
             <Route path="/signup" element={<SignUp />}></Route>
             <Route path="/signin" element={<SignIn />}></Route>
@@ -99,6 +100,7 @@ function App() {
               path="/post/edit/:id"
               element={<TravelDiaryEditor />}
             ></Route>
+            <Route path="/posts/search" element={<PostsSearch />}></Route>
           </Routes>
         </BrowserRouter>
       </RecoilRoot>

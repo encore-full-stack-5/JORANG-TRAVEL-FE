@@ -11,8 +11,8 @@ import "./Posts.css";
 const PostsPerCountry = () => {
   const [posts, setPosts] = useState([]);
   const [date, setDate] = useState([
-    new DateObject().subtract(30, "years"),
-    new DateObject().add(30, "years"),
+    new DateObject().subtract(1, "months"),
+    new DateObject().add(0, "days"),
   ]);
   const [showFilter, setShowFilter] = useState(false);
   const [pages, setPages] = useState([]);

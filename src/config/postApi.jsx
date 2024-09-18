@@ -199,3 +199,14 @@ export const getMyTotalCostPerCountryApi = async () => {
     console.error("Error in getMyTotalCostPerCountryApi", error);
   }
 };
+
+export const getPostsByKeywordApi = async (keyword) => {
+  try {
+    const res = await api("/api/v1/posts/search", "get", null, {
+      keyword: keyword,
+    });
+    return res.data;
+  } catch (error) {
+    console.error("Error in getPostsByKeywordApi", error);
+  }
+};

@@ -41,10 +41,6 @@ const TravelDiaryV2 = () => {
   const [expenseId, setExpenseId] = useState();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    localStorage.removeItem("currentPage");
-  }, []);
-
   const [savedExpenses, setSavedExpenses] = useState({});
   const [expenses, setExpenses] = useState({});
 
@@ -655,6 +651,31 @@ const TravelDiaryV2 = () => {
     }
   };
 
+  const changeTileStyle = () => {
+    console.log(savedExpenses, "savedExpenses in tile");
+    const expenseKeys = Object.keys(savedExpenses);
+    if (expenseKeys.length > 0) {
+      for (let key of expenseKeys) {
+        let formattedKey;
+        if (Number(key.slice(8)) < 10) {
+          formattedKey = `abbr[aria-label="${key.slice(0, 4)}년 ${key.slice(
+            6,
+            7
+          )}월 ${key.slice(9)}일"]`;
+        } else {
+          formattedKey = `abbr[aria-label="${key.slice(0, 4)}년 ${key.slice(
+            6,
+            7
+          )}월 ${key.slice(8)}일"]`;
+        }
+        console.log(formattedKey);
+        const abbrElement = document.querySelector(formattedKey);
+        if (abbrElement)
+          abbrElement.parentNode.style.backgroundColor = "#9cc7ee";
+      }
+    }
+  };
+
   const deleteExpense = (index) => {
     const newExpenses = structuredClone(expenses);
     newExpenses[selectedExpenseDate].splice(index, 1);
@@ -667,6 +688,14 @@ const TravelDiaryV2 = () => {
   // const getDiaryInputs = () => {
   //   expenses.date)
   // }
+
+  useEffect(() => {
+    localStorage.removeItem("currentPage");
+  }, []);
+
+  useEffect(() => {
+    changeTileStyle();
+  }, [savedExpenses]);
 
   return (
     <div className="travel">
