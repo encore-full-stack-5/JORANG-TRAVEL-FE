@@ -101,6 +101,8 @@ https://github.com/user-attachments/assets/5277301b-6221-4451-9c30-7a4ac4897c13
 > 6. 다른 URL 에 들어갔다가 다시 왔을 때 원래 꺼에 머물러 있다.<br>
 > → 다른 page로 이동했을 때 localStorage의 현재 페이지 삭제
 
+<br>
+
 **3. 여행 일지 (여행기, 경비)를 작성하는 페이지를 구성하면서 발생한 문제<br><br>**
 > 1. 버튼 배치의 어려움<br>
 > → 여행기 및 경비 모두 여행 일지 table의 child table이기 때문에 부모 table인 여행 일지 entity를 먼저 생성해줘야 한다.<br>
