@@ -36,7 +36,7 @@ const ShareTripCountry = () => {
       const countryInKorean = getCountryInKorean();
       const response = await getCountryInfo(countryInKorean);
       console.log(response);
-      setCountryInfo(response.info);
+      setCountryInfo(response);
     } catch (error) {
       setCountryInfo("");
     }
@@ -76,6 +76,8 @@ const ShareTripCountry = () => {
         <div
           className="country-image-container"
           onClick={() => setClick(!click)}
+          // onMouseLeave={() => setClick(false)}
+          // onMouseOver={() => setClick(true)}
         >
           <img
             style={{ width: "1200px", height: "280px" }}
@@ -85,8 +87,8 @@ const ShareTripCountry = () => {
           {click && (
             <div className="country-image-overlay">
               <div>
-                <p>{countryInEnglish}</p>
-                <p>{countryInfo}</p>
+                <p>{countryInfo.name}</p>
+                <p>{countryInfo.info}</p>
               </div>
             </div>
           )}

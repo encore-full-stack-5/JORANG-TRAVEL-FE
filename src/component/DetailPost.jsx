@@ -235,9 +235,9 @@ const DetailPost = () => {
                                   marginLeft: "20px",
                                 }}
                               >
-                                경비
+                                지출
                               </div>
-                              <div>비용</div>
+                              <div>장소</div>
                               <div
                                 style={{
                                   marginRight: "20px",

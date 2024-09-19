@@ -152,141 +152,158 @@ const MyDetailPost = () => {
           ) : (
             <p>No post data available.</p>
           )}
-          <div className="post-signature-color-oval-post">
-            {/* <h3 style={{ marginLeft: "250px", textAlign: "left" }}>여행기</h3> */}
-          </div>
           <div>
-            {diaries?.map((diary, index) => (
-              <div className="signature-oval-post" id="my-diary" key={index}>
-                <div
-                  className="diary-container"
-                  style={{
-                    display: "flex",
-                    gap: "40px",
-                  }}
-                >
+            {diaries && diaries.length > 0 ? (
+              diaries.map((diary, index) => (
+                <div className="signature-oval-post" id="my-diary" key={index}>
                   <div
-                    className="diary-left"
+                    className="diary-container"
                     style={{
                       display: "flex",
-                      flexDirection: "column",
-                      flex: 1,
-                      alignItems: "center",
+                      gap: "40px",
                     }}
                   >
-                    {diary.date ? (
-                      <div style={{ marginBottom: "20px" }}>
-                        <p style={{ color: "#606060", fontSize: "1.2rem" }}>
-                          {diary.date}
-                        </p>
-                      </div>
-                    ) : (
-                      <div
-                        style={{
-                          boxSizing: "border-box",
-                          width: "300px",
-                          border: "2px dashed #9cc7ee",
-                          borderRadius: "15px",
-                          padding: "15px",
-                          marginBottom: "18px",
-                        }}
-                      >
-                        날짜를 넣어주세요
-                      </div>
-                    )}
-                    {diary.photos && diary.photos.length > 0 ? (
-                      <ImageSlider content={diary.photos} />
-                    ) : (
-                      <div
-                        style={{
-                          boxSizing: "border-box",
-                          width: "300px",
-                          height: "300px",
-                          border: "2px dashed #9cc7ee",
-                          borderRadius: "15px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                      >
-                        이미지를 넣어주세요
-                      </div>
-                    )}
-                  </div>
-                  <div
-                    className="diary-right"
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      flex: 4,
-                      alignItems: "center",
-                    }}
-                  >
-                    {diary.title ? (
-                      <div style={{ marginBottom: "20px" }}>
-                        <p
+                    <div
+                      className="diary-left"
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        flex: 1,
+                        alignItems: "center",
+                      }}
+                    >
+                      {diary.date ? (
+                        <div style={{ marginBottom: "20px" }}>
+                          <p style={{ color: "#606060", fontSize: "1.2rem" }}>
+                            {diary.date}
+                          </p>
+                        </div>
+                      ) : (
+                        <div
                           style={{
-                            color: "#9cc7ee",
-                            fontSize: "1.2rem",
+                            boxSizing: "border-box",
+                            width: "300px",
+                            border: "2px dashed #9cc7ee",
+                            borderRadius: "15px",
+                            padding: "15px",
+                            marginBottom: "18px",
                           }}
                         >
-                          {diary.title}
-                        </p>
-                      </div>
-                    ) : (
-                      <div
-                        style={{
-                          boxSizing: "border-box",
-                          width: "100%",
-                          border: "2px dashed #9cc7ee",
-                          borderRadius: "15px",
-                          padding: "15px",
-                          marginBottom: "18px",
-                        }}
-                      >
-                        제목을 넣어주세요
-                      </div>
-                    )}
-                    {diary.content ? (
-                      <div className="diary-content">
-                        <p
+                          날짜를 넣어주세요
+                        </div>
+                      )}
+                      {diary.photos && diary.photos.length > 0 ? (
+                        <ImageSlider content={diary.photos} />
+                      ) : (
+                        <div
                           style={{
-                            color: "#606060",
-                            fontSize: "1.1rem",
-                            textAlign: "left",
-                            margin: "0",
-                            lineHeight: "30px",
+                            boxSizing: "border-box",
+                            width: "300px",
+                            height: "300px",
+                            border: "2px dashed #9cc7ee",
+                            borderRadius: "15px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
                           }}
                         >
-                          {diary.content}
-                        </p>
-                      </div>
-                    ) : (
-                      <div
-                        style={{
-                          boxSizing: "border-box",
-                          width: "100%",
-                          height: "100%",
-                          border: "2px dashed #9cc7ee",
-                          borderRadius: "15px",
-                          padding: "15px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                      >
-                        내용을 넣어주세요
-                      </div>
-                    )}
+                          이미지를 넣어주세요
+                        </div>
+                      )}
+                    </div>
+                    <div
+                      className="diary-right"
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        flex: 4,
+                        alignItems: "center",
+                      }}
+                    >
+                      {diary.title ? (
+                        <div style={{ marginBottom: "20px" }}>
+                          <p
+                            style={{
+                              color: "#9cc7ee",
+                              fontSize: "1.2rem",
+                            }}
+                          >
+                            {diary.title}
+                          </p>
+                        </div>
+                      ) : (
+                        <div
+                          style={{
+                            boxSizing: "border-box",
+                            width: "100%",
+                            border: "2px dashed #9cc7ee",
+                            borderRadius: "15px",
+                            padding: "15px",
+                            marginBottom: "18px",
+                          }}
+                        >
+                          제목을 넣어주세요
+                        </div>
+                      )}
+                      {diary.content ? (
+                        <div className="diary-content">
+                          <p
+                            style={{
+                              color: "#606060",
+                              fontSize: "1.1rem",
+                              textAlign: "left",
+                              margin: "0",
+                              lineHeight: "30px",
+                            }}
+                          >
+                            {diary.content}
+                          </p>
+                        </div>
+                      ) : (
+                        <div
+                          style={{
+                            boxSizing: "border-box",
+                            width: "100%",
+                            height: "100%",
+                            border: "2px dashed #9cc7ee",
+                            borderRadius: "15px",
+                            padding: "15px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                        >
+                          내용을 넣어주세요
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
+              ))
+            ) : (
+              <div className="signature-oval-post">
+                <div
+                  style={{
+                    boxSizing: "border-box",
+                    width: "80%",
+                    height: "200px",
+                    margin: "auto",
+                    border: "2px dashed #9cc7ee",
+                    borderRadius: "15px",
+                    padding: "15px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  여행기를 넣어주세요
+                </div>
               </div>
-            ))}
+            )}
           </div>
           {console.log(expenses, "expenses")}
 
-          {expenses &&
-            expenses.length > 0 &&
+          {expenses && expenses.length > 0 ? (
             expenses.map((expense, index) => (
               <div key={index} className="expense-box">
                 <h3
@@ -319,9 +336,9 @@ const MyDetailPost = () => {
                                   marginLeft: "20px",
                                 }}
                               >
-                                경비
+                                지출
                               </div>
-                              <div>비용</div>
+                              <div>장소</div>
                               <div
                                 style={{
                                   marginRight: "20px",
@@ -348,36 +365,62 @@ const MyDetailPost = () => {
                   )}
                 </div>
               </div>
-            ))}
+            ))
+          ) : (
+            <div
+              className="signature-oval-post"
+              style={{
+                margin: "30px auto",
+              }}
+            >
+              <div
+                style={{
+                  boxSizing: "border-box",
+                  width: "100%",
+                  height: "200px",
+                  border: "2px dashed #9cc7ee",
+                  borderRadius: "15px",
+                  padding: "15px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                여행 경비를 넣어주세요
+              </div>
+            </div>
+          )}
 
           {expenses && expenses.length > 0 && <DonutChart postId={postId} />}
           {console.log(likeCheck, "likeCHeck")}
 
-          {likeCheck ? (
-            <div className="like-button">
-              <button
-                className="signature-oval"
-                style={{ backgroundColor: "#d7e9fa", textAlign: "center" }}
-                onClick={likePost}
-              >
-                {post && (
-                  <p style={{ color: "#606060", fontSize: "1.1rem" }}>
-                    ❤️ {post.love}개
-                  </p>
-                )}
-              </button>
-            </div>
-          ) : (
-            <div className="like-button">
-              <button className="signature-oval" onClick={likePost}>
-                {post && (
-                  <p style={{ color: "#606060", fontSize: "1.1rem" }}>
-                    ❤️ {post.love}개
-                  </p>
-                )}
-              </button>
-            </div>
-          )}
+          {post && post.published ? (
+            likeCheck ? (
+              <div className="like-button">
+                <button
+                  className="signature-oval"
+                  style={{ backgroundColor: "#d7e9fa", textAlign: "center" }}
+                  onClick={likePost}
+                >
+                  {post && (
+                    <p style={{ color: "#606060", fontSize: "1.1rem" }}>
+                      ❤️ {post.love}개
+                    </p>
+                  )}
+                </button>
+              </div>
+            ) : (
+              <div className="like-button">
+                <button className="signature-oval" onClick={likePost}>
+                  {post && (
+                    <p style={{ color: "#606060", fontSize: "1.1rem" }}>
+                      ❤️ {post.love}개
+                    </p>
+                  )}
+                </button>
+              </div>
+            )
+          ) : null}
         </div>
       )}
     </div>

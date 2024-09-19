@@ -141,7 +141,7 @@ export const createTempPost = async (body) => {
   }
 };
 
-export const updateTempPost = async (id, body) => {
+export const updateTempPostApi = async (id, body) => {
   try {
     const res = await api(`/api/v1/posts/${id}/temp`, "put", body);
     console.log(res.data);
@@ -197,5 +197,16 @@ export const getMyTotalCostPerCountryApi = async () => {
     return res.data;
   } catch (error) {
     console.error("Error in getMyTotalCostPerCountryApi", error);
+  }
+};
+
+export const getPostsByKeywordApi = async (keyword) => {
+  try {
+    const res = await api("/api/v1/posts/search", "get", null, {
+      keyword: keyword,
+    });
+    return res.data;
+  } catch (error) {
+    console.error("Error in getPostsByKeywordApi", error);
   }
 };
