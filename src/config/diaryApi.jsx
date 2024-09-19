@@ -36,3 +36,12 @@ export const deleteDiaryById = async (id) => {
     console.log("Error in deleteDiary", error);
   }
 };
+
+export const getMyDiaryContentsApi = async (id) => {
+  try {
+    const res = await api(`/api/v1/diaries/chatbot`, "get");
+    return res.data;
+  } catch (error) {
+    console.log("Error in getMyDiaryContentsApi", error);
+  }
+};

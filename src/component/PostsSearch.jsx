@@ -4,12 +4,22 @@ import filterImage from "./../image/filterImage.png";
 import { getRecentPostsFirst } from "../api/post-api";
 import "./Posts.css";
 import DatePicker, { DateObject } from "react-multi-date-picker";
-import { Link, useNavigate } from "react-router-dom";
-const Posts = () => {
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
+import { getPostsByKeywordApi } from "../config/postApi";
+const PostsSearch = () => {
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get("query");
+  console.log(query, "query");
+
   const [posts, setPosts] = useState([]);
   const [date, setDate] = useState([
-    new DateObject().subtract(1, "months"),
-    new DateObject().add(0, "days"),
+    new DateObject().subtract(30, "years"),
+    new DateObject().add(30, "years"),
   ]);
   const [showFilter, setShowFilter] = useState(false);
   const [pages, setPages] = useState([]);
@@ -18,11 +28,12 @@ const Posts = () => {
 
   useEffect(() => {
     // localStorage.removeItem("currentPage");
-    getPostsAndSetPage();
-  }, []);
+    searchPostsAndSetPage();
+  }, [query]);
 
-  const getPostsAndSetPage = async () => {
-    const res = await getRecentPostsFirst();
+  const searchPostsAndSetPage = async () => {
+    const res = await getPostsByKeywordApi(query);
+    console.log(res, "getPostsByKeywordApi");
     setPosts(res);
     updatePageNumbers(res);
     if (!localStorage.getItem("currentPage")) setCurrentPage(1);
@@ -91,9 +102,6 @@ const Posts = () => {
     localStorage.setItem("currentPage", page);
   };
 
-  const disablePageButton = (page) => {
-    return page === currentPage;
-  };
   // const writePost = async () => {
   //   const res = await savePost();
   //   console.log(res);
@@ -133,27 +141,30 @@ const Posts = () => {
         >
           여행일지 작성하기
         </button>
-        <div className="filter-button">
-          <div className="signature-oval" style={{ width: "80px" }}>
-            <button
-              type="button"
-              style={{
-                color: "#606060",
-                border: "none",
-                fontSize: "15px",
-                backgroundColor: "white",
-              }}
-              onClick={clickOnFilter}
-            >
-              필터
-            </button>
-            <img
-              src={filterImage}
-              style={{ width: "25px", height: "25px" }}
-              alt="filter"
-            />
+        {posts && posts.length > 0 && (
+          <div className="filter-button">
+            <div className="signature-oval" style={{ width: "80px" }}>
+              <button
+                type="button"
+                style={{
+                  color: "#606060",
+                  border: "none",
+                  fontSize: "15px",
+                  backgroundColor: "white",
+                }}
+                onClick={clickOnFilter}
+              >
+                필터
+              </button>
+              <img
+                src={filterImage}
+                style={{ width: "25px", height: "25px" }}
+                alt="filter"
+              />
+            </div>
           </div>
-        </div>
+        )}
+
         {showFilter && (
           <div className="filter-box">
             <select id="filter" onChange={changeSort}>
@@ -180,7 +191,7 @@ const Posts = () => {
       </div>
       <div className="country-posts">
         <div className="posts-container">
-          {posts &&
+          {posts && posts.length > 0 ? (
             posts
               .filter(
                 (post) =>
@@ -204,28 +215,43 @@ const Posts = () => {
                     content={post.title}
                   ></ImageText>
                 </Link>
-              ))}
+              ))
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                width: "100%",
+                fontSize: "2rem",
+                marginTop: "200px",
+              }}
+            >
+              검색 내용과 매칭되는 여행일지가 없습니다 😴
+            </div>
+          )}
         </div>
       </div>
       <div style={{ position: "fixed", bottom: "0", width: "100%" }}>
-        {pages.map((page) => (
-          <button
-            key={page}
-            onClick={() => showCurrentPage(page)}
-            disabled={page === currentPage}
-            style={{
-              margin: "-20px 5px 100px 5px",
-              backgroundColor: "white",
-              border: "none",
-              fontSize: "1.4rem",
-            }}
-          >
-            {page}
-          </button>
-        ))}
+        {posts &&
+          posts.length > 0 &&
+          pages.map((page) => (
+            <button
+              key={page}
+              onClick={() => showCurrentPage(page)}
+              disabled={page === currentPage}
+              style={{
+                margin: "-20px 5px 100px 5px",
+                backgroundColor: "white",
+                border: "none",
+                fontSize: "1.4rem",
+              }}
+            >
+              {page}
+            </button>
+          ))}
       </div>
     </div>
   );
 };
 
-export default Posts;
+export default PostsSearch;

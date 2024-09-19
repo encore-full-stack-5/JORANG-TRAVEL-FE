@@ -30,6 +30,7 @@ export const getChatbotPlan = async (data) => {
 export const getChatbotMypage = async (data) => {
   try {
     const res = await chatApi(`http://localhost:8000/my-style`, "post", data);
+    console.log(res, "getChatbotMypage");
     return res.data;
   } catch (error) {
     console.error("Error in getChatbotMypage", error);

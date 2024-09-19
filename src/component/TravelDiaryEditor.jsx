@@ -15,7 +15,13 @@ import months from "../months";
 import { deletePhotosByDiaryId, savePhotos } from "../config/photoApi";
 import travelCountries from "../travelCountries";
 import { api } from "../config/network";
-import { getMyPostById, updatePostById } from "../config/postApi";
+import {
+  createPost,
+  createTempPost,
+  getMyPostById,
+  updatePostById,
+  updateTempPostApi,
+} from "../config/postApi";
 import { el } from "date-fns/locale";
 import { saveExpensesApi } from "../config/expenseApi";
 import { saveExpenseDetailsApi } from "../config/expenseDetailApi";
@@ -48,7 +54,28 @@ const TravelDiaryEditor = () => {
   ]);
 
   const openPublishModal = () => {
-    setShowPublishModal(true);
+    // 여행일지가 빈 케이스를 걸러냄
+    if (isPostEmpty()) {
+      alert("여행일지의 제목을 작성해주세요");
+      setShowPublishModal(false);
+      return;
+    }
+    console.log(isDiaryEmpty(), "isDiaryEmpty");
+    // if (isDiaryEmpty().result && isDiaryEmpty().status === "nothing") {
+    //   alert("최소 하나의 여행기를 작성해주세요");
+    //   return;
+    // }
+    // 여행기를 중간에 쓰다 만 케이스를 걸러냄
+    if (isDiaryEmpty().result && isDiaryEmpty().status === "partial") {
+      alert("여행기의 빈 칸을 채워주세요");
+      setShowPublishModal(false);
+      return;
+      // 여행기와 경비가 모두 텅 빈 케이스를 걸러냄
+    } else if (isDiaryEmpty().result && isExpenseEmpty()) {
+      alert("여행기와 경비 중 최소 한 가지를 작성해 주세요");
+      setShowPublishModal(false);
+      return;
+    } else setShowPublishModal(true);
   };
 
   const saveOrUpdateDiaries = async (postId) => {
@@ -110,7 +137,7 @@ const TravelDiaryEditor = () => {
 
   const updateTempPost = async () => {
     const postTitle = document.getElementById("post-title").value;
-    await updatePostById(savedPostId, {
+    await updateTempPostApi(savedPostId, {
       title: postTitle,
     });
   };
@@ -174,30 +201,24 @@ const TravelDiaryEditor = () => {
     setDiaries(updatedDiaries);
   };
 
-  const isTempPostAndDiaryEmpty = () => {
-    const postTitle = document.getElementById("post-title").value;
-    if (!postTitle) {
-      alert("여행일지의 제목을 작성해주세요");
-      return true;
-    } else {
-      for (const [i, diary] of diaries.entries()) {
-        const diaryTitle = document.getElementById("diary-title" + i)
-          ? document.getElementById("diary-title" + i).value
-          : null;
-        const description = document.getElementById("diary-content" + i)
-          ? document.getElementById("diary-content" + i).value
-          : null;
-        const isDiaryEmpty =
-          !diaryTitle &&
-          !diary.date &&
-          !description &&
-          Object.keys(diary.image).length === 0;
-        if (isDiaryEmpty) {
-          alert(
-            "모든 여행기의 제목, 날짜, 내용, 사진 중 최소 한 곳을 채워주세요"
-          );
-          return true;
-        }
+  const isTempDiaryEmpty = () => {
+    for (const [i, diary] of diaries.entries()) {
+      const diaryTitle = document.getElementById("diary-title" + i)
+        ? document.getElementById("diary-title" + i).value
+        : null;
+      const description = document.getElementById("diary-content" + i)
+        ? document.getElementById("diary-content" + i).value
+        : null;
+      const isDiaryEmpty =
+        !diaryTitle &&
+        !diary.date &&
+        !description &&
+        Object.keys(diary.image).length === 0;
+      if (isDiaryEmpty) {
+        alert(
+          "모든 여행기의 제목, 날짜, 내용, 사진 중 최소 한 곳을 채워주세요"
+        );
+        return true;
       }
     }
   };
@@ -208,6 +229,7 @@ const TravelDiaryEditor = () => {
   };
 
   const isDiaryEmpty = () => {
+    if (diaries.length === 0) return { result: true, status: "nothing" };
     for (const [i, diary] of diaries.entries()) {
       const diaryTitle = document.getElementById("diary-title" + i)
         ? document.getElementById("diary-title" + i).value
@@ -234,48 +256,108 @@ const TravelDiaryEditor = () => {
     }
   };
 
-  const publishPost = async () => {
-    if (window.confirm("여행기를 발행 하시겠습니까?")) {
-      // 여행일지가 빈 케이스를 걸러냄
-      if (isPostEmpty()) {
-        alert("여행일지의 제목을 작성해주세요");
-        setShowPublishModal(false);
-        return;
-      }
-      // 여행기를 중간에 쓰다 만 케이스를 걸러냄
-      if (isDiaryEmpty().result && isDiaryEmpty().status === "partial") {
-        alert("여행기의 빈 칸을 채워주세요");
-        setShowPublishModal(false);
-        return;
-        // 여행기와 경비가 모두 텅 빈 케이스를 걸러냄
-      } else if (isDiaryEmpty().result && isExpenseEmpty()) {
-        alert("여행기와 경비 중 최소 한 가지를 작성해 주세요");
-        setShowPublishModal(false);
-        return;
-      }
-      await updatePost();
-      const diaryIds = await saveOrUpdateDiaries(savedPostId);
-      if (!diaryIds) return;
-      await savePhotosForDiary(savedPostId, diaryIds);
-      const res = await saveExpensesToDB(savedPostId);
-      if (res === "error") return;
+  const scopeAndCountryEmpty = () => {
+    const selectedRadio = document.querySelector(
+      'input[name="privacy"]:checked'
+    );
+    const country = document.getElementById("post-country").value;
+    console.log(country, "country");
+    if (!selectedRadio || !country || country === "나라 선택") return true;
+  };
 
+  const savePost = async () => {
+    const postTitle = document.getElementById("post-title").value;
+    const scope = document.getElementById("public-post").checked
+      ? "PUBLIC"
+      : "PERSONAL";
+    const country = document.getElementById("post-country").value;
+    const postId = await createPost({
+      scope: scope,
+      country: country,
+      title: postTitle,
+    });
+    return postId;
+  };
+
+  const publishPost = async () => {
+    if (scopeAndCountryEmpty()) {
+      alert("여행일지의 공개 범위와 나라를 선택해주세요");
+      return;
+    }
+
+    if (window.confirm("여행기를 발행 하시겠습니까?")) {
+      if (!savedPostId) {
+        const postId = await savePost();
+        if (!postId) return;
+        // if (!isDiaryEmpty().result || !isDiaryEmpty().status === "total") {
+        const diaryIds = await saveNewDiaries(postId);
+        if (!diaryIds) return;
+        await savePhotosForDiary(postId, diaryIds);
+        // }
+        const res = await saveExpensesToDB(postId);
+        if (res === "error") return;
+      } else {
+        await updatePost();
+        // if (!isDiaryEmpty().result || !isDiaryEmpty().status === "total") {
+        const diaryIds = await saveOrUpdateDiaries(savedPostId);
+        if (!diaryIds) return;
+        await savePhotosForDiary(savedPostId, diaryIds);
+        // }
+        const res = await saveExpensesToDB(savedPostId);
+        if (res === "error") return;
+      }
       alert("발행이 완료되었습니다.");
       navigate("/mytrip");
     }
   };
 
+  const saveTempPost = async () => {
+    const postTitle = document.getElementById("post-title").value;
+    const postId = await createTempPost({
+      title: postTitle,
+    });
+    return postId;
+  };
+
+  const saveNewDiaries = async (postId) => {
+    const diarySaveRequest = [];
+    for (const [i, diary] of diaries.entries()) {
+      const diaryInput = {
+        postId: postId,
+        title: document.getElementById("diary-title" + i).value,
+        content: document.getElementById("diary-content" + i).value,
+        date: diary.date,
+      };
+      diarySaveRequest.push(diaryInput);
+    }
+    const diaryIds = await createDiary(diarySaveRequest);
+    return diaryIds;
+  };
+
   const saveTemporaryDiary = async () => {
-    const isEmpty = isTempPostAndDiaryEmpty();
-    if (isEmpty) return;
-
-    await updateTempPost();
-    const diaryIds = await saveOrUpdateDiaries(savedPostId);
-    if (!diaryIds) return;
-    setSavedDiaryId(diaryIds);
-    assignNewDiaryId(diaryIds);
-    await savePhotosForDiary(savedPostId, diaryIds);
-
+    if (isPostEmpty()) {
+      alert("여행일지의 제목을 작성해주세요");
+      return;
+    }
+    // const isEmpty = isTempDiaryEmpty();
+    // if (isEmpty) return;
+    if (!savedPostId) {
+      const postId = await saveTempPost();
+      if (!postId) return;
+      setSavedPostId(postId);
+      const diaryIds = await saveNewDiaries(postId);
+      if (!diaryIds) return;
+      setSavedDiaryId(diaryIds);
+      assignNewDiaryId(diaryIds);
+      await savePhotosForDiary(postId, diaryIds);
+    } else {
+      await updateTempPost();
+      const diaryIds = await saveOrUpdateDiaries(savedPostId);
+      if (!diaryIds) return;
+      setSavedDiaryId(diaryIds);
+      assignNewDiaryId(diaryIds);
+      await savePhotosForDiary(savedPostId, diaryIds);
+    }
     alert(
       '여행기 임시 저장이 완료되었습니다.\n저장된 내용은 "나의 여행"에서 확인하실 수 있습니다.'
     );
@@ -350,22 +432,28 @@ const TravelDiaryEditor = () => {
   };
 
   const saveTemporaryExpense = async () => {
-    const postTitle = document.getElementById("post-title").value;
-    if (!postTitle) {
+    if (isPostEmpty()) {
       alert("여행일지의 제목을 작성해주세요");
       return;
     }
-    if (isExpenseEmpty()) return;
+    // if (isExpenseEmpty()) {
+    //   alert("여행 경비를 최소 하나 채워주세요");
+    //   return;
+    // }
 
-    const res = await saveExpensesToDB(savedPostId);
-
+    let res;
+    if (savedPostId) res = await saveExpensesToDB(savedPostId);
+    else {
+      const postId = await saveTempPost();
+      setSavedPostId(postId);
+      res = await saveExpensesToDB(postId);
+    }
     if (res !== "error")
       alert(
         '경비 임시 저장이 완료되었습니다.\n저장된 내용은 "나의 여행"에서 확인하실 수 있습니다.'
       );
     // save or update
   };
-
   const isExpensesEmpty = () => {
     for (let [i, expense] of expenses[selectedExpenseDate].entries()) {
       const place = document.getElementById("expense-place" + i).value;
@@ -545,10 +633,18 @@ const TravelDiaryEditor = () => {
     const expenseKeys = Object.keys(savedExpenses);
     if (expenseKeys.length > 0) {
       for (let key of expenseKeys) {
-        const formattedKey = `abbr[aria-label="${key.slice(0, 4)}년 ${key.slice(
-          6,
-          7
-        )}월 ${key.slice(8)}일"]`;
+        let formattedKey;
+        if (Number(key.slice(8)) < 10) {
+          formattedKey = `abbr[aria-label="${key.slice(0, 4)}년 ${key.slice(
+            6,
+            7
+          )}월 ${key.slice(9)}일"]`;
+        } else {
+          formattedKey = `abbr[aria-label="${key.slice(0, 4)}년 ${key.slice(
+            6,
+            7
+          )}월 ${key.slice(8)}일"]`;
+        }
         console.log(formattedKey);
         const abbrElement = document.querySelector(formattedKey);
         if (abbrElement)

@@ -22,8 +22,8 @@ const Place = () => {
       });
       setLoading(false);
       console.log(response);
-      const temp = response.replaceAll("**", "");
-      setResult(temp);
+      // const temp = response.replaceAll("**", "");
+      setResult(response);
     } catch (error) {
       console.log("Error in getPlaceApi", error);
       setLoading(false);
@@ -90,36 +90,45 @@ const Place = () => {
           ) : result === "" ? (
             <div />
           ) : (
-            <div className="chatbot-font">{result}</div>
+            <div
+              className="chatbot-font"
+              dangerouslySetInnerHTML={{ __html: result }}
+            ></div>
           )}
         </div>
       </div>
-
-      <div className="chatbot-button">
-        <input
-          type="text"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          style={{ marginTop: "0px", width: "70vw" }}
-        />
-        <button
-          className="rectangle"
-          style={{
-            height: "30px",
-            width: "30px",
-            margin: "10px",
-          }}
-          onClick={showResultQuestion}
-        >
-          <img
-            width="18px"
-            height="20px"
-            style={{ margin: "0px" }}
-            src={searchImage}
-            alt="Search"
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          setMessage(e.target.value);
+        }}
+      >
+        <div className="chatbot-button">
+          <input
+            type="text"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            style={{ marginTop: "0px", width: "70vw" }}
           />
-        </button>
-      </div>
+          <button
+            className="rectangle"
+            style={{
+              height: "30px",
+              width: "30px",
+              margin: "10px",
+            }}
+            onClick={showResultQuestion}
+          >
+            <img
+              width="18px"
+              height="20px"
+              style={{ margin: "0px" }}
+              src={searchImage}
+              alt="Search"
+            />
+          </button>
+        </div>
+      </form>
     </div>
   );
 };
