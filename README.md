@@ -54,7 +54,7 @@ https://github.com/user-attachments/assets/5277301b-6221-4451-9c30-7a4ac4897c13
 >```javascript
 >   const savedExpenses = [...expenses]
 >```
-> * 해결 : structuredClone()으로 아예 동일하게 <br>
+> * 해결 : structuredClone()으로 아예 다른 주소를 바라보게 copy한다 <br>
 >```javascript
 > ======================= Shallow copy ============================
 >
