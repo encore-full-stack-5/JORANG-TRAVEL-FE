@@ -17,7 +17,7 @@ https://github.com/jinho9482/JORANG-TRAVEL
 https://github.com/encore-full-stack-5/JORANG-TRAVEL-BE
 
 ### Langchain server
-https://github.com/encore-full-stack-5/JORANG-TRAVEL-FE
+https://github.com/encore-full-stack-5/JORANG_LANGCHAIN_SERVER
 
 ## <br>📃 화면 구성 및 기능 소개 (Video)
 ### 1. 나라별 여행 일지 확인 ###
