@@ -119,5 +119,10 @@ https://github.com/user-attachments/assets/5277301b-6221-4451-9c30-7a4ac4897c13
 > → Front에서 file type으로 보낼 때, FormData 형식으로 보내고 server에서는 Multipart type으로 받아서 처리<br>
 > → 사진을 삭제할 때 DB에 이미 사진이 존재하는 경우엔 기존 사진과 google cloud storage에 있는 사진들을 모두 지우고 새로 저장한다. 이 때 여행기 삭제 버튼을 눌러서 지우는 경우엔 cascade처리로 사진을 자동 삭제하고자 하였으나, google cloud storage의 사진은 삭제되지 않아, 사진 삭제 api 를 추가로 생성해서 호출하는 것으로 변경
 
+**4. 여행 일지를 가져올 때 child entity인 여행기, 경비, 사진을 한 번에 불러오면서 list안에 list가 있는 구조 문제<br><br>**
+> * 원인 : 부모, 자식 table이 양방향 맵핑이 되어있어, 부모를 가져올 때도 자식의 list를 전부 가져옴
+> * 해결 방향
+>   1) 전부 가져온 list에서 여행기, 경비, 사진들을 따로 state를 분리 <br>
+>   2) table을 단방향 mapping으로 바꾸고, 부모에서 자식 table로의 cascade처리를 없애고 isDeleted column을 생성하여 data 삭제 대신 해당 column을 가지고 삭제 제어
 <br>
 
