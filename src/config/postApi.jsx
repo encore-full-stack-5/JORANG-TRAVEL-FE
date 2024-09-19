@@ -141,7 +141,7 @@ export const createTempPost = async (body) => {
   }
 };
 
-export const updateTempPost = async (id, body) => {
+export const updateTempPostApi = async (id, body) => {
   try {
     const res = await api(`/api/v1/posts/${id}/temp`, "put", body);
     console.log(res.data);

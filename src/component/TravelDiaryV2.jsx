@@ -24,6 +24,7 @@ import {
   createTempPost,
   updatePostById,
   updateTempPost,
+  updateTempPostApi,
 } from "../config/postApi";
 import { el } from "date-fns/locale";
 import { saveExpensesApi } from "../config/expenseApi";
@@ -62,19 +63,17 @@ const TravelDiaryV2 = () => {
       return;
     }
     console.log(isDiaryEmpty(), "isDiaryEmpty");
-    if (isDiaryEmpty().result && isDiaryEmpty().status === "nothing") {
-      alert("최소 하나의 여행기를 작성해주세요");
-      return;
-    }
+    // if (isDiaryEmpty().result && isDiaryEmpty().status === "nothing") {
+    //   alert("최소 하나의 여행기를 작성해주세요");
+    //   return;
+    // }
     // 여행기를 중간에 쓰다 만 케이스를 걸러냄
-    else if (isDiaryEmpty().result && isDiaryEmpty().status === "partial") {
-      console.log(1);
+    if (isDiaryEmpty().result && isDiaryEmpty().status === "partial") {
       alert("여행기의 빈 칸을 채워주세요");
       setShowPublishModal(false);
       return;
       // 여행기와 경비가 모두 텅 빈 케이스를 걸러냄
     } else if (isDiaryEmpty().result && isExpenseEmpty()) {
-      console.log(1);
       alert("여행기와 경비 중 최소 한 가지를 작성해 주세요");
       setShowPublishModal(false);
       return;
@@ -221,7 +220,7 @@ const TravelDiaryV2 = () => {
 
   const updateTempPost = async () => {
     const postTitle = document.getElementById("post-title").value;
-    await updatePostById(savedPostId, {
+    await updateTempPostApi(savedPostId, {
       title: postTitle,
     });
   };
@@ -366,20 +365,20 @@ const TravelDiaryV2 = () => {
       if (!savedPostId) {
         const postId = await savePost();
         if (!postId) return;
-        if (!isDiaryEmpty().result || !isDiaryEmpty().status === "total") {
-          const diaryIds = await saveNewDiaries(postId);
-          if (!diaryIds) return;
-          await savePhotosForDiary(postId, diaryIds);
-        }
+        // if (!isDiaryEmpty().result || !isDiaryEmpty().status === "total") {
+        const diaryIds = await saveNewDiaries(postId);
+        if (!diaryIds) return;
+        await savePhotosForDiary(postId, diaryIds);
+        // }
         const res = await saveExpensesToDB(postId);
         if (res === "error") return;
       } else {
         await updatePost();
-        if (!isDiaryEmpty().result || !isDiaryEmpty().status === "total") {
-          const diaryIds = await saveOrUpdateDiaries(savedPostId);
-          if (!diaryIds) return;
-          await savePhotosForDiary(savedPostId, diaryIds);
-        }
+        // if (!isDiaryEmpty().result || !isDiaryEmpty().status === "total") {
+        const diaryIds = await saveOrUpdateDiaries(savedPostId);
+        if (!diaryIds) return;
+        await savePhotosForDiary(savedPostId, diaryIds);
+        // }
         const res = await saveExpensesToDB(savedPostId);
         if (res === "error") return;
       }
@@ -389,8 +388,12 @@ const TravelDiaryV2 = () => {
   };
 
   const saveTemporaryDiary = async () => {
-    const isEmpty = isTempPostAndDiaryEmpty();
-    if (isEmpty) return;
+    if (isPostEmpty()) {
+      alert("여행일지의 제목을 작성해주세요");
+      return;
+    }
+    // const isEmpty = isTempDiaryEmpty();
+    // if (isEmpty) return;
     if (!savedPostId) {
       const postId = await saveTempPost();
       if (!postId) return;
@@ -538,15 +541,14 @@ const TravelDiaryV2 = () => {
   };
 
   const saveTemporaryExpense = async () => {
-    const postTitle = document.getElementById("post-title").value;
-    if (!postTitle) {
+    if (isPostEmpty()) {
       alert("여행일지의 제목을 작성해주세요");
       return;
     }
-    if (isExpenseEmpty()) {
-      alert("여행 경비를 최소 하나 채워주세요");
-      return;
-    }
+    // if (isExpenseEmpty()) {
+    //   alert("여행 경비를 최소 하나 채워주세요");
+    //   return;
+    // }
 
     let res;
     if (savedPostId) res = await saveExpensesToDB(savedPostId);

@@ -129,8 +129,8 @@ const Mypage = () => {
         const response = await getChatbotMypage({
           diaries: chatbotDiaries,
         });
-        console.log(response);
-        setChatbotResult(response.replaceAll("**", "\n"));
+        console.log(response, "ai 맞춤 계획");
+        setChatbotResult(response);
         setLoading(false);
       } catch (error) {
         console.log("Error in getPlaceApi", error);
@@ -224,8 +224,6 @@ const Mypage = () => {
                   <div style={{ width: "30px", height: "30px" }}>
                     <Loading />
                   </div>
-                ) : chatbotResult === "" ? (
-                  <div />
                 ) : (
                   <div
                     className="mypage-chatbot"
