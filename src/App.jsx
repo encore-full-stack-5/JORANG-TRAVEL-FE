@@ -11,7 +11,6 @@ import Chatbot from "./component/Chatbot";
 import Mytrip from "./component/Mytrip";
 import ShareTrip from "./component/ShareTrip";
 import ShareTripCountry from "./component/ShareTripCountry";
-import TravelDiary from "./component/TravelDiary";
 
 import FindPassword from "./component/FindPassword";
 import FindLoginId from "./component/FindLoginId";

@@ -2,17 +2,14 @@ import React, { useEffect, useState } from "react";
 import jorangImage from "./../image/jorangImage.png";
 import SignatureColorOval from "./SignatureColorOval";
 import SignatureOval from "./SignatureOval";
-import {
-  getDiaryByUserAndCountry,
-  getExpenseDetailByUserAndCountry,
-  getUserById,
-  updateUser,
-} from "../config/authApi";
+import { getUserById, updateUser } from "../config/authApi";
 import { useNavigate } from "react-router-dom";
 import Loading from "./Loading";
 import { getChatbotMypage } from "../config/chatbotApi";
-import { getMyDiary, getMyTotalCostPerCountryApi } from "../config/postApi";
-import { getNumberOfCountriesVisited } from "../api/post-api";
+import {
+  getMyTotalCostPerCountryApi,
+  getNumberOfCountriesVisited,
+} from "../config/postApi";
 import { getMyDiaryContentsApi } from "../config/diaryApi";
 
 const Mypage = () => {

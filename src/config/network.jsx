@@ -13,8 +13,6 @@ export const api = async (url, method, body, params) => {
       url === "/api/v1/posts/recent" ||
       url === "/api/v1/auths/findLoginId" ||
       url === "/api/v1/auths/findPassword" ||
-      // url === "/api/v1/posts/recent"
-      // url === "/api/v1/expense-details"
       url === "/api/v1/posts/recent/diaries" ||
       url.startsWith("/api/v1/country/info/") ||
       url.startsWith("/api/v1/auths/loginId/") ||
@@ -23,7 +21,7 @@ export const api = async (url, method, body, params) => {
       url.startsWith("/api/v1/diaries/posts") ||
       url.startsWith("/api/v1/expenseDetail/chart/postId/")
     )
-      return "";
+      return null;
     return "Bearer " + localStorage.getItem("token");
   };
 

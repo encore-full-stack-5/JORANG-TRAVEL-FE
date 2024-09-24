@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { getRecentPostsByCountry } from "../api/post-api";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import { Link, useParams } from "react-router-dom";
 import ImageText from "./ImageText";
@@ -7,6 +6,7 @@ import filterImage from "./../image/filterImage.png";
 import countries from "../countries.js";
 import "./PostsPerCountry.css";
 import "./Posts.css";
+import { getRecentPostsByCountry } from "../config/postApi.jsx";
 
 const PostsPerCountry = () => {
   const [posts, setPosts] = useState([]);
