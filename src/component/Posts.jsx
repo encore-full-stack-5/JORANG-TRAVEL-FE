@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import ImageText from "./ImageText";
 import filterImage from "./../image/filterImage.png";
-import { getRecentPostsFirst } from "../api/post-api";
+
 import "./Posts.css";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import { Link, useNavigate } from "react-router-dom";
+import { getRecentPostsFirst } from "../config/postApi";
 const Posts = () => {
   const [posts, setPosts] = useState([]);
   const [date, setDate] = useState([

@@ -84,21 +84,3 @@ export const findPassword = async (data) => {
     console.error("Error in findPassword", error);
   }
 };
-
-export const getExpenseDetailByUserAndCountry = async () => {
-  try {
-    const res = await api(`/api/v1/expense-details/my-countries`, "get");
-    return res.data;
-  } catch (error) {
-    console.error("Error in getExpenseDetailByUserAndCountry", error);
-  }
-};
-
-export const getDiaryByUserAndCountry = async () => {
-  try {
-    const res = await api(`/api/v1/diaries/mypage`, "get");
-    return res.data;
-  } catch (error) {
-    console.error("Error in getDiaryByUserAndCountry", error);
-  }
-};

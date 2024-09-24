@@ -201,28 +201,6 @@ const TravelDiaryEditor = () => {
     setDiaries(updatedDiaries);
   };
 
-  const isTempDiaryEmpty = () => {
-    for (const [i, diary] of diaries.entries()) {
-      const diaryTitle = document.getElementById("diary-title" + i)
-        ? document.getElementById("diary-title" + i).value
-        : null;
-      const description = document.getElementById("diary-content" + i)
-        ? document.getElementById("diary-content" + i).value
-        : null;
-      const isDiaryEmpty =
-        !diaryTitle &&
-        !diary.date &&
-        !description &&
-        Object.keys(diary.image).length === 0;
-      if (isDiaryEmpty) {
-        alert(
-          "모든 여행기의 제목, 날짜, 내용, 사진 중 최소 한 곳을 채워주세요"
-        );
-        return true;
-      }
-    }
-  };
-
   const isPostEmpty = () => {
     const postTitle = document.getElementById("post-title").value;
     if (!postTitle) return true;
@@ -339,8 +317,6 @@ const TravelDiaryEditor = () => {
       alert("여행일지의 제목을 작성해주세요");
       return;
     }
-    // const isEmpty = isTempDiaryEmpty();
-    // if (isEmpty) return;
     if (!savedPostId) {
       const postId = await saveTempPost();
       if (!postId) return;
@@ -376,7 +352,6 @@ const TravelDiaryEditor = () => {
     const formattedDate = getFormattedDate(date);
     setSelectedExpenseDate(formattedDate);
     setIsExpenseModalOpen(true);
-    // if (!expenses[formattedDate]) {
     const newExpenses = structuredClone(savedExpenses);
     if (!newExpenses[formattedDate])
       newExpenses[formattedDate] = [{ cost: 0, place: "", category: "" }];
@@ -436,11 +411,6 @@ const TravelDiaryEditor = () => {
       alert("여행일지의 제목을 작성해주세요");
       return;
     }
-    // if (isExpenseEmpty()) {
-    //   alert("여행 경비를 최소 하나 채워주세요");
-    //   return;
-    // }
-
     let res;
     if (savedPostId) res = await saveExpensesToDB(savedPostId);
     else {
@@ -609,7 +579,6 @@ const TravelDiaryEditor = () => {
         }
       });
       setSavedExpenses(expensesFromResponse);
-      // setLoading(false);
     } catch {
       console.log("error in getMyPost");
     }

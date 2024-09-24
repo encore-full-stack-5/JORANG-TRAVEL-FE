@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getMyPostById } from "../config/postApi";
+import { deleteById, getMyPostById } from "../config/postApi";
 import DonutChart from "./DonutChart";
 import ImageSlider from "./ImageSlider";
-import { deleteById } from "../api/post-api";
 import { deletePhotosByDiaryId } from "../config/photoApi";
 import { deleteDiaryById } from "../config/diaryApi";
-import {
-  getLikeCheckApi,
-  getLikeCountByPostIdApi,
-  likePostApi,
-} from "../config/likeApi";
+import { getLikeCheckApi, likePostApi } from "../config/likeApi";
+import { deleteExpenseDetailsApi } from "../config/expenseDetailApi";
+import { deleteExpenseApi } from "../config/expenseApi";
 
 const MyDetailPost = () => {
   const postId = useParams().id;
@@ -67,7 +64,14 @@ const MyDetailPost = () => {
         await deletePhotosByDiaryId(diary.id); // photo를 먼저 지워야 한다. (foreign key 때문에)
         await deleteDiaryById(diary.id); // id가 발급된 diary는 DB에서 삭제
       }
+
+      for (let expense of expenses) {
+        console.log(expense, "expense");
+        await deleteExpenseDetailsApi(expense.id);
+        await deleteExpenseApi(expense.id);
+      }
       await deleteById(postId);
+
       alert("여행 일지가 삭제되었습니다");
       navigate("/mytrip");
     }

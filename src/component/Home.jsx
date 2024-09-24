@@ -3,7 +3,6 @@ import WorldMap from "react-world-map";
 import "./Home.css";
 import countries from "../countries.js";
 import { Link } from "react-router-dom";
-import { getCountryInfo } from "../config/country-info.jsx";
 
 const Home = () => {
   const [selectedContinent, setSelectedContinent] = useState();
@@ -71,7 +70,6 @@ const Home = () => {
   };
 
   useEffect(() => {
-    console.log(getCountryInfo(1));
     localStorage.removeItem("currentPage");
   }, []);
 
