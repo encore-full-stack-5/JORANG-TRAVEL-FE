@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import Norway from "./../image/Norway.png";
 import ImageText from "./ImageText";
 import { Link, useParams } from "react-router-dom";
-import { getRecent5PostsByCountry } from "../api/post-api";
 import countries from "../countries.js";
-import { getCountryInfo } from "../config/postApi.jsx";
+import { getCountryInfo } from "../config/countryinfoApi.jsx";
+import { getRecent5PostsByCountry } from "../config/postApi.jsx";
 
 const ShareTripCountry = () => {
   const [click, setClick] = useState(false);

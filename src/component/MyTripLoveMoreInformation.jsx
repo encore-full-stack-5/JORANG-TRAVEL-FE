@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { getMyLikePostByPageApi, postLikeListByUser } from "../config/postApi";
+import { postLikeListByUser } from "../config/postApi";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ImageText from "./ImageText";
 import Norway from "./../image/Norway.png";
+import { getMyLikePostByPageApi } from "../config/likeApi";
 
 const MyTripLoveMoreInformation = () => {
   const [currentPage, setCurrentPage] = useState(0);

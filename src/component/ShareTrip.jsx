@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ImageText from "./ImageText";
-import { getTop5RecentPosts, getTopLikePostsFirst } from "../api/post-api";
 import { Link } from "react-router-dom";
+import { getTop5RecentPosts, getTopLikePostsFirst } from "../config/postApi";
 
 const Mytrip = () => {
   const [recentPosts, setRecentPosts] = useState([]);

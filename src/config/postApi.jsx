@@ -1,12 +1,4 @@
 import { api } from "./network";
-export const getDiaryAllByPostId = async (id) => {
-  try {
-    const res = await api(`/api/v1/diaries/posts/${id}`, "get");
-    return res.data;
-  } catch (error) {
-    console.error("Error in getAllByPostId", error);
-  }
-};
 
 export const getPostById = async (id) => {
   try {
@@ -56,38 +48,6 @@ export const getMyPublishedPostApi = async () => {
   }
 };
 
-export const getChartData = async (postId) => {
-  try {
-    const res = await api(
-      `/api/v1/expense-details/chart/postId/${postId}`,
-      "get"
-    );
-    return res.data;
-  } catch (error) {
-    console.error("Error in getChartData", error);
-  }
-};
-
-export const getExpenseDetailsByPostId = async (postId) => {
-  try {
-    const response = await api(
-      `/api/v1/expense-details/by-post/${postId}`,
-      "get"
-    );
-    return response.data;
-  } catch (error) {
-    console.error("게시물 ID로 경비 세부 정보 가져오기 오류", error);
-  }
-};
-// export const getById = async (id) => {
-//   try {
-//     const response = await api(`/api/v1/posts/${id}`, "get");
-//     return response.data;
-//   } catch (error) {
-//     console.error("포스트id로 포스트 다 가져오기 오류", error);
-//   }
-// };
-
 export const getMyPublishedPostsByPageApi = async (pageNumber) => {
   try {
     const res = await api(
@@ -97,27 +57,6 @@ export const getMyPublishedPostsByPageApi = async (pageNumber) => {
     return res.data;
   } catch (error) {
     console.error("Error in getMyPublishedPostsByPageApi", error);
-  }
-};
-
-export const getMyLikePostByPageApi = async (pageNumber) => {
-  try {
-    const res = await api(
-      `/api/v1/likes/posts/user/page?page=${pageNumber}`,
-      "get"
-    );
-    return res.data;
-  } catch (error) {
-    console.error("Error in getMyLikePostByPageApi", error);
-  }
-};
-
-export const getMyDiary = async () => {
-  try {
-    const res = await api(`/api/v1/diaries/mydiary`, "get");
-    return res.data;
-  } catch (error) {
-    console.error("Error in getMyDiary", error);
   }
 };
 
@@ -157,15 +96,6 @@ export const updatePostById = async (id, updatePostDto) => {
     return res.data;
   } catch (error) {
     console.error("Error in updatePostById", error);
-  }
-};
-
-export const getCountryInfo = async (countryName) => {
-  try {
-    const res = await api(`/api/v1/country/info/${countryName}`, "get");
-    return res.data;
-  } catch (error) {
-    console.error("Error in getCountryInfo", error);
   }
 };
 
@@ -209,4 +139,46 @@ export const getPostsByKeywordApi = async (keyword) => {
   } catch (error) {
     console.error("Error in getPostsByKeywordApi", error);
   }
+};
+
+// 나라별 최신순 post 가져오기
+export const getRecentPostsByCountry = async (country) => {
+  const res = await api("/api/v1/posts/recent/diaries", "get", null, {
+    country: country,
+  });
+  return res.data;
+};
+
+// 최신순 post 가져오기
+export const getRecentPostsFirst = async () => {
+  const res = await api("/api/v1/posts/recent", "get");
+  return res.data;
+};
+
+export const getTop5RecentPosts = async () => {
+  const res = await api("/api/v1/posts/top5/recent", "get");
+  return res.data;
+};
+
+// 이번주 좋아요 순 post top5 가져오기
+export const getTopLikePostsFirst = async () => {
+  const res = await api("/api/v1/posts/top5/like", "get");
+  return res.data;
+};
+
+export const getRecent5PostsByCountry = async (country) => {
+  const res = await api("/api/v1/posts/top5/diaries", "get", null, {
+    country: country,
+  });
+  return res.data;
+};
+
+// 내가 여행한 나라 갯수 @마이페이지
+export const getNumberOfCountriesVisited = async () => {
+  const res = await api("/api/v1/posts/my-countries", "get");
+  return res.data;
+};
+
+export const deleteById = async (id) => {
+  await api(`/api/v1/posts/${id}`, "delete");
 };

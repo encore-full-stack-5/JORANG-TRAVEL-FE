@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Doughnut } from "react-chartjs-2";
 import "chart.js/auto";
-import { getChartData } from "../config/postApi";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import { getChartData } from "../config/expenseDetailApi";
 
 const DonutChart = (props) => {
   const [labels, setLabels] = useState([]);
