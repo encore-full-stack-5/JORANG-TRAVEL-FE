@@ -10,8 +10,8 @@
 - Sorting travel logs by recent date and likes, and filtering by travel duration
 - Sending a temporary password via email when changing user ID or email
 
-### <br> Full Project Introduction
-https://github.com/encore-full-stack-5/JORANG-TRAVEL-FE
+### <br> Full Project
+https://github.com/encore-full-stack-5/JORANG-TRAVEL
 
 ### Main Server (Java with Spring Boot)
 https://github.com/encore-full-stack-5/JORANG-TRAVEL-BE
