@@ -11,7 +11,7 @@
 - Sending a temporary password via email when changing user ID or email
 
 ### <br> Full Project Introduction
-https://github.com/jinho9482/JORANG-TRAVEL
+https://github.com/encore-full-stack-5/JORANG-TRAVEL-FE
 
 ### Main Server (Java with Spring Boot)
 https://github.com/encore-full-stack-5/JORANG-TRAVEL-BE
