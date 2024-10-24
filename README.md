@@ -11,7 +11,7 @@
 - 유저 아이디, 이메일 변경 시 이메일로 임시 비밀번호 발송
 
 ### <br>전체 프로젝트 소개
-https://github.com/encore-full-stack-5/JORANG-TRAVEL-FE
+https://github.com/encore-full-stack-5/JORANG-TRAVEL
 
 ### Main server (Java with Spring boot)
 https://github.com/encore-full-stack-5/JORANG-TRAVEL-BE
